@@ -3,46 +3,25 @@ import { wrapLabel } from "./wrap-label.js";
 import { getSelectedGender } from "./get-selected-gender.js";
 import { getNested } from "./get-nested.js";
 
-export const chart_colours = ["#3878c5", "#00205B", "#68A41E", "#732777", "#ce70d2", "#434700", "#a88f8f", "#3b3b3b", "#e64791", "#400b23"];
+export const chart_colours = ["#00205B", "#68A41E", "#732777", "#ce70d2", "#434700", "#a88f8f", "#3b3b3b", "#e64791", "#400b23", "#3878c5",];
 
-export function createLineChart({data, stat, years, line_1, line_2, label_1 = "Female", label_2 = "Male", unit = "%", canvas_id}) {
+export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
 
     const line_canvas = document.getElementById(canvas_id);
 
     let line_values = [];
-    let female_values = [];
-    let male_values = [];
-
-    for (let i = 0; i < years.length; i++) {
-        const base = data.data[stat][years[i]];   // start point for that year
-
-        if (line_1.includes("No violence") || line_1.includes("No forms of violence")) {
-            female_values.push(100 - getNested(base, line_1));
-            male_values.push(100 - getNested(base, line_2));
-        } else {
-            female_values.push(getNested(base, line_1));
-            male_values.push(getNested(base, line_2));
-        }
+ 
+    for (let i = 0; i < lines.length; i++) {
+      line_values.push({
+        axis: "y",
+        label: labels[i],
+        data: lines[i],
+        fill: false,
+        backgroundColor: chart_colours[i],
+        borderColor: chart_colours[i],
+        borderWidth: 2
+      });
     }
-
-    line_values.push({axis: "y",
-        label: label_1,
-        data: female_values,
-        fill: false,
-        backgroundColor: chart_colours[0],
-        borderColor: chart_colours[0],
-        borderWidth: 2
-    });
-
-    line_values.push({axis: "y",
-        label: label_2,
-        data: male_values,
-        fill: false,
-        backgroundColor: chart_colours[1],
-        borderColor: chart_colours[1],
-        borderWidth: 2
-    });
-
 
     const line_data = {
         labels: years,
@@ -85,12 +64,7 @@ export function createLineChart({data, stat, years, line_1, line_2, label_1 = "F
           tooltip: {
             callbacks: {
               label: function (context) {
-                const value = context.raw;
-                if (unit === "%") {
-                  return `${value}%`;
-                } else {
-                  return Number(value).toLocaleString();
-                }
+                return `${context.dataset.label}: ${Number(context.raw).toLocaleString(1)} ${unit}`;
               }
             }
           }

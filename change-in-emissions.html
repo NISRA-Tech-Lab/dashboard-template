@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body style="display:none;">
+    
+<banner id="banner"></banner>
+  <!-- Top Navbar -->
+<nav id ="nav"></nav>
+
+<!-- Main Content -->
+<main>
+<div class="w-100 text-center current-page py-2">
+    Figures on this page are presented as Million tonnes of Carbon Dioxide Equivalent (MtCO&#8322;e).
+</div>
+
+<div id="content" class="container-fluid">
+        
+        <div class = "py-2">
+            <!-- First row - cards -->
+            <div class="row text-center">
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 navy-bg">
+                        <div class="card-body">
+                            <p>Total Greenhouse Gas Emissions</p>
+                            <p class="display-6"><span id="total-ghg"></span> MtCO&#8322;e</p>
+                            <p id="ghg-change"></p>
+                            <p id="ghg-base-change"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Carbon Dioxide Emissions</p>
+                            <p class="display-6"><span id="total-co2"></span> MtCO&#8322;e</p>
+                            <p id="co2-change"></p>
+                            <p id="co2-base-change"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>PfG Wellbeing Framework</p>
+                            <p class="display-6"><span id="pfg-change"></span> MtCO&#8322;e</p>
+                            <p><span id="pfg-change-type"></span> since baseline emission figure of <span id="pfg-base-value"></span> MtCO&#8322;e in <span id="pfg-base-year"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Greatest increase</p>
+                            <p class="display-6">↑ <span id="min-sector-pct"></span>%</p>
+                            <p>rise in <strong id="min-sector-name"></strong> emissionssince base year</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Greatest decrease</p>
+                            <p class="display-6">↓ <span id="max-sector-pct"></span>%</p>
+                            <p>fall in <strong id="max-sector-name"></strong> emissions since base year</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second row - tables and charts -->
+            <div class="row">
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="historic-line-capture">
+                            <div class="card-header">
+                                Historic Emissions, 1990 to <span class="latest-year"></span>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="historic-line" class="chart-canvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="emissions-table-capture">
+                        <div class="card-header">
+                            Change in Emissions by Sector, Base Year to <span class="latest-year"></span>
+                        </div>
+                        <div class="card-body">
+                            <table id="emissions-table" class="table table-bordered"></table>
+                        </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third row - Definitions -->
+            <div id="info-boxes"></div>
+            
+        </div>
+        
+    </main>
+</div>
+
+<footer id = "footer"></footer>
+
+<script type = "module" src="src/change-in-emissions.js"></script>
+
+
+</body>

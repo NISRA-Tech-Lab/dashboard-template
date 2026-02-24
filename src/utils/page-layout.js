@@ -29,7 +29,7 @@ export function insertHeader () {
 
   <!-- Center: Page title -->
   <div class="col-12 col-xl-4 d-flex justify-content-center">
-    <h1 class="mb-0 text-white fs-2 app-title text-center">${config.title}</h1>
+    <h1 class="mb-0 text-white fs-2 app-title text-center">${config.title} 1990-<span class="latest-year"></span></h1>
   </div>
 
   <!-- Right: TEO logo -->
@@ -220,7 +220,7 @@ export async function insertHead(title) {
     <link rel="icon" type="image/svg+xml" href="assets/img/icon/favicon.svg" />
     <link rel="shortcut icon" href="assets/img/icon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Gender-based violence - ${title}" />
+    <meta name="apple-mobile-web-app-title" content="${config.title} - ${title}" />
 
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css">
 

@@ -1,13 +1,16 @@
 export const config = {
     // Dashboard title
-    "title": `Northern Ireland Greenhouse Gas Inventory 1990-<span class="latest-year"></span>`,
+    "title": `Northern Ireland Greenhouse Gas Inventory`,
 
     // Set order of page links and display text in navigation bar
     "navigation": [
         { href: "index.html", text: "Home" },
-        { href: "charts.html", text: "Charts" },
-        { href: "maps.html", text: "Maps" },
-        { href: "information.html", text: "Information" }
+        { href: "change-in-emissions.html", text: "Change in Emissions" },
+        { href: "sector-comparison.html", text: "Sector Comparison" },
+        { href: "sector-emissions.html", text: "Sectors Emissions" },
+        { href: "uk-comparison.html", text: "UK Comparison" },
+        { href: "projections.html", text: "Projections" },        
+        { href: "user-notes.html", text: "User Notes" }        
     ],
 
     // Data portal version in use

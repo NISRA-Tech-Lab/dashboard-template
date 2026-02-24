@@ -14,8 +14,11 @@ export function downloadButton (capture_id, matrix, update_date, map_plot = fals
 
     const link_label = map_plot ? "map" : "chart";
 
-    footer.innerHTML = `
-        <div class="dropdown"><strong>Data last updated:</strong> ${update_date}.
+    let footerContent = document.createElement("div");
+    footerContent.classList.add("dropdown");
+
+    footerContent.innerHTML = `
+        <strong>Data last updated:</strong> ${update_date}.
         <div>
             <button class="btn btn-secondary dropdown-toggle btn-primary mt-2" type="button" id="${capture_id}-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 Download
@@ -27,8 +30,10 @@ export function downloadButton (capture_id, matrix, update_date, map_plot = fals
                 <li><a class="dropdown-item" href="#" id="download-${capture_id}">${link_label} (as image)</a></li>
             </ul>
             </div>
-        </div>
+        
     `;
+
+    footer.appendChild(footerContent);
 
 
     if (map_plot) {
