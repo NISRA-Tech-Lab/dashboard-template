@@ -7,7 +7,7 @@ export const config = {
         { href: "index.html", text: "Home" },
         { href: "change-in-emissions.html", text: "Change in Emissions" },
         { href: "sector-comparison.html", text: "Sector Comparison" },
-        { href: "sector-emissions.html", text: "Sectors Emissions" },
+        { href: "sector-emissions.html", text: "Sector Emissions" },
         { href: "uk-comparison.html", text: "UK Comparison" },
         { href: "projections.html", text: "Projections" },        
         { href: "user-notes.html", text: "User Notes" }        

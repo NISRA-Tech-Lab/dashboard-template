@@ -87,27 +87,10 @@ export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
 
 
     const ctx_line = line_canvas.getContext('2d');
-    const line_chart = new Chart(ctx_line, config_line);
+    return new Chart(ctx_line, config_line);
 
-    const gender_form = document.getElementById("gender-form");
-    if (gender_form) {
-        let selectedGender = getSelectedGender(); 
 
-        const datasetsForSelection = (sel) => {
-            if (sel === "female") return [line_values[0]];
-            if (sel === "male") return [line_values[1]];
-            return [line_values[0], line_values[1]]; // "both" / default
-        };
 
-        line_chart.data.datasets = datasetsForSelection(selectedGender);
-        line_chart.update();
-
-        gender_form.addEventListener("change", function () {
-            selectedGender = getSelectedGender(); 
-            line_chart.data.datasets = datasetsForSelection(selectedGender);
-            line_chart.update();
-        });
-    }
 
 }
 

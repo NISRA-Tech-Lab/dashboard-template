@@ -1,16 +1,17 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
-import { chart_colours, text_colours, splitLabel, formatValue, get_tree_data } from "./utils/charts.js";
+import { chart_colours,  get_tree_data } from "./utils/charts.js";
 import { latest_year, first_year, updateYearSpans, years } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
 import { toTitleCase, sectorNameTidy } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
+import { reshapeForTreemap } from "./utils/reshape-for-treemap.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
-    await insertHead("Change in Emissions");
+    await insertHead("Sector Comparison");
     insertHeader();
     insertNavButtons();
     insertExpandButtons();
@@ -114,57 +115,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Sector treemap
 
-    function reshapeForTreemap(rawObj) {
-        const rows = [];
-        const keys = Object.keys(rawObj);
-
-        // helpers
-        const isAllCaps = (s) =>
-            /[A-Z]/.test(s) && s === s.toUpperCase(); // simple + works for "INDUSTRY TOTAL", "LULUCF NET EMISSIONS"
-        const isGrandTotal = (s) => s.trim() === "GRAND TOTAL";
-
-        let pendingItems = []; // { name, value }
-
-        for (const k of keys) {
-            const v = rawObj[k];
-
-            if (isGrandTotal(k)) {
-            // ignore completely
-            continue;
-            }
-
-            if (isAllCaps(k)) {
-
-                // we've hit the sector total: flush pending items under this sector
-                const sector = sectorNameTidy(k)
-
-                for (const item of pendingItems) {
-                    // ignore non-numeric / missing values defensively
-                    const num = Number(item.value);
-
-                    if (Number.isFinite(num)) {
-                        const safeValue = Math.max(0, num); // negative values become 0
-                        rows.push({ sector, subsector: item.name, value: safeValue });
-                    }
-                }
-
-                // reset for next sector block
-                pendingItems = [];
-            } else {
-                // title-case / normal key => a leaf item to be grouped under the next ALL CAPS total
-                pendingItems.push({ name: k, value: v });
-            }
-        }
-
-        return rows;
-    }
+    
 
     // usage:
     const treemap_data_raw = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"];
     const treemap_data = reshapeForTreemap(treemap_data_raw);
 
-
-// treemap_data = [{ sector, subsector, value }, ...]
 
   // ---- helpers ----
   
