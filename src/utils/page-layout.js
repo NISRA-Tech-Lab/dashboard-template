@@ -244,6 +244,7 @@ export async function insertHead(title) {
   await loadScript("https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2");
   await loadScript("https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js");
   await loadScript("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
+  await loadScript("https://cdn.jsdelivr.net/npm/chartjs-chart-treemap/dist/chartjs-chart-treemap.min.js");
 
   document.body.removeAttribute("style");
 

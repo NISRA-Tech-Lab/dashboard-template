@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body style="display:none;">
+    
+<banner id="banner"></banner>
+  <!-- Top Navbar -->
+<nav id ="nav"></nav>
+
+<!-- Main Content -->
+<main>
+<div class="w-100 text-center current-page py-2">
+    Figures on this page are presented as Million tonnes of Carbon Dioxide Equivalent (MtCO&#8322;e).
+</div>
+
+<div id="content" class="container-fluid">
+        
+        <div class = "py-2">
+            <!-- First row - cards -->
+            <div class="row text-center">
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 navy-bg">
+                        <div class="card-body">
+                            <p>The <strong id="max-sector-name"></strong> sector contributed</p>
+                            <p class="display-6"><span id="max-sector-pct"></span>%</p>
+                            <p>of Northern Ireland's total emissions in <span class="latest-year"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>The <strong id="min-sector-name"></strong> sector contributed</p>
+                            <p class="display-6"><span id="min-sector-pct"></span>%</p>
+                            <p>of Northern Ireland's total emissions in <span class="latest-year"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Greatest increase</p>
+                            <p class="display-6">↑ <span id="most-worsened-pct"></span>%</p>
+                            <p>rise in <strong id="most-worsened-name"></strong> emissions since base year</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Greatest decrease</p>
+                            <p class="display-6">↓ <span id="most-improved-pct"></span>%</p>
+                            <p>fall in <strong id="most-improved-name"></strong> emissions since base year</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Other notable decreases since the base year:</p>
+                            <br>
+                            <p><strong id="other-decrease-sector-1"></strong> (↓ <span id="other-decrease-pct-1"></span>%)</p>
+                            <p><strong id="other-decrease-sector-2"></strong> (↓ <span id="other-decrease-pct-2"></span>%)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second row - tables and charts -->
+            <div class="row">
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="sector-treemap-capture">
+                            <div class="card-header">
+                                Northern Ireland Emissions by sector, <span class="latest-year"></span>
+                            </div>
+                            <div class="card-body text-center">
+                                <p id="treemap-caption">Click a sector to drill down</p>
+                                <canvas id="sector-treemap" class="chart-canvas"></canvas>
+                                <div class="mb-5">
+                                    <button class ="btn btn-primary d-none mt-2" id="reset-treemap" type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="sector-bar-capture">
+                        <div class="card-header">
+                            Emissions by sector, Base Year to <span class="latest-year"></span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="sector-bar" class="chart-canvas"></canvas>
+                        </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third row - Definitions -->
+            <div id="info-boxes"></div>
+            
+        </div>
+        
+    </main>
+</div>
+
+<footer id = "footer"></footer>
+
+<script type = "module" src="src/sector-comparison.js"></script>
+
+
+</body>

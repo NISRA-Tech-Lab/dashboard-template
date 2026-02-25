@@ -108,11 +108,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("pfg-base-year", pfg_base_year);
 
     //// Greatest increase / decrease
-    let sectors = Object.keys(
+     let sectors = Object.keys(
         GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]
         )
         .filter(x =>
-            x.includes("TOTAL") &&
+            (x.includes("TOTAL") || x.includes("NET EMISSIONS")) &&
             x !== "GRAND TOTAL" &&
             !x.includes("PUBLIC SECTOR")
         )

@@ -3,7 +3,20 @@ import { wrapLabel } from "./wrap-label.js";
 import { getSelectedGender } from "./get-selected-gender.js";
 import { getNested } from "./get-nested.js";
 
-export const chart_colours = ["#00205B", "#68A41E", "#732777", "#ce70d2", "#434700", "#a88f8f", "#3b3b3b", "#e64791", "#400b23", "#3878c5",];
+export const chart_colours = ["#00205B", "#68A41E", "#732777", "#ce70d2", "#434700", "#a88f8f", "#3b3b3b", "#e64791", "#400b23", "#3878c5"];
+
+export const text_colours = [
+  "#FFFFFF", // #00205B
+  "#000000", // #68A41E
+  "#FFFFFF", // #732777
+  "#000000", // #ce70d2
+  "#FFFFFF", // #434700
+  "#000000", // #a88f8f
+  "#FFFFFF", // #3b3b3b
+  "#000000", // #e64791
+  "#FFFFFF", // #400b23
+  "#000000"  // #3878c5
+];
 
 export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
 
@@ -257,3 +270,88 @@ export function createDALast3Data({data, stat, year, da_types}) {
             male: male_bars};    
 
 }
+
+export function splitLabel(label, maxChars) {
+    const lines = [];
+    let start = 0;
+    while (start < label.length) {
+      let end = start + maxChars;
+      if (end < label.length && label[end] !== " ") {
+        const spaceIndex = label.lastIndexOf(" ", end);
+        if (spaceIndex > start) end = spaceIndex;
+      }
+      lines.push(label.substring(start, end).trim());
+      start = end;
+      if (label[start] === " ") start++;
+    }
+    return lines.filter(Boolean);
+  }
+
+  export function formatValue(v) {
+    return Number(v).toLocaleString("en", { maximumFractionDigits: 0 });
+  }
+
+  export function get_tree_data(level, sectorName = null, sectorTotals, sectorIndex, treemap_data) {
+
+    // IMPORTANT: Use object trees + groups so labels come from ctx.raw.g (not index)
+    const tree =
+      level === "sector"
+        ? sectorTotals // [{ sector, value }]
+        : treemap_data
+            .filter(d => d.sector === sectorName)
+            .map(d => ({ subsector: d.subsector, value: Number(d.value) }));
+
+    const groupField = level === "sector" ? "sector" : "subsector";
+
+    return {
+      datasets: [{
+        type: "treemap",
+        tree,
+        key: "value",
+        groups: [groupField],
+
+        label: "",
+        label2: level,
+
+        spacing: 1,
+        borderWidth: 1,
+        hoverBorderWidth: 3,
+        hoverBorderColor: "#000",
+        borderColor: level === "sector" ? "#ffffff" : "#000",
+
+        backgroundColor: (ctx) => {
+          if (level === "sector") {
+            const sector = ctx.raw?.g; // group label
+            const i = sectorIndex.get(sector) ?? 0;
+            return chart_colours[i % chart_colours.length];
+          }
+          const i = sectorIndex.get(sectorName) ?? 0; // inherit parent colour
+          return chart_colours[i % chart_colours.length];
+        },
+
+        labels: {
+          display: true,
+          align: "center",
+          position: "center",
+
+          color: (ctx_tree) => {
+            if (level === "sector") {
+              const sector = ctx_tree.raw?.g;
+              const i = sectorIndex.get(sector) ?? 0;
+              return text_colours[i % text_colours.length];
+            }
+            const i = sectorIndex.get(sectorName) ?? 0;
+            return text_colours[i % text_colours.length];
+          },
+
+          formatter: (ctx_tree) => {
+            const label = ctx_tree.raw?.g ?? ""; // <-- always correct label
+            const chars_per_line = Math.max(1, Math.round(ctx_tree.raw.w / 10));
+            const lines = splitLabel(label, chars_per_line);
+            lines.push(formatValue(ctx_tree.raw.v));
+            return lines;
+          }
+        }
+      }]
+    };
+  }
