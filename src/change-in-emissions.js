@@ -171,8 +171,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     createLineChart({
         years,
-        lines: [ghg_values, co2_values],
-        labels: ["Total GHG", "Carbon Dioxide"],
+        lines: [ghg_values, co2_values, methane_values],
+        labels: ["Total GHG", "Carbon Dioxide", "Methane"],
         unit: "MtCO2e",
         canvas_id: "historic-line-expanded"
     })

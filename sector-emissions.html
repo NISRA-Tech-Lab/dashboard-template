@@ -16,12 +16,18 @@
 <div id="content" class="container-fluid">
 
         <div class="row mt-2">
-            <div class="col-12 col-xl-10"></div>
-            <div class="col-12 col-xl">
+            <div class="col-12 d-flex justify-content-end">
                 <div class="card">
                     <div class="card-body">
-                        <label for="select-sector" class="form-label">Choose a sector:</label>
-                        <select id="select-sector" class="form-select" aria-label="Choose a sector"></select>
+                        <div class="d-flex align-items-center gap-2">
+                            <label for="select-sector" class="form-label mb-0 text-nowrap">
+                                Choose a sector:
+                            </label>
+                            <select id="select-sector"
+                                    class="form-select"
+                                    aria-label="Choose a sector">
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,12 +102,12 @@
                 </div>
                 <div class="col-12 col-xl-6 py-2">
                     <div class="card h-100">
-                        <div id="sector-bar-capture">
+                        <div id="gas-bar-capture">
                         <div class="card-header">
-                            Emissions by sector, Base Year to <span class="latest-year"></span>
+                            <span class="sector-name"></span> emissions by gas type, Base Year and <span class="latest-year"></span>
                         </div>
                         <div class="card-body">
-                            <canvas id="sector-bar" class="chart-canvas"></canvas>
+                            <canvas id="gas-bar" class="chart-canvas"></canvas>
                         </div>
                         </div>
                         <div class="card-footer"></div>

@@ -55,6 +55,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     let subsector_chart;
     let subsector_expand;    
+    let gas_chart;
+    let gas_expand;
 
     function update_cards () {
 
@@ -181,6 +183,65 @@ window.addEventListener("DOMContentLoaded", async () => {
         canvas_id: "subsector-line-expanded"
     })
 
+    const gases = Object.keys(GHGALL.data)
+        .filter((x) => x != "Total GHG");
+
+    const bar_years = [first_year, latest_year];
+
+    const bar_datasets = gases.map((gas, i) => ({
+        label: gas,
+        data: bar_years.map((yr) => {
+            const v = GHGALL.data[gas][yr]?.["Northern Ireland"]?.[sector];
+            return Number.isFinite(v) ? v : null; // null -> gaps if missing
+        }),
+        backgroundColor: chart_colours[i % chart_colours.length]
+    }));
+
+    let bar_years_display = [];
+    for (let i = 0; i < bar_years.length; i ++) {
+        if (bar_years[i] == first_year) {
+            bar_years_display[i] = "Base Year"
+        } else {
+            bar_years_display[i] = bar_years[i]
+        }
+    }
+
+    // Bar chart (stacked over time: one bar per year, stacks = sectors)
+
+    if (gas_chart) {
+        gas_chart.destroy();
+        gas_expand.destroy();
+      }
+    const bar_canvas = document.getElementById("gas-bar");
+    const bar_canvas_expanded = document.getElementById("gas-bar-expanded");
+
+    const bar_data = {
+        labels: bar_years_display,
+        datasets: bar_datasets
+    };
+
+    const bar_config = {
+        type: "bar",
+        data: bar_data,
+        options: {
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+            display: false
+            
+            }
+            // keep legend defaults (you didn't disable it before)
+        },
+        scales: {
+            x: { stacked: true },
+            y: { stacked: true }
+        }
+        }
+    };
+
+    gas_chart = new Chart(bar_canvas, bar_config);
+    gas_expand = new Chart(bar_canvas_expanded, bar_config);
+
 
     }
 
@@ -191,6 +252,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     sector_select.onchange = update_cards;
 
     downloadButton("subsector-line-capture", "GHGALL", update_date);
+    downloadButton("gas-bar-capture", "GHGALL", update_date);
 
     
 
