@@ -282,7 +282,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         // keep legend defaults (you didn't disable it before)
       },
       scales: {
-        x: { stacked: true },
+        x: { stacked: true,
+          grid: {
+              display: false
+            }
+         },
         y: { stacked: true }
       }
     }

@@ -56,9 +56,6 @@ export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
             beginAtZero: true,
             ticks: {
               precision: 0,
-            },
-            grid: {
-              display: false
             }
           },
           x: {
@@ -67,6 +64,9 @@ export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
               minRotation: 0,
               autoSkip: true,
               autoSkipPadding: 4
+            },
+            grid: {
+              display: false
             }
           }
         },
