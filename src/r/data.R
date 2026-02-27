@@ -3,12 +3,9 @@ library(purrr)
 library(jsonlite)
 
 # List datasets ####
-matrix_list <- list(
-  pp_portal = c(
-  ),
-  data_portal = c(
-    "GHGALL"
-  )
+matrix_list <- c(
+  "GHGALL",
+  "GHGINVENTORY"
 )
 
 # API Key ####
@@ -19,7 +16,6 @@ api_key <- "801aaca4bcf0030599c019f4efa8b89032e5e6aa1de4a629a7f7e9a86db7fb8c"
 fetch_dataset <- function(matrix,
                           api_key,
                           max_attempts = Inf,
-                          pp_portal = FALSE,
                           wait_seconds = 2) {
   attempt <- 1
   repeat {
@@ -27,7 +23,6 @@ fetch_dataset <- function(matrix,
       {
         url <- paste0(
           "https://",
-          if (pp_portal) "pp",
           "ws-data.nisra.gov.uk/public/api.restful/",
           "PxStat.Data.Cube_API.ReadDataset/",
           matrix,
@@ -67,51 +62,47 @@ fetch_dataset <- function(matrix,
 
 # Fetch data ####
 all_data <- list()
+for (matrix in matrix_list) {
 
+  raw_data <- fetch_dataset(matrix, api_key)
 
-for (portal in matrix_list) {
+  dimensions <- names(raw_data$dimension)
+  size <- raw_data$size
 
-  for (matrix in portal) {
+  reshaped_data <- data.frame(value = as.numeric(raw_data$value))
 
-    raw_data <- fetch_dataset(matrix, api_key, pp_portal = matrix %in% matrix_list$pp_portal)
+  for (i in seq_along(dimensions)) {
+    dimension_cats <- unlist(raw_data$dimension[[dimensions[[i]]]]$category$label)
 
-    dimensions <- names(raw_data$dimension)
-    size <- raw_data$size
+    dimension_col <- c()
 
-    reshaped_data <- data.frame(value = as.numeric(raw_data$value))
-
-    for (i in seq_along(dimensions)) {
-      dimension_cats <- unlist(raw_data$dimension[[dimensions[[i]]]]$category$label)
-
-      dimension_col <- c()
-
-      for (cat in dimension_cats) {
-        if (i == length(dimensions)) {
-          dimension_col <- c(dimension_col, cat)
-        } else {
-          dimension_col <- c(dimension_col, rep(cat, prod(size[(i + 1):length(size)])))
-        }
-
+    for (cat in dimension_cats) {
+      if (i == length(dimensions)) {
+        dimension_col <- c(dimension_col, cat)
+      } else {
+        dimension_col <- c(dimension_col, rep(cat, prod(size[(i + 1):length(size)])))
       }
 
-      reshaped_data[[dimensions[i]]] <- dimension_col
     }
 
-    reshaped_data <- reshaped_data %>%
-      relocate(value, .after = dimensions[[length(dimensions)]])
-
-    data_list <- list()
-
-    for (i in seq_len(nrow(reshaped_data))) {
-      keys <- map(dimensions, ~ reshaped_data[[.x]][i])
-      pluck(data_list, !!!keys) <- reshaped_data$value[i]
-    }
-
-    all_data[[matrix]]$label <- raw_data$label
-    all_data[[matrix]]$updated <- as.Date(raw_data$updated)
-    all_data[[matrix]]$data <- data_list
+    reshaped_data[[dimensions[i]]] <- dimension_col
   }
+
+  reshaped_data <- reshaped_data %>%
+    relocate(value, .after = dimensions[[length(dimensions)]])
+
+  data_list <- list()
+
+  for (i in seq_len(nrow(reshaped_data))) {
+    keys <- map(dimensions, ~ reshaped_data[[.x]][i])
+    pluck(data_list, !!!keys) <- reshaped_data$value[i]
+  }
+
+  all_data[[matrix]]$label <- raw_data$label
+  all_data[[matrix]]$updated <- as.Date(raw_data$updated)
+  all_data[[matrix]]$data <- data_list
 }
+
 
 
 if (!dir.exists("public")) dir.create("public")

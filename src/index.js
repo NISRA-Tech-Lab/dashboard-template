@@ -1,8 +1,9 @@
 import { insertHeader, insertFooter, insertHead, insertNavButtons } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js";
 import { insertValue } from "./utils/insert-value.js";
-import { latest_year, updateYearSpans, first_year } from "./utils/update-years.js";
+import { latest_year, updateYearSpans, first_year, last_year } from "./utils/update-years.js";
 import { toTitleCase } from "./utils/to-title-case.js";
+import { getSectors } from "./utils/get-sectors.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -11,16 +12,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertNavButtons()
 
     // Insert values into homepage cards
-    const GHGALL = await readData("GHGALL");
-    const GHGALL_stat = "Total GHG";
-    updateYearSpans(GHGALL, GHGALL_stat);
+    const GHGINVENTORY = await readData("GHGINVENTORY");
+    const GHGINVENTORY_stat = "CO2 equivalent emissions"
+    updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
 
     // Change in Emissions
-    const ghg_value = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
 
     insertValue("total-ghg", ghg_value.toFixed(2));
 
-    const ghg_value_last = GHGALL.data[GHGALL_stat][latest_year - 1]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["Grand Total"] / 1000;
     const ghg_change_value = ghg_value_last - ghg_value;
     const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
     let ghg_change_string;
@@ -33,7 +34,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("ghg-change", ghg_change_string);
 
-    const ghg_value_base = GHGALL.data[GHGALL_stat][first_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["Grand Total"] / 1000;
     const ghg_change_base_value = ghg_value_base - ghg_value;
     const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
     let ghg_change_base_string;
@@ -47,13 +48,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("ghg-base-change", ghg_change_base_string);
 
     // Sectors
-    let sectors = Object.keys(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
-    sectors = sectors.filter((x) => x.indexOf("TOTAL") > -1 & x != "GRAND TOTAL");
+    const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
+        .filter((x) => x != "Grand Total");
 
     let sector_totals = {}
 
     for (let i = 0; i < sectors.length; i ++) {
-        sector_totals[sectors[i]] = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"][sectors[i]]
+        sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year][sectors[i]]
     }
 
     const max_sector = Object.entries(sector_totals)
@@ -73,15 +74,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     let base_differences = {};
 
     for (let i = 0; i < sectors.length; i ++) {
-        base_sector_totals[sectors[i]] = GHGALL.data[GHGALL_stat][first_year]["Northern Ireland"][sectors[i]];
+        base_sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][first_year][sectors[i]];
         base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
     }
 
     const max_change_sector = Object.entries(base_differences)
         .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
         .reduce((max, current) => current[1] > max[1] ? current : max)[0];
-
-        console.log(max_change_sector)
 
     const max_change_sector_value = base_differences[max_change_sector].toFixed(0);
     const max_change_sector_name = toTitleCase(max_change_sector.replace(" TOTAL", ""));
@@ -90,6 +89,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-change-sector-name", max_change_sector_name);
 
 
+    const pfg_value = GHGINVENTORY.data[GHGINVENTORY_stat]["2019"]["Grand Total"] / 1000;
+    insertValue("pfg-value", pfg_value.toFixed(1));
+
+    const pfg_change = pfg_value - ghg_value;
+    insertValue("pfg-change", pfg_change.toFixed(1));
     
     insertFooter();
 
