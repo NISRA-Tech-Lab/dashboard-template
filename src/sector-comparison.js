@@ -20,25 +20,28 @@ window.addEventListener("DOMContentLoaded", async () => {
     let GHGALL = await readData("GHGALL");
     const GHGALL_stat = "Total GHG";
 
-    const update_date = new Date(GHGALL.updated).toLocaleDateString("en-GB",
+    let GHGINVENTORY = await readData("GHGINVENTORY");
+    const GHGINVENTORY_stat = "CO2 equivalent emissions"
+    updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
+
+    const update_date = new Date(GHGINVENTORY.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
             month: "long",
             year: "numeric"
         });
 
-    updateYearSpans(GHGALL, GHGALL_stat);
-
     // Update values
     //// Biggest sector
-    const ghg_value = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
 
-    const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"])
+    const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
+        .filter((x) => x != "Grand Total");
 
     let sector_totals = {}
 
     for (let i = 0; i < sectors.length; i ++) {
-        sector_totals[sectors[i]] = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"][sectors[i]]
+        sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year][sectors[i]]
     }
 
     const max_sector = Object.entries(sector_totals)
@@ -71,8 +74,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     let base_differences = {};
 
     for (let i = 0; i < sectors.length; i ++) {
-        base_sector_totals[sectors[i]] = GHGALL.data[GHGALL_stat][first_year]["Northern Ireland"][sectors[i]];
-        base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
+        base_sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][first_year][sectors[i]];
+        if (base_sector_totals[sectors[i]] != 0) {
+            base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
+        } else {
+            base_differences[sectors[i]] = null;
+        }
     }
 
     const max_change_sector = Object.entries(base_differences)
@@ -106,17 +113,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("other-decrease-sector-2", toTitleCase(other_decrease_2[0].replace(" TOTAL", "")));
     insertValue("other-decrease-pct-2", Math.abs(other_decrease_2[1]).toFixed(0));
 
-    // Sector treemap
-
-    
-
-    // usage:
+    // Sector treemap  
     const treemap_data_raw = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"];
-    const treemap_data = reshapeForTreemap(treemap_data_raw);
-
-
-  // ---- helpers ----
-  
+    const treemap_data = reshapeForTreemap(treemap_data_raw); 
 
   // Compute totals for top level (unsorted first)
   const sectorTotalsUnsorted = Array.from(new Set(treemap_data.map(d => d.sector))).map(sector => ({
@@ -136,8 +135,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // Colour/text index is based on sorted order
   const sectorIndex = new Map(sectorList.map((s, i) => [s, i]));
-
-  // ---- data builder ----
   
   // ---- chart ----
   const tree_canvas = document.getElementById("sector-treemap");
@@ -274,9 +271,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // Datasets: one dataset per sector (so each sector is a stack segment across years)
   const bar_datasets = sectors.map((sector, i) => ({
-    label: sectorNameTidy(sector),
+    label: sector,
     data: bar_years.map((yr) => {
-      const v = GHGALL.data[GHGALL_stat][yr]?.["Northern Ireland"]?.[sector];
+      const v = GHGINVENTORY.data[GHGINVENTORY_stat][yr]?.[sector];
       return Number.isFinite(v) ? v : null; // null -> gaps if missing
     }),
     backgroundColor: chart_colours[i % chart_colours.length]
