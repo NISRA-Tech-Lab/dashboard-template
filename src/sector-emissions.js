@@ -1,7 +1,7 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
 import { chart_colours,  createLineChart } from "./utils/charts.js";
-import { latest_year, first_year, updateYearSpans, years } from "./utils/update-years.js";
+import { latest_year, first_year, last_year, updateYearSpans, years } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
@@ -187,7 +187,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const gases = Object.keys(GHGALL.data)
         .filter((x) => x != "Total GHG");
 
-    const bar_years = [first_year, latest_year];
+    const bar_years = [first_year, last_year, latest_year];
 
     const bar_datasets = gases.map((gas, i) => ({
         label: gas,
