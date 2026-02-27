@@ -155,14 +155,13 @@ window.addEventListener("DOMContentLoaded", async () => {
         subsector_labels.push(subsector_tidy);
       }
 
-
-      const greatest_increase = subsector_data_filtered.reduce((max, item) => item.change > max.change ? item : max, subsector_data_filtered[0]);
-      const greatest_decrease = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
+      const greatest_decrease = subsector_data_filtered.reduce((max, item) => item.change > max.change ? item : max, subsector_data_filtered[0]);
+      const greatest_increase = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
 
       insertValue("most-worsened-pct", greatest_increase.pct_change.toFixed(0));
-      insertValue("most-worsened-name", greatest_increase.subsector);
+      insertValue("most-worsened-name", greatest_increase.subsector_tidy);
       insertValue("most-improved-pct", greatest_decrease.pct_change.toFixed(0));
-      insertValue("most-improved-name", greatest_decrease.subsector);
+      insertValue("most-improved-name", greatest_decrease.subsector_tidy);
 
       if (subsector_chart) {
         subsector_chart.destroy();
