@@ -128,11 +128,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         if (base_sector_totals[sectors[i]] != 0) {
             base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
         } else {
-            base_differences[sectors[i]] = 0;
+            base_differences[sectors[i]] = null;
         }
     }
-
-    console.log(base_sector_totals, base_differences)
 
     const max_change_sector = Object.entries(base_differences)
         .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
@@ -153,21 +151,24 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-sector-name", max_change_sector_name);
 
     // Historic Line Chart
+    let line_years = [];
+    for (let i = first_year; i <= latest_year; i ++) {
+        line_years.push(i)
+    }
+
     let ghg_values = [];
     let co2_values = [];
     let methane_values = [];
-
-    for (let i = 0; i < years.length; i ++) {
-        ghg_values[i] = GHGINVENTORY.data[GHGINVENTORY_stat][years[i]]["Grand Total"] / 1000;       
-        if (years[i] > 2004) {
-            co2_values[i] = GHGALL.data["Carbon Dioxide"][years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000;
-            methane_values[i] = GHGALL.data["Methane"][years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000;
-        }
-        
+    
+    for (let i = 0; i < line_years.length; i ++) {
+        ghg_values[i] = GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]] ? GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]]["Grand Total"] / 1000 : null;       
+        co2_values[i] = GHGALL.data["Carbon Dioxide"][line_years[i]] ? GHGALL.data["Carbon Dioxide"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;
+        methane_values[i] = GHGALL.data["Methane"][line_years[i]] ? GHGALL.data["Methane"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;        
     }
 
+
     createLineChart({
-        years,
+        years: line_years,
         lines: [ghg_values, co2_values, methane_values],
         labels: ["Total GHG", "Carbon Dioxide", "Methane"],
         unit: "MtCO2e",
@@ -203,8 +204,14 @@ window.addEventListener("DOMContentLoaded", async () => {
         const base_value = base_sector_totals[sector];
         const latest_value = sector_totals[sector];
 
-        const value = base_differences[sector].toFixed(0);
-        const pct_change = '<strong style="color: ' + (value < 0 ? '#ff0000' : value > 0 ? '#008000' : '#000') + '">' + (value < 0 ? '+' : value > 0 ? '-' : '') + Math.abs(value) + '% ' + (value < 0 ? '↑' : value > 0 ? '↓' : '') + '</strong>';
+        const value = base_differences[sector] == null ? null : base_differences[sector].toFixed(0);
+        const pct_change = value == null
+            ? '<strong style="color: #000">n/a</strong>'
+            : '<strong style="color: ' + (value < 0 ? '#ff0000' : value > 0 ? '#008000' : '#000') + '">' 
+                + (value < 0 ? '+' : value > 0 ? '-' : '') 
+                + Math.abs(value) + '% ' 
+                + (value < 0 ? '↑' : value > 0 ? '↓' : '') 
+                + '</strong>';
 
         const row = tbody.insertRow();
         const sectorCell = row.insertCell(0);
@@ -220,6 +227,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         baseCell.style.textAlign = "right";
         latestCell.style.textAlign = "right";
         changeCell.style.textAlign = "right";
+
+        baseCell.style.verticalAlign = "middle";
+        latestCell.style.verticalAlign = "middle";
+        changeCell.style.verticalAlign = "middle";
     }
 
     downloadButton("emissions-table-capture", "GHGALL", update_date);
