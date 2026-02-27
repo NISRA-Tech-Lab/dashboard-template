@@ -5,9 +5,9 @@ import { latest_year, first_year, updateYearSpans, years } from "./utils/update-
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
-import { config } from "./config/config.js"
-import { toTitleCase } from "./utils/to-title-case.js";
+import { sectorNameTidy, toTitleCase } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
+import { getSectors } from "./utils/get-sectors.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -108,15 +108,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("pfg-base-year", pfg_base_year);
 
     //// Greatest increase / decrease
-     let sectors = Object.keys(
-        GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]
-        )
-        .filter(x =>
-            (x.includes("TOTAL") || x.includes("NET EMISSIONS")) &&
-            x !== "GRAND TOTAL" &&
-            !x.includes("PUBLIC SECTOR")
-        )
-        .sort((a, b) => a.localeCompare(b, 'en-GB'));
+    const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
 
     let sector_totals = {}
 
@@ -141,9 +133,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         .reduce((min, current) => current[1] < min[1] ? current : min)[0];
 
     const max_change_sector_value = base_differences[max_change_sector].toFixed(0);
-    const max_change_sector_name = toTitleCase(max_change_sector.replace(" TOTAL", ""));
+    const max_change_sector_name = sectorNameTidy(max_change_sector);
     const min_change_sector_value = base_differences[min_change_sector].toFixed(0);
-    const min_change_sector_name = toTitleCase(min_change_sector.replace(" TOTAL", ""));
+    const min_change_sector_name = sectorNameTidy(min_change_sector);
 
     insertValue("min-sector-pct", Math.abs(min_change_sector_value));
     insertValue("min-sector-name", min_change_sector_name);
@@ -207,7 +199,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         const latestCell = row.insertCell(2);
         const changeCell = row.insertCell(3);
 
-        sectorCell.innerHTML = toTitleCase(sector.replace(" TOTAL", ""));
+        sectorCell.innerHTML = sectorNameTidy(sector);
         baseCell.innerHTML = base_value.toLocaleString('en-GB', {maximumFractionDigits: 0});
         latestCell.innerHTML = latest_value.toLocaleString('en-GB', {maximumFractionDigits: 0});
         changeCell.innerHTML = `${pct_change}`;

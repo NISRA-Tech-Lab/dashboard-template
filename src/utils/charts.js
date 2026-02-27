@@ -276,65 +276,68 @@ export function splitLabel(label, maxChars) {
 
   export function get_tree_data(level, sectorName = null, sectorTotals, sectorIndex, treemap_data) {
 
-    // IMPORTANT: Use object trees + groups so labels come from ctx.raw.g (not index)
-    const tree =
-      level === "sector"
-        ? sectorTotals // [{ sector, value }]
-        : treemap_data
-            .filter(d => d.sector === sectorName)
-            .map(d => ({ subsector: d.subsector, value: Number(d.value) }));
+  const tree =
+    level === "sector"
+      ? sectorTotals // [{ sector, value }]
+      : treemap_data
+          .filter(d => d.sector === sectorName)
+          .map(d => ({
+            subsector: d.subsector,                   // keep original if you need it for drilldown
+            subsector_tidy: d.subsector_tidy ?? d.subsector, // label to display
+            value: Number(d.value)
+          }));
 
-    const groupField = level === "sector" ? "sector" : "subsector";
+  const groupField = level === "sector" ? "sector" : "subsector_tidy";
 
-    return {
-      datasets: [{
-        type: "treemap",
-        tree,
-        key: "value",
-        groups: [groupField],
+  return {
+    datasets: [{
+      type: "treemap",
+      tree,
+      key: "value",
+      groups: [groupField],
 
-        label: "",
-        label2: level,
+      label: "",
+      label2: level,
 
-        spacing: 1,
-        borderWidth: 1,
-        hoverBorderWidth: 3,
-        hoverBorderColor: "#000",
-        borderColor: level === "sector" ? "#ffffff" : "#000",
+      spacing: 1,
+      borderWidth: 1,
+      hoverBorderWidth: 3,
+      hoverBorderColor: "#000",
+      borderColor: level === "sector" ? "#ffffff" : "#000",
 
-        backgroundColor: (ctx) => {
-          if (level === "sector") {
-            const sector = ctx.raw?.g; // group label
-            const i = sectorIndex.get(sector) ?? 0;
-            return chart_colours[i % chart_colours.length];
-          }
-          const i = sectorIndex.get(sectorName) ?? 0; // inherit parent colour
+      backgroundColor: (ctx) => {
+        if (level === "sector") {
+          const sector = ctx.raw?.g;
+          const i = sectorIndex.get(sector) ?? 0;
           return chart_colours[i % chart_colours.length];
+        }
+        const i = sectorIndex.get(sectorName) ?? 0;
+        return chart_colours[i % chart_colours.length];
+      },
+
+      labels: {
+        display: true,
+        align: "center",
+        position: "center",
+
+        color: (ctx_tree) => {
+          if (level === "sector") {
+            const sector = ctx_tree.raw?.g;
+            const i = sectorIndex.get(sector) ?? 0;
+            return text_colours[i % text_colours.length];
+          }
+          const i = sectorIndex.get(sectorName) ?? 0;
+          return text_colours[i % text_colours.length];
         },
 
-        labels: {
-          display: true,
-          align: "center",
-          position: "center",
-
-          color: (ctx_tree) => {
-            if (level === "sector") {
-              const sector = ctx_tree.raw?.g;
-              const i = sectorIndex.get(sector) ?? 0;
-              return text_colours[i % text_colours.length];
-            }
-            const i = sectorIndex.get(sectorName) ?? 0;
-            return text_colours[i % text_colours.length];
-          },
-
-          formatter: (ctx_tree) => {
-            const label = ctx_tree.raw?.g ?? ""; // <-- always correct label
-            const chars_per_line = Math.max(1, Math.round(ctx_tree.raw.w / 10));
-            const lines = splitLabel(label, chars_per_line);
-            lines.push(formatValue(ctx_tree.raw.v));
-            return lines;
-          }
+        formatter: (ctx_tree) => {
+          const label = ctx_tree.raw?.g ?? ""; // now this will be subsector_tidy
+          const chars_per_line = Math.max(1, Math.round(ctx_tree.raw.w / 10));
+          const lines = splitLabel(label, chars_per_line);
+          lines.push(formatValue(ctx_tree.raw.v));
+          return lines;
         }
-      }]
-    };
-  }
+      }
+    }]
+  };
+}

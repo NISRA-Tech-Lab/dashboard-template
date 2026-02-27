@@ -8,13 +8,14 @@ export function reshapeForTreemap(rawObj) {
         const isAllCaps = (s) =>
             /[A-Z]/.test(s) && s === s.toUpperCase(); // simple + works for "INDUSTRY TOTAL", "LULUCF NET EMISSIONS"
         const isGrandTotal = (s) => s.trim() === "GRAND TOTAL";
+        const isPublicSector = (s) => s.toLocaleLowerCase().includes("public sector");
 
         let pendingItems = []; // { name, value }
 
         for (const k of keys) {
             const v = rawObj[k];
 
-            if (isGrandTotal(k)) {
+            if (isGrandTotal(k) || isPublicSector(k)) {
             // ignore completely
             continue;
             }
@@ -39,6 +40,16 @@ export function reshapeForTreemap(rawObj) {
             } else {
                 // title-case / normal key => a leaf item to be grouped under the next ALL CAPS total
                 pendingItems.push({ name: k, value: v });
+            }
+        }
+
+         for (let i = 0; i < rows.length; i ++) {
+            if (rows[i].subsector.indexOf(rows[i].sector) == 0) {
+                rows[i].subsector_tidy = rows[i].subsector.replace(`${rows[i].sector} `, "");
+            } else if (rows[i].subsector.indexOf("Net Emissions: ") == 0) {
+                rows[i].subsector_tidy = rows[i].subsector.replace("Net Emissions: ", "");
+            } else {
+                rows[i].subsector_tidy = rows[i].subsector;
             }
         }
 

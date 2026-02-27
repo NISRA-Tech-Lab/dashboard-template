@@ -1,13 +1,14 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
-import { chart_colours,  createLineChart,  get_tree_data } from "./utils/charts.js";
+import { chart_colours,  createLineChart } from "./utils/charts.js";
 import { latest_year, first_year, updateYearSpans, years } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
-import { toTitleCase, sectorNameTidy } from "./utils/to-title-case.js";
+import { sectorNameTidy } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
 import { reshapeForTreemap } from "./utils/reshape-for-treemap.js";
+import { getSectors } from "./utils/get-sectors.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -29,19 +30,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     updateYearSpans(GHGALL, GHGALL_stat);
 
     // Choose sector box
-    const sector_select = document.getElementById("select-sector");
-    
-    let sectors = Object.keys(
-        GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]
-        )
-        .filter(x =>
-            (x.includes("TOTAL") || x.includes("NET EMISSIONS")) &&
-            x !== "GRAND TOTAL" &&
-            !x.includes("PUBLIC SECTOR")
-        )
-        .sort((a, b) => a.localeCompare(b, 'en-GB'));
+    const sector_select = document.getElementById("select-sector");  
 
-    
+    const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
 
     for (let i = 0; i < sectors.length; i ++) {
       let option = document.createElement("option");
@@ -151,8 +142,19 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         subsector_lines.push(subsector_line_values);
-        subsector_labels.push(subsector);
+        let subsector_tidy;
+        if (subsector.indexOf(sectorNameTidy(sector)) == 0) {
+            subsector_tidy = subsector.replace(`${sectorNameTidy(sector)} `, "")
+        } else if (subsector.indexOf("Net Emissions: ") == 0) {
+            subsector_tidy = subsector.replace("Net Emissions: ", "")
+        } else {
+            subsector_tidy = subsector;
+        }
+
+
+        subsector_labels.push(subsector_tidy);
       }
+
 
       const greatest_increase = subsector_data_filtered.reduce((max, item) => item.change > max.change ? item : max, subsector_data_filtered[0]);
       const greatest_decrease = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
@@ -211,7 +213,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     if (gas_chart) {
         gas_chart.destroy();
         gas_expand.destroy();
-      }
+    }
+    
     const bar_canvas = document.getElementById("gas-bar");
     const bar_canvas_expanded = document.getElementById("gas-bar-expanded");
 

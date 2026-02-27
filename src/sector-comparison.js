@@ -8,6 +8,7 @@ import { downloadButton } from "./utils/download-button.js";
 import { toTitleCase, sectorNameTidy } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
 import { reshapeForTreemap } from "./utils/reshape-for-treemap.js";
+import { getSectors } from "./utils/get-sectors.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -32,15 +33,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     //// Biggest sector
     const ghg_value = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
 
-    let sectors = Object.keys(
-        GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]
-        )
-        .filter(x =>
-            (x.includes("TOTAL") || x.includes("NET EMISSIONS")) &&
-            x !== "GRAND TOTAL" &&
-            !x.includes("PUBLIC SECTOR")
-        )
-        .sort((a, b) => a.localeCompare(b, 'en-GB'));
+    const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"])
 
     let sector_totals = {}
 
@@ -203,7 +196,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       const sectorClicked = points[0].element?.$context?.raw?.g;
       if (!sectorClicked) return;
 
-      const newData = get_tree_data("subsector", sectorClicked, sectorTotals, sectorIndex, treemap_data);
+      const newData = get_tree_data("subsector_tidy", sectorClicked, sectorTotals, sectorIndex, treemap_data);
 
       // apply to BOTH
       tree_chart.config.data = newData;
