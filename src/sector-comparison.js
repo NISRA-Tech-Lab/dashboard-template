@@ -1,7 +1,7 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
 import { chart_colours,  get_tree_data } from "./utils/charts.js";
-import { latest_year, first_year, updateYearSpans, years } from "./utils/update-years.js";
+import { latest_year, first_year, last_year, updateYearSpans, years } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
@@ -227,6 +227,33 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("treemap-caption").textContent = "Click a sector to drill down";
     document.getElementById("reset-treemap").classList.add("d-none");
+    document.getElementById("reset-modal").classList.add("d-none");
+    reset_modal.classList.add("d-none");
+  };
+
+  let reset_modal_div = document.createElement("div");
+  reset_modal_div.classList.add("mb-5");
+
+  let reset_modal = document.createElement("button");
+  reset_modal.id = "reset-modal";
+  reset_modal.className = "btn btn-primary d-none";
+  reset_modal.textContent = "Reset";
+  reset_modal_div.appendChild(reset_modal)
+
+  document.getElementById("sector-treemap-expanded").parentElement.appendChild(reset_modal_div);
+
+  document.getElementById("reset-modal").onclick = () => {
+    const data = get_tree_data("sector", null, sectorTotals, sectorIndex, treemap_data);
+
+    tree_chart.config.data = data;
+    tree_chart.update();
+
+    tree_chart_expanded.config.data = data;
+    tree_chart_expanded.update();
+
+    document.getElementById("treemap-caption").textContent = "Click a sector to drill down";
+    document.getElementById("reset-treemap").classList.add("d-none");
+    document.getElementById("reset-modal").classList.add("d-none");
     reset_modal.classList.add("d-none");
   };
 
@@ -235,30 +262,37 @@ window.addEventListener("DOMContentLoaded", async () => {
     tree_chart_expanded.update();
   });
 
-  let reset_modal = document.createElement("button");
-  reset_modal.id = "reset-modal";
-  reset_modal.className = "btn btn-secondary d-none";
-  reset_modal.textContent = "Reset";
-  document.getElementById("sector-treemap-modal").appendChild(reset_modal);
+  
 
   downloadButton("sector-treemap-capture", "GHGALL", update_date);
 
   // Bar chart (stacked over time: one bar per year, stacks = sectors)
   const bar_canvas = document.getElementById("sector-bar");
   const bar_canvas_expanded = document.getElementById("sector-bar-expanded");
+  
+  const bar_years = [first_year, last_year, latest_year]
 
   // Datasets: one dataset per sector (so each sector is a stack segment across years)
   const bar_datasets = sectors.map((sector, i) => ({
     label: sectorNameTidy(sector),
-    data: years.map((yr) => {
+    data: bar_years.map((yr) => {
       const v = GHGALL.data[GHGALL_stat][yr]?.["Northern Ireland"]?.[sector];
       return Number.isFinite(v) ? v : null; // null -> gaps if missing
     }),
     backgroundColor: chart_colours[i % chart_colours.length]
   }));
 
+  let bar_years_display = [];
+    for (let i = 0; i < bar_years.length; i ++) {
+        if (bar_years[i] == first_year) {
+            bar_years_display[i] = "Base Year"
+        } else {
+            bar_years_display[i] = bar_years[i]
+        }
+    }
+
   const bar_data = {
-    labels: years,
+    labels: bar_years_display,
     datasets: bar_datasets
   };
 
