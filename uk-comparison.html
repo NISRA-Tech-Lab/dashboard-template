@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head></head>
+<body style="display:none;">
+    
+<banner id="banner"></banner>
+  <!-- Top Navbar -->
+<nav id ="nav"></nav>
+
+<!-- Main Content -->
+<main>
+<div class="w-100 text-center current-page py-2">
+    Figures on this page are presented as Million tonnes of Carbon Dioxide Equivalent (MtCO&#8322;e).
+</div>
+
+<div id="content" class="container-fluid">
+
+        
+        <div class = "py-2">
+            <!-- First row - cards -->
+            <div class="row text-center">
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 navy-bg">
+                        <div class="card-body">
+                            <p>Total UK Greenhouse Gas Emissions in <span class="latest-year"></span></p>
+                            <p class="display-6"><span id="ghg-uk">385</span> MtCO&#8322;e</p>
+                            <p>Northern Ireland <span id="ghg-ni"></span> MtCO&#8322;e</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>In Northern Ireland Carbon Dioxide accounted for</p>
+                            <p class="display-6"><span id="co2-ni">61</span>%</p>
+                            <p>of all emissions in <span class="latest-year"></span>.</p>
+                            <p>Compared to <span id="co2-uk">79</span>% in the UK.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>England Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
+                            <p class="display-6"><span id="ghg-eng">284.73</span> MtCO&#8322;e</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Scotland Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
+                            <p class="display-6"><span id="ghg-sco">37.81</span> MtCO&#8322;e</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body">
+                            <p>Wales Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
+                            <p class="display-6"><span id="ghg-wal">33.70</span> MtCO&#8322;e</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Second row - tables and charts -->
+            <div class="row">
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="gas-bar-capture">
+                            <div class="card-header">
+                                Compositions of Emissions (NI and UK), <span class="latest-year"></span>
+                            </div>
+                            <div class="card-body text-center">
+                                <canvas id="gas-bar" class="chart-canvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-xl-6 py-2">
+                    <div class="card h-100">
+                        <div id="historic-bar-capture">
+                        <div class="card-header">
+                            UK Hisotric Comparison - Base Year, <span class="last-year"></span> and <span class="latest-year"></span>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="historic-bar" class="chart-canvas"></canvas>
+                        </div>
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Third row - Definitions -->
+            <div id="info-boxes"></div>
+            
+        </div>
+        
+    </main>
+</div>
+
+<footer id = "footer"></footer>
+
+<script type = "module" src="src/uk-comparison.js"></script>
+
+
+</body>
