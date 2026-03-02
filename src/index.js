@@ -17,11 +17,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
 
     // Change in Emissions
-    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
+    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
 
     insertValue("total-ghg", ghg_value.toFixed(2));
 
-    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["Grand Total"] / 1000;
+    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["All"] / 1000;
     const ghg_change_value = ghg_value_last - ghg_value;
     const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
     let ghg_change_string;
@@ -34,7 +34,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("ghg-change", ghg_change_string);
 
-    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["Grand Total"] / 1000;
+    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["All"] / 1000;
     const ghg_change_base_value = ghg_value_base - ghg_value;
     const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
     let ghg_change_base_string;
@@ -49,7 +49,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Sectors
     const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
-        .filter((x) => x != "Grand Total");
+        .filter((x) => x != "All");
 
     let sector_totals = {}
 
@@ -89,7 +89,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-change-sector-name", max_change_sector_name);
 
 
-    const pfg_value = GHGINVENTORY.data[GHGINVENTORY_stat]["2019"]["Grand Total"] / 1000;
+    const pfg_value = GHGINVENTORY.data[GHGINVENTORY_stat]["2019"]["All"] / 1000;
     insertValue("pfg-value", pfg_value.toFixed(1));
 
     const pfg_change = pfg_value - ghg_value;

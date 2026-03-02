@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
 
     // Total Emissions box
-    const ghg_ni = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
+    const ghg_ni = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
 
     insertValue("ghg-ni", ghg_ni.toFixed(2));
 

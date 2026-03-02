@@ -33,10 +33,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Update values
     //// Biggest sector
-    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
+    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
 
     const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
-        .filter((x) => x != "Grand Total");
+        .filter((x) => x != "All");
 
     let sector_totals = {}
 

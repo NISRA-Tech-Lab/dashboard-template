@@ -33,11 +33,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Update values
     //// Total Greenhouse Gas Emissions
-    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["Grand Total"] / 1000;
+    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
 
     insertValue("total-ghg", ghg_value.toFixed(2));
 
-    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["Grand Total"] / 1000;
+    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["All"] / 1000;
     const ghg_change_value = ghg_value_last - ghg_value;
     const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
     let ghg_change_string;
@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("ghg-change", ghg_change_string);
 
-    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["Grand Total"] / 1000;
+    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["All"] / 1000;
     const ghg_change_base_value = ghg_value_base - ghg_value;
     const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
     let ghg_change_base_string;
@@ -95,7 +95,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     //// Pfg Wellbeing Framework
     const pfg_base_year = "2019"
-    const pfg_base_value = GHGINVENTORY.data[GHGINVENTORY_stat][pfg_base_year]["Grand Total"] / 1000;
+    const pfg_base_value = GHGINVENTORY.data[GHGINVENTORY_stat][pfg_base_year]["All"] / 1000;
     const pfg_change_value = pfg_base_value - ghg_value;
     let pfg_change_string;
 
@@ -112,7 +112,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     //// Greatest increase / decrease
     const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
-        .filter((x) => x != "Grand Total");
+        .filter((x) => x != "All");
 
     let sector_totals = {}
 
@@ -161,7 +161,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     let methane_values = [];
     
     for (let i = 0; i < line_years.length; i ++) {
-        ghg_values[i] = GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]] ? GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]]["Grand Total"] / 1000 : null;       
+        ghg_values[i] = GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]] ? GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]]["All"] / 1000 : null;       
         co2_values[i] = GHGALL.data["Carbon Dioxide"][line_years[i]] ? GHGALL.data["Carbon Dioxide"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;
         methane_values[i] = GHGALL.data["Methane"][line_years[i]] ? GHGALL.data["Methane"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;        
     }

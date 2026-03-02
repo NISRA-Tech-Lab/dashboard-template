@@ -20,6 +20,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     let GHGALL = await readData("GHGALL");
     const GHGALL_stat = "Total GHG";
 
+    let GHGINVENTORY = await readData("GHGINVENTORY");
+    const GHGINVENTORY_stat = "CO2 equivalent emissions";
+
     const update_date = new Date(GHGALL.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
@@ -86,7 +89,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("ghg-base-change", ghg_change_base_string);
 
-      const ghg_ni = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+      const ghg_ni = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
       const sector_pct = (ghg_value / ghg_ni * 100).toFixed(0);
 
       insertValue("sector-pct", sector_pct);
