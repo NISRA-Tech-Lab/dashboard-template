@@ -39383,7 +39383,7 @@
   },
   "GHGINVENTORY": {
     "label": "Northern Ireland greenhouse gas inventory",
-    "updated": "2026-02-27",
+    "updated": "2026-03-02",
     "data": {
       "CO2 equivalent emissions": {
         "1990": {
@@ -39394,8 +39394,8 @@
           "Electricity supply": 5307.253,
           "Fuel supply": 0,
           "Industry": 3310.499,
-          "LULUCF": 2642.536,
-          "Grand Total": 26564.616
+          "Land use, land-use change and forestry": 2642.536,
+          "All": 26564.616
         },
         "1995": {
           "Agriculture": 5656.482,
@@ -39405,8 +39405,8 @@
           "Electricity supply": 6528.49,
           "Fuel supply": 0.067,
           "Industry": 2737.924,
-          "LULUCF": 2420.516,
-          "Grand Total": 26634.902
+          "Land use, land-use change and forestry": 2420.516,
+          "All": 26634.902
         },
         "1998": {
           "Agriculture": 5808.486,
@@ -39416,8 +39416,8 @@
           "Electricity supply": 6184.86,
           "Fuel supply": 0.088,
           "Industry": 2566.857,
-          "LULUCF": 2249.225,
-          "Grand Total": 26302.461
+          "Land use, land-use change and forestry": 2249.225,
+          "All": 26302.461
         },
         "1999": {
           "Agriculture": 5741.979,
@@ -39427,8 +39427,8 @@
           "Electricity supply": 6280.323,
           "Fuel supply": 0.382,
           "Industry": 2708.248,
-          "LULUCF": 2219.006,
-          "Grand Total": 26677.647
+          "Land use, land-use change and forestry": 2219.006,
+          "All": 26677.647
         },
         "2000": {
           "Agriculture": 5573.845,
@@ -39438,8 +39438,8 @@
           "Electricity supply": 6334.415,
           "Fuel supply": 0.433,
           "Industry": 2321.282,
-          "LULUCF": 2186.976,
-          "Grand Total": 26225.466
+          "Land use, land-use change and forestry": 2186.976,
+          "All": 26225.466
         },
         "2001": {
           "Agriculture": 5573.51,
@@ -39449,8 +39449,8 @@
           "Electricity supply": 6648.177,
           "Fuel supply": 0.478,
           "Industry": 2275.792,
-          "LULUCF": 2174.975,
-          "Grand Total": 26592.12
+          "Land use, land-use change and forestry": 2174.975,
+          "All": 26592.12
         },
         "2002": {
           "Agriculture": 5558.079,
@@ -39460,8 +39460,8 @@
           "Electricity supply": 5217.356,
           "Fuel supply": 0.51,
           "Industry": 1393.74,
-          "LULUCF": 2160.784,
-          "Grand Total": 24419.132
+          "Land use, land-use change and forestry": 2160.784,
+          "All": 24419.132
         },
         "2003": {
           "Agriculture": 5600.572,
@@ -39471,8 +39471,8 @@
           "Electricity supply": 5025.264,
           "Fuel supply": 0.654,
           "Industry": 1446.266,
-          "LULUCF": 2128.381,
-          "Grand Total": 24502.466
+          "Land use, land-use change and forestry": 2128.381,
+          "All": 24502.466
         },
         "2004": {
           "Agriculture": 5586.081,
@@ -39482,8 +39482,8 @@
           "Electricity supply": 4876.304,
           "Fuel supply": 0.661,
           "Industry": 1532.401,
-          "LULUCF": 2131.088,
-          "Grand Total": 24419.032
+          "Land use, land-use change and forestry": 2131.088,
+          "All": 24419.032
         },
         "2005": {
           "Agriculture": 5659.15,
@@ -39493,8 +39493,8 @@
           "Electricity supply": 5399.001,
           "Fuel supply": 0.748,
           "Industry": 2000.069,
-          "LULUCF": 2142.828,
-          "Grand Total": 25395.497
+          "Land use, land-use change and forestry": 2142.828,
+          "All": 25395.497
         },
         "2006": {
           "Agriculture": 5547.758,
@@ -39504,8 +39504,8 @@
           "Electricity supply": 5728.612,
           "Fuel supply": 0.601,
           "Industry": 1956.162,
-          "LULUCF": 2147.371,
-          "Grand Total": 25764.382
+          "Land use, land-use change and forestry": 2147.371,
+          "All": 25764.382
         },
         "2007": {
           "Agriculture": 5476.861,
@@ -39515,8 +39515,8 @@
           "Electricity supply": 4652.108,
           "Fuel supply": 2.657,
           "Industry": 2045.328,
-          "LULUCF": 2171.951,
-          "Grand Total": 24645.17
+          "Land use, land-use change and forestry": 2171.951,
+          "All": 24645.17
         },
         "2008": {
           "Agriculture": 5353.944,
@@ -39526,8 +39526,8 @@
           "Electricity supply": 4838.843,
           "Fuel supply": 1.45,
           "Industry": 1720.852,
-          "LULUCF": 2181.734,
-          "Grand Total": 24385.218
+          "Land use, land-use change and forestry": 2181.734,
+          "All": 24385.218
         },
         "2009": {
           "Agriculture": 5316.125,
@@ -39537,8 +39537,8 @@
           "Electricity supply": 3685.87,
           "Fuel supply": 1.129,
           "Industry": 1148.333,
-          "LULUCF": 2241.562,
-          "Grand Total": 22458.256
+          "Land use, land-use change and forestry": 2241.562,
+          "All": 22458.256
         },
         "2010": {
           "Agriculture": 5414.863,
@@ -39548,8 +39548,8 @@
           "Electricity supply": 3939.207,
           "Fuel supply": 1.719,
           "Industry": 1357.838,
-          "LULUCF": 2261.626,
-          "Grand Total": 23047.264
+          "Land use, land-use change and forestry": 2261.626,
+          "All": 23047.264
         },
         "2011": {
           "Agriculture": 5394.479,
@@ -39559,8 +39559,8 @@
           "Electricity supply": 3727.711,
           "Fuel supply": 1.104,
           "Industry": 1426.404,
-          "LULUCF": 2246.754,
-          "Grand Total": 22070.853
+          "Land use, land-use change and forestry": 2246.754,
+          "All": 22070.853
         },
         "2012": {
           "Agriculture": 5516.157,
@@ -39570,8 +39570,8 @@
           "Electricity supply": 3856.964,
           "Fuel supply": 1.385,
           "Industry": 1356.633,
-          "LULUCF": 2389.87,
-          "Grand Total": 22314.999
+          "Land use, land-use change and forestry": 2389.87,
+          "All": 22314.999
         },
         "2013": {
           "Agriculture": 5490.735,
@@ -39581,8 +39581,8 @@
           "Electricity supply": 4056.306,
           "Fuel supply": 1.632,
           "Industry": 1430.416,
-          "LULUCF": 2194.87,
-          "Grand Total": 22499.421
+          "Land use, land-use change and forestry": 2194.87,
+          "All": 22499.421
         },
         "2014": {
           "Agriculture": 5492.608,
@@ -39592,8 +39592,8 @@
           "Electricity supply": 3816.074,
           "Fuel supply": 1.177,
           "Industry": 1576.441,
-          "LULUCF": 2196.197,
-          "Grand Total": 21647.052
+          "Land use, land-use change and forestry": 2196.197,
+          "All": 21647.052
         },
         "2015": {
           "Agriculture": 5653.981,
@@ -39603,8 +39603,8 @@
           "Electricity supply": 3815.488,
           "Fuel supply": 1.35,
           "Industry": 1596.805,
-          "LULUCF": 2197.703,
-          "Grand Total": 22042.173
+          "Land use, land-use change and forestry": 2197.703,
+          "All": 22042.173
         },
         "2016": {
           "Agriculture": 5720.013,
@@ -39614,8 +39614,8 @@
           "Electricity supply": 4007.386,
           "Fuel supply": 3.099,
           "Industry": 1392.736,
-          "LULUCF": 2207.025,
-          "Grand Total": 22218.185
+          "Land use, land-use change and forestry": 2207.025,
+          "All": 22218.185
         },
         "2017": {
           "Agriculture": 5774.461,
@@ -39625,8 +39625,8 @@
           "Electricity supply": 3418.834,
           "Fuel supply": 2.78,
           "Industry": 1448.398,
-          "LULUCF": 2180.181,
-          "Grand Total": 21562.602
+          "Land use, land-use change and forestry": 2180.181,
+          "All": 21562.602
         },
         "2018": {
           "Agriculture": 5645.744,
@@ -39636,8 +39636,8 @@
           "Electricity supply": 2904.752,
           "Fuel supply": 4.05,
           "Industry": 1372.562,
-          "LULUCF": 2169.709,
-          "Grand Total": 21033.403
+          "Land use, land-use change and forestry": 2169.709,
+          "All": 21033.403
         },
         "2019": {
           "Agriculture": 5645.473,
@@ -39647,8 +39647,8 @@
           "Electricity supply": 2772.952,
           "Fuel supply": 3.672,
           "Industry": 1334.344,
-          "LULUCF": 2135.145,
-          "Grand Total": 20577.025
+          "Land use, land-use change and forestry": 2135.145,
+          "All": 20577.025
         },
         "2020": {
           "Agriculture": 5683.977,
@@ -39658,8 +39658,8 @@
           "Electricity supply": 2863.152,
           "Fuel supply": 4.198,
           "Industry": 1213.67,
-          "LULUCF": 2171.006,
-          "Grand Total": 19863.175
+          "Land use, land-use change and forestry": 2171.006,
+          "All": 19863.175
         },
         "2021": {
           "Agriculture": 5860.692,
@@ -39669,8 +39669,8 @@
           "Electricity supply": 3077.503,
           "Fuel supply": 5.488,
           "Industry": 1245.721,
-          "LULUCF": 2175.535,
-          "Grand Total": 20565.455
+          "Land use, land-use change and forestry": 2175.535,
+          "All": 20565.455
         },
         "2022": {
           "Agriculture": 5708.688,
@@ -39680,8 +39680,8 @@
           "Electricity supply": 2983.261,
           "Fuel supply": 3.946,
           "Industry": 1179.68,
-          "LULUCF": 2145.135,
-          "Grand Total": 19606.265
+          "Land use, land-use change and forestry": 2145.135,
+          "All": 19606.265
         },
         "2023": {
           "Agriculture": 5615.16,
@@ -39691,8 +39691,8 @@
           "Electricity supply": 2124.116,
           "Fuel supply": 4.345,
           "Industry": 1127.325,
-          "LULUCF": 2148.883,
-          "Grand Total": 18212.212
+          "Land use, land-use change and forestry": 2148.883,
+          "All": 18212.212
         }
       }
     }
