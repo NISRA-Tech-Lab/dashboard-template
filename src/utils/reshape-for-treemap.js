@@ -7,7 +7,9 @@ export function reshapeForTreemap(rawObj) {
         // helpers
         const isAllCaps = (s) =>
             /[A-Z]/.test(s) && s === s.toUpperCase(); // simple + works for "INDUSTRY TOTAL", "LULUCF NET EMISSIONS"
-        const isGrandTotal = (s) => s.trim() === "GRAND TOTAL";
+        const isSectorTotal = (s) =>
+            s.indexOf(" total") > -1 || s.indexOf(" net emissions") > -1;
+        const isGrandTotal = (s) => s.trim() === "Grand total";
         const isPublicSector = (s) => s.toLocaleLowerCase().includes("public sector");
 
         let pendingItems = []; // { name, value }
@@ -20,7 +22,7 @@ export function reshapeForTreemap(rawObj) {
             continue;
             }
 
-            if (isAllCaps(k)) {
+            if (isSectorTotal(k)) {
 
                 // we've hit the sector total: flush pending items under this sector
                 const sector = sectorNameTidy(k)

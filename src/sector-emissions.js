@@ -36,6 +36,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const sector_select = document.getElementById("select-sector");  
 
     const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
+    console.log(sectors)
 
     for (let i = 0; i < sectors.length; i ++) {
       let option = document.createElement("option");
@@ -94,10 +95,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("sector-pct", sector_pct);
 
-      const co2_value = GHGALL.data["Carbon Dioxide"][latest_year]["Northern Ireland"][sector] / 1000;
+      const co2_value = GHGALL.data["Carbon dioxide"][latest_year]["Northern Ireland"][sector] / 1000;
       insertValue("total-co2", co2_value.toFixed(2));
 
-      const co2_value_last = GHGALL.data["Carbon Dioxide"][latest_year - 1]["Northern Ireland"][sector] / 1000;
+      const co2_value_last = GHGALL.data["Carbon dioxide"][latest_year - 1]["Northern Ireland"][sector] / 1000;
       const co2_change_value = co2_value_last - co2_value;
       const co2_pct_change = Math.abs(co2_change_value / co2_value_last * 100).toFixed(0);
       let co2_change_string;
@@ -110,7 +111,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("co2-change", co2_change_string);
 
-      const co2_value_base = GHGALL.data["Carbon Dioxide"][first_year]["Northern Ireland"][sector] / 1000;
+      const co2_value_base = GHGALL.data["Carbon dioxide"][first_year]["Northern Ireland"][sector] / 1000;
       const co2_change_base_value = co2_value_base - co2_value;
       const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
       let co2_change_base_string;

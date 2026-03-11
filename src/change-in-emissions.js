@@ -64,10 +64,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("ghg-base-change", ghg_change_base_string);
 
     //// Carbon Dioxide Emissions
-    const co2_value = GHGALL.data["Carbon Dioxide"][latest_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const co2_value = GHGALL.data["Carbon dioxide"][latest_year]["Northern Ireland"]["Grand total"] / 1000;
     insertValue("total-co2", co2_value.toFixed(2));
 
-    const co2_value_last = GHGALL.data["Carbon Dioxide"][last_year]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const co2_value_last = GHGALL.data["Carbon dioxide"][last_year]["Northern Ireland"]["Grand total"] / 1000;
     const co2_change_value = co2_value_last - co2_value;
     const co2_pct_change = Math.abs(co2_change_value / co2_value_last * 100).toFixed(0);
     let co2_change_string;
@@ -80,7 +80,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("co2-change", co2_change_string);
 
-    const co2_value_base = GHGALL.data["Carbon Dioxide"]["2005"]["Northern Ireland"]["GRAND TOTAL"] / 1000;
+    const co2_value_base = GHGALL.data["Carbon dioxide"]["2005"]["Northern Ireland"]["Grand total"] / 1000;
     const co2_change_base_value = co2_value_base - co2_value;
     const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
     let co2_change_base_string;
@@ -162,8 +162,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     
     for (let i = 0; i < line_years.length; i ++) {
         ghg_values[i] = GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]] ? GHGINVENTORY.data[GHGINVENTORY_stat][line_years[i]]["All"] / 1000 : null;       
-        co2_values[i] = GHGALL.data["Carbon Dioxide"][line_years[i]] ? GHGALL.data["Carbon Dioxide"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;
-        methane_values[i] = GHGALL.data["Methane"][line_years[i]] ? GHGALL.data["Methane"][line_years[i]]["Northern Ireland"]["GRAND TOTAL"] / 1000 : null;        
+        co2_values[i] = GHGALL.data["Carbon dioxide"][line_years[i]] ? GHGALL.data["Carbon dioxide"][line_years[i]]["Northern Ireland"]["Grand total"] / 1000 : null;
+        methane_values[i] = GHGALL.data["Methane"][line_years[i]] ? GHGALL.data["Methane"][line_years[i]]["Northern Ireland"]["Grand total"] / 1000 : null;        
     }
 
 

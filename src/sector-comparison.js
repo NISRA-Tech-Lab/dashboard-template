@@ -62,7 +62,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         .reduce((min, current) => current[1] < min[1] ? current : min)[0];
     
     const min_sector_value = sector_totals[min_sector] / 1000;
-    const min_sector_pct = (min_sector_value / ghg_value * 100).toFixed(0);
+    const min_sector_pct = min_sector_value / ghg_value * 100 < 1 ? (min_sector_value / ghg_value * 100).toFixed(2) : (min_sector_value / ghg_value * 100).toFixed(0);
     const min_sector_name = toTitleCase(min_sector.replace(" TOTAL", ""));  
 
     insertValue("min-sector-pct", min_sector_pct);
@@ -115,6 +115,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Sector treemap  
     const treemap_data_raw = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"];
+    console.log(treemap_data_raw)
     const treemap_data = reshapeForTreemap(treemap_data_raw); 
 
   // Compute totals for top level (unsorted first)

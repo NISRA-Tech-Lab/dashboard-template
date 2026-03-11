@@ -6,9 +6,9 @@ export function toTitleCase(str) {
 }
 
 export function sectorNameTidy (sector) {
-  if (sector == "LULUCF NET EMISSIONS") {
+  if (sector == "LULUCF net emissions") {
     return "LULUCF";
   } else {
-    return toTitleCase(sector.replace(" TOTAL", ""));
+    return toTitleCase(sector.replace(" total", ""));
   }
 }

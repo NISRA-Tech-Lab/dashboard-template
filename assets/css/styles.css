@@ -409,3 +409,10 @@ table tr:not(:has(th)):hover {
   border-radius: 0.25rem; /* optional, if you want */
 }
 
+.display-6 .unit {
+  font-size: 18pt;
+}
+
+.unit:before {
+  content: "MtCO₂e";
+}

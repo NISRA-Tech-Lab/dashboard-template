@@ -12,11 +12,17 @@ export const config = {
         { href: "projections.html", text: "Projections" },        
         { href: "user-notes.html", text: "User Notes" }        
     ],
-
-    // Data portal version in use
-    // Remove "pp" from portal_url below after tables have been uploaded to public portal
+    
     "portal_url": "https://data.nisra.gov.uk/",
 
-    "logo": "assets/img/logo/DAERA_Logo_NI_white.svg"
+    "logo": "assets/img/logo/DAERA_Logo_NI_white.svg",
+
+    "matrix": [
+        "GHGALL",
+        "GHGINVENTORY",
+        "GHGINVGAS",
+        "GHGINVENTTESSUB",
+        "GHGINVDA"
+    ] 
     
 }
