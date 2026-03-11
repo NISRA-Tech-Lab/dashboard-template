@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 
     // Gas bar
-    const regions = ["NI", "UK"];
+    const regions = ["Northern Ireland", "UK"];
 
     const bar_datasets = [
         {

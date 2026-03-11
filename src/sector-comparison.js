@@ -115,7 +115,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Sector treemap  
     const treemap_data_raw = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"];
-    console.log(treemap_data_raw)
     const treemap_data = reshapeForTreemap(treemap_data_raw); 
 
   // Compute totals for top level (unsorted first)
@@ -268,10 +267,16 @@ window.addEventListener("DOMContentLoaded", async () => {
   const bar_canvas = document.getElementById("sector-bar");
   const bar_canvas_expanded = document.getElementById("sector-bar-expanded");
   
-  const bar_years = [first_year, last_year, latest_year]
+  const bar_years = [first_year, last_year, latest_year];
+
+  const sorted_sectors = [...sectors].sort((a, b) => {
+    const valA = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]?.[a] ?? -Infinity;
+    const valB = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]?.[b] ?? -Infinity;
+    return valB - valA;
+  });
 
   // Datasets: one dataset per sector (so each sector is a stack segment across years)
-  const bar_datasets = sectors.map((sector, i) => ({
+  const bar_datasets = sorted_sectors.map((sector, i) => ({
     label: sector,
     data: bar_years.map((yr) => {
       const v = GHGINVENTORY.data[GHGINVENTORY_stat][yr]?.[sector];
@@ -281,13 +286,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   }));
 
   let bar_years_display = [];
-    for (let i = 0; i < bar_years.length; i ++) {
-        if (bar_years[i] == first_year) {
-            bar_years_display[i] = "Base Year"
-        } else {
-            bar_years_display[i] = bar_years[i]
-        }
-    }
+  for (let i = 0; i < bar_years.length; i ++) {
+    bar_years_display[i] = bar_years[i] == first_year ? "Base Year" : bar_years[i]
+  }
 
   const bar_data = {
     labels: bar_years_display,

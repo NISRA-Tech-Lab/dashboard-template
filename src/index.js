@@ -21,32 +21,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("total-ghg", ghg_value.toFixed(2));
 
-    const ghg_value_last = GHGINVENTORY.data[GHGINVENTORY_stat][last_year]["All"] / 1000;
-    const ghg_change_value = ghg_value_last - ghg_value;
-    const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
-    let ghg_change_string;
-
-    if (ghg_change_value < 0) {
-        ghg_change_string = `↑ up ${ghg_pct_change}% since ${latest_year - 1}`
-    } else {
-        ghg_change_string = `↓ down ${ghg_pct_change}% since ${latest_year - 1}`
-    }
-
-    insertValue("ghg-change", ghg_change_string);
-
-    const ghg_value_base = GHGINVENTORY.data[GHGINVENTORY_stat][first_year]["All"] / 1000;
-    const ghg_change_base_value = ghg_value_base - ghg_value;
-    const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
-    let ghg_change_base_string;
-
-     if (ghg_change_base_value < 0) {
-        ghg_change_base_string = `↑ up ${ghg_pct_change_base}% since base year`
-    } else {
-        ghg_change_base_string = `↓ down ${ghg_pct_change_base}% since base year`
-    }
-
-    insertValue("ghg-base-change", ghg_change_base_string);
-
     // Sectors
     const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
         .filter((x) => x != "All");
@@ -91,9 +65,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const pfg_value = GHGINVENTORY.data[GHGINVENTORY_stat]["2019"]["All"] / 1000;
     insertValue("pfg-value", pfg_value.toFixed(1));
-
-    const pfg_change = pfg_value - ghg_value;
-    insertValue("pfg-change", pfg_change.toFixed(1));
     
     insertFooter();
 

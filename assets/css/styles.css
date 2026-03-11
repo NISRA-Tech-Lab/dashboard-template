@@ -409,11 +409,11 @@ table tr:not(:has(th)):hover {
   border-radius: 0.25rem; /* optional, if you want */
 }
 
-.display-6 .unit {
+.display-6 .unit, .display-6 .unit-pct {
   font-size: 18pt;
 }
 
-.display-4 .unit {
+.display-4 .unit, .display-4 .unit-pct {
   font-size: 26pt;
 }
 

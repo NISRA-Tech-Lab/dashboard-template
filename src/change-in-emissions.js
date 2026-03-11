@@ -193,25 +193,25 @@ window.addEventListener("DOMContentLoaded", async () => {
     thead.innerHTML = `
     <tr>
         <th>Sector</th>
-        <th style="text-align: right;">Base Year Emissions (KtCO&#8322;e)</th>
-        <th style="text-align: right;">${latest_year} Emissions (KtCO&#8322;e)</th>
+        <th style="text-align: right;">Base Year Emissions (MtCO&#8322;e)</th>
+        <th style="text-align: right;">${latest_year} Emissions (MtCO&#8322;e)</th>
         <th style="text-align: right;">Change (%)</th>
     </tr>
     `;
 
     for (let i = 0; i < sectors.length; i ++) {
         const sector = sectors[i];
-        const base_value = base_sector_totals[sector];
-        const latest_value = sector_totals[sector];
+        const base_value = base_sector_totals[sector] / 1000;
+        const latest_value = sector_totals[sector] / 1000;
 
         const value = base_differences[sector] == null ? null : base_differences[sector].toFixed(0);
         const pct_change = value == null
-            ? '<strong style="color: #000">n/a</strong>'
-            : '<strong style="color: ' + (value < 0 ? '#ff0000' : value > 0 ? '#008000' : '#000') + '">' 
-                + (value < 0 ? '+' : value > 0 ? '-' : '') 
-                + Math.abs(value) + '% ' 
-                + (value < 0 ? '↑' : value > 0 ? '↓' : '') 
-                + '</strong>';
+            ? `<strong style="color: #000">n/a</strong>`
+            : `<strong style="color: ${value < 0 ? '#ff0000' : value > 0 ? '#008000' : '#000'}">
+                ${value < 0 ? '+' : value > 0 ? '-' : ''} 
+                ${Math.abs(value)}% 
+                ${value < 0 ? '↑' : value > 0 ? '↓' : ''} 
+                </strong>`;
 
         const row = tbody.insertRow();
         const sectorCell = row.insertCell(0);
@@ -220,20 +220,21 @@ window.addEventListener("DOMContentLoaded", async () => {
         const changeCell = row.insertCell(3);
 
         sectorCell.innerHTML = sector;
-        baseCell.innerHTML = base_value.toLocaleString('en-GB', {maximumFractionDigits: 0});
-        latestCell.innerHTML = latest_value.toLocaleString('en-GB', {maximumFractionDigits: 0});
+        baseCell.innerHTML = base_value.toFixed(2);
+        latestCell.innerHTML = latest_value.toFixed(2);
         changeCell.innerHTML = `${pct_change}`;
 
         baseCell.style.textAlign = "right";
         latestCell.style.textAlign = "right";
         changeCell.style.textAlign = "right";
+        changeCell.style.paddingRight = value == null || value == 0 ? "1em" : "";
 
         baseCell.style.verticalAlign = "middle";
         latestCell.style.verticalAlign = "middle";
         changeCell.style.verticalAlign = "middle";
     }
 
-    downloadButton("emissions-table-capture", "GHGALL", update_date);
+    downloadButton("emissions-table-capture", "GHGINVENTORY", update_date, "table");
 
     // Populate info boxes
     populateInfoBoxes(

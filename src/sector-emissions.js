@@ -36,7 +36,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     const sector_select = document.getElementById("select-sector");  
 
     const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
-    console.log(sectors)
 
     for (let i = 0; i < sectors.length; i ++) {
       let option = document.createElement("option");
@@ -191,25 +190,17 @@ window.addEventListener("DOMContentLoaded", async () => {
     const gases = Object.keys(GHGALL.data)
         .filter((x) => x != "Total GHG");
 
-    const bar_years = [first_year, last_year, latest_year];
+    const bar_stacks = ["Grand total", sector]
+    const bar_stacks_display = ["Northern Ireland", sectorNameTidy(sector)];
 
     const bar_datasets = gases.map((gas, i) => ({
         label: gas,
-        data: bar_years.map((yr) => {
-            const v = GHGALL.data[gas][yr]?.["Northern Ireland"]?.[sector];
+        data: bar_stacks.map((sector) => {
+            const v = GHGALL.data[gas][latest_year]?.["Northern Ireland"]?.[sector] / GHGALL.data[GHGALL_stat][latest_year]?.["Northern Ireland"]?.[sector] * 100;
             return Number.isFinite(v) ? v : null; // null -> gaps if missing
         }),
         backgroundColor: chart_colours[i % chart_colours.length]
     }));
-
-    let bar_years_display = [];
-    for (let i = 0; i < bar_years.length; i ++) {
-        if (bar_years[i] == first_year) {
-            bar_years_display[i] = "Base Year"
-        } else {
-            bar_years_display[i] = bar_years[i]
-        }
-    }
 
     // Bar chart (stacked over time: one bar per year, stacks = sectors)
 
@@ -222,7 +213,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const bar_canvas_expanded = document.getElementById("gas-bar-expanded");
 
     const bar_data = {
-        labels: bar_years_display,
+        labels: bar_stacks_display,
         datasets: bar_datasets
     };
 
@@ -244,7 +235,11 @@ window.addEventListener("DOMContentLoaded", async () => {
               display: false
             }
              },
-            y: { stacked: true }
+            y: { stacked: true,
+                min: 0,
+                max: 100,
+                maxTicksLimit: 10
+             }
         }
         }
     };
@@ -253,20 +248,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     gas_expand = new Chart(bar_canvas_expanded, bar_config);
 
 
-    }
-
-    
-
+    }   
     
     update_cards();
     sector_select.onchange = update_cards;
 
     downloadButton("subsector-line-capture", "GHGALL", update_date);
     downloadButton("gas-bar-capture", "GHGALL", update_date);
-
-    
-
-
 
     // Populate info boxes
     populateInfoBoxes(

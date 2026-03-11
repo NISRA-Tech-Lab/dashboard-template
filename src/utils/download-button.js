@@ -1,7 +1,7 @@
 import { config } from "../config/config.js";
 import { map } from "./plot-map.js"
 
-export function downloadButton (capture_id, matrix, update_date, map_plot = false) {
+export function downloadButton (capture_id, matrix, update_date, plot_type = "chart") {
 
     const capture = document.getElementById(capture_id);
     const footer = capture.parentElement.querySelector(".card-footer");
@@ -12,7 +12,7 @@ export function downloadButton (capture_id, matrix, update_date, map_plot = fals
         data_sub = "pp";
     }
 
-    const link_label = map_plot ? "map" : "chart";
+    // const link_label = map_plot ? "map" : "chart";
 
     let footerContent = document.createElement("div");
     footerContent.classList.add("dropdown");
@@ -27,7 +27,7 @@ export function downloadButton (capture_id, matrix, update_date, map_plot = fals
             <ul class="dropdown-menu" aria-labelledby="${capture_id}-dropdown">
                 <li><a class="dropdown-item" href="https://${data_sub}ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.ReadDataset/${matrix}/CSV/1.0/">data (in CSV format)</a></li>
                 <li><a class="dropdown-item" href="https://${data_sub}ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.ReadDataset/${matrix}/XLSX/2007/">data (in Excel format)</a></li>
-                <li><a class="dropdown-item" href="#" id="download-${capture_id}">${link_label} (as image)</a></li>
+                <li><a class="dropdown-item" href="#" id="download-${capture_id}">${plot_type} (as image)</a></li>
             </ul>
             </div>
         
@@ -36,7 +36,7 @@ export function downloadButton (capture_id, matrix, update_date, map_plot = fals
     footer.appendChild(footerContent);
 
 
-    if (map_plot) {
+    if (plot_type == "map") {
         document.getElementById(`download-${capture_id}`).addEventListener("click", async (e) => {
         e.preventDefault();
 
