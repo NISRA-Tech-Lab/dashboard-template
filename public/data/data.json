@@ -39382,8 +39382,8 @@
     }
   },
   "GHGINVENTORY": {
-    "label": "Northern Ireland greenhouse gas inventory",
-    "updated": "2026-03-02",
+    "label": "Greenhouse gas emissions",
+    "updated": "2026-03-12",
     "data": {
       "CO2 equivalent emissions": {
         "1990": {
