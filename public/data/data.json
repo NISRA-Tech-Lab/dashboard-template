@@ -649,17 +649,17 @@
   },
   "DARPV": {
     "label": "Domestic abuse - relationship of perpetrator to victim",
-    "updated": "2025-12-19",
+    "updated": "2026-03-12",
     "data": {
       "Percentage of perpetrators": {
         "2018/19": {
-          "Current husband, wife or civil partner": 10.5,
-          "Former husband, wife or civil partner": 35.5,
-          "Someone currently dating or seeing casually": 9.1,
-          "Someone formerly dating or seeing casually": 16.8,
-          "Parent, step parent or foster parent": 0.9,
-          "Another family member": 4.5,
-          "Other": 22.7
+          "Current husband, wife or civil partner": 10,
+          "Former husband, wife or civil partner": 35,
+          "Someone currently dating or seeing casually": 9,
+          "Someone formerly dating or seeing casually": 17,
+          "Parent, step parent or foster parent": 1,
+          "Another family member": 5,
+          "Other": 23
         }
       }
     }
@@ -850,68 +850,68 @@
   },
   "EXPDA": {
     "label": "Experience of domestic abuse",
-    "updated": "2026-01-19",
+    "updated": "2026-03-12",
     "data": {
       "Victims of domestic abuse": {
         "2018/19": {
           "Any domestic abuse": {
             "Lifetime (since age 16)": {
-              "Female": 23.1,
-              "Male": 14.1,
-              "All persons": 18.8
+              "Female": 23,
+              "Male": 14,
+              "All persons": 19
             },
             "Recent (last 3 years)": {
-              "Female": 13.7,
-              "Male": 10.6,
-              "All persons": 12.3
+              "Female": 14,
+              "Male": 11,
+              "All persons": 12
             }
           },
           "Non-physical abuse": {
             "Lifetime (since age 16)": {
-              "Female": 19.7,
-              "Male": 12.6,
-              "All persons": 16.4
+              "Female": 20,
+              "Male": 13,
+              "All persons": 16
             },
             "Recent (last 3 years)": {
-              "Female": 10.2,
-              "Male": 8.3,
-              "All persons": 9.3
+              "Female": 10,
+              "Male": 8,
+              "All persons": 9
             }
           },
           "Threats or force": {
             "Lifetime (since age 16)": {
-              "Female": 15.9,
-              "Male": 5.2,
-              "All persons": 10.9
+              "Female": 16,
+              "Male": 5,
+              "All persons": 11
             },
             "Recent (last 3 years)": {
-              "Female": 7.4,
-              "Male": 3.2,
-              "All persons": 5.4
+              "Female": 7,
+              "Male": 3,
+              "All persons": 5
             }
           },
           "Threats": {
             "Lifetime (since age 16)": {
-              "Female": 7.1,
-              "Male": 2.1,
-              "All persons": 4.8
+              "Female": 7,
+              "Male": 2,
+              "All persons": 5
             },
             "Recent (last 3 years)": {
-              "Female": 1.5,
-              "Male": 0.7,
-              "All persons": 1.1
+              "Female": 2,
+              "Male": 1,
+              "All persons": 1
             }
           },
           "Force": {
             "Lifetime (since age 16)": {
               "Female": 15,
-              "Male": 4.6,
-              "All persons": 10.1
+              "Male": 5,
+              "All persons": 10
             },
             "Recent (last 3 years)": {
-              "Female": 6.7,
-              "Male": 2.5,
-              "All persons": 4.7
+              "Female": 7,
+              "Male": 3,
+              "All persons": 5
             }
           }
         }
@@ -1102,13 +1102,13 @@
   },
   "LDARPG": {
     "label": "Lifetime domestic abuse reported to the police",
-    "updated": "2026-01-19",
+    "updated": "2026-03-12",
     "data": {
       "Proportion of any lifetime domestic abuse reported to the police": {
         "2018/19": {
-          "Female": 32.1,
-          "Male": 9.7,
-          "All persons": 24.9
+          "Female": 32,
+          "Male": 10,
+          "All persons": 25
         }
       }
     }
