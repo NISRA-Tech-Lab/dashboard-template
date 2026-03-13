@@ -1,12 +1,18 @@
 library(dplyr)
 library(purrr)
 library(jsonlite)
+library(V8)
 
-# List datasets ####
-matrix_list <- c(
-  "GHGALL",
-  "GHGINVENTORY"
-)
+config_file <- readLines("src/config/config.js", warn = FALSE) %>%
+  sub("export ", "", .) %>%
+  paste(., collapse = "\n")
+
+ctx <- V8::v8()
+ctx$eval(config_file)
+
+config <- ctx$get("config")
+
+matrix_list <- config$matrix
 
 # API Key ####
 api_key <- "801aaca4bcf0030599c019f4efa8b89032e5e6aa1de4a629a7f7e9a86db7fb8c"
@@ -72,7 +78,9 @@ for (matrix in matrix_list) {
   reshaped_data <- data.frame(value = as.numeric(raw_data$value))
 
   for (i in seq_along(dimensions)) {
-    dimension_cats <- unlist(raw_data$dimension[[dimensions[[i]]]]$category$label)
+    dimension_cats <- unlist(
+      raw_data$dimension[[dimensions[[i]]]]$category$label
+    )
 
     dimension_col <- c()
 
@@ -80,7 +88,10 @@ for (matrix in matrix_list) {
       if (i == length(dimensions)) {
         dimension_col <- c(dimension_col, cat)
       } else {
-        dimension_col <- c(dimension_col, rep(cat, prod(size[(i + 1):length(size)])))
+        dimension_col <- c(
+          dimension_col,
+          rep(cat, prod(size[(i + 1):length(size)]))
+        )
       }
 
     }

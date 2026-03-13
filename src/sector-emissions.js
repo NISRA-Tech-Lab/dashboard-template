@@ -21,21 +21,24 @@ window.addEventListener("DOMContentLoaded", async () => {
     const GHGALL_stat = "Total GHG";
 
     let GHGINVENTORY = await readData("GHGINVENTORY");
-    const GHGINVENTORY_stat = "CO2 equivalent emissions";
+    let GHGINVENTTESSUB = await readData("GHGINVENTTESSUB");
+    let GHGINVGAS = await readData("GHGINVGAS");
 
-    const update_date = new Date(GHGALL.updated).toLocaleDateString("en-GB",
+    const stat = "CO2 equivalent emissions";
+
+    const update_date = new Date(GHGINVENTTESSUB.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
             month: "long",
             year: "numeric"
         });
 
-    updateYearSpans(GHGALL, GHGALL_stat);
+    updateYearSpans(GHGINVENTTESSUB, stat);
 
     // Choose sector box
     const sector_select = document.getElementById("select-sector");  
 
-    const sectors = getSectors(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
+    const sectors = getSectors(GHGINVENTTESSUB.data[stat][latest_year]);
 
     for (let i = 0; i < sectors.length; i ++) {
       let option = document.createElement("option");
@@ -44,8 +47,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       sector_select.appendChild(option);
     }
 
-    const subsector_data = reshapeForTreemap(GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"]);
-    const subsector_base_data = reshapeForTreemap(GHGALL.data[GHGALL_stat][first_year]["Northern Ireland"]);
+    const subsector_data = reshapeForTreemap(GHGINVENTTESSUB.data[stat][latest_year]);
+    const subsector_base_data = reshapeForTreemap(GHGINVENTTESSUB.data[stat][first_year]);
 
     let subsector_chart;
     let subsector_expand;    
@@ -60,10 +63,10 @@ window.addEventListener("DOMContentLoaded", async () => {
           sector_name_els[i].textContent = sectorNameTidy(sector);
       }
 
-      const ghg_value = GHGALL.data[GHGALL_stat][latest_year]["Northern Ireland"][sector] / 1000;
+      const ghg_value = GHGINVENTTESSUB.data[stat][latest_year][sector]  / 1000;
       insertValue("total-ghg", ghg_value.toFixed(2));
 
-      const ghg_value_last = GHGALL.data[GHGALL_stat][latest_year - 1]["Northern Ireland"][sector] / 1000;
+      const ghg_value_last = GHGINVENTTESSUB.data[stat][latest_year - 1][sector] / 1000;
       const ghg_change_value = ghg_value_last - ghg_value;
       const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
       let ghg_change_string;
@@ -76,7 +79,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("ghg-change", ghg_change_string);
 
-      const ghg_value_base = GHGALL.data[GHGALL_stat][first_year]["Northern Ireland"][sector] / 1000;
+      const ghg_value_base = GHGINVENTTESSUB.data[stat][latest_year - 1][sector] / 1000;
       const ghg_change_base_value = ghg_value_base - ghg_value;
       const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
       let ghg_change_base_string;
@@ -89,15 +92,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("ghg-base-change", ghg_change_base_string);
 
-      const ghg_ni = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
+      const ghg_ni = GHGINVENTORY.data[stat][latest_year]["All"] / 1000;
       const sector_pct = (ghg_value / ghg_ni * 100).toFixed(0);
 
       insertValue("sector-pct", sector_pct);
 
-      const co2_value = GHGALL.data["Carbon dioxide"][latest_year]["Northern Ireland"][sector] / 1000;
+      const co2_value = GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
       insertValue("total-co2", co2_value.toFixed(2));
 
-      const co2_value_last = GHGALL.data["Carbon dioxide"][latest_year - 1]["Northern Ireland"][sector] / 1000;
+      const co2_value_last = GHGINVGAS.data[stat][latest_year - 1]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
       const co2_change_value = co2_value_last - co2_value;
       const co2_pct_change = Math.abs(co2_change_value / co2_value_last * 100).toFixed(0);
       let co2_change_string;
@@ -110,7 +113,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("co2-change", co2_change_string);
 
-      const co2_value_base = GHGALL.data["Carbon dioxide"][first_year]["Northern Ireland"][sector] / 1000;
+      const co2_value_base = GHGINVGAS.data[stat][first_year]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
       const co2_change_base_value = co2_value_base - co2_value;
       const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
       let co2_change_base_string;
@@ -140,7 +143,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         for (let j = 0; j < years.length; j++) {
           const year = years[j];
-          const value = GHGALL.data[GHGALL_stat][year]["Northern Ireland"][subsector] ? GHGALL.data[GHGALL_stat][year]["Northern Ireland"][subsector] / 1000 : 0;
+          const value = GHGINVENTTESSUB.data[stat][year][subsector] ? GHGINVENTTESSUB.data[stat][year][subsector] / 1000 : 0;
           subsector_line_values.push(value);
         }
 
@@ -187,16 +190,16 @@ window.addEventListener("DOMContentLoaded", async () => {
         canvas_id: "subsector-line-expanded"
     })
 
-    const gases = Object.keys(GHGALL.data)
-        .filter((x) => x != "Total GHG");
+    const gases = Object.keys(GHGINVGAS.data[stat][latest_year]["Northern Ireland"]["All"]);
 
-    const bar_stacks = ["Grand total", sector]
+    const bar_stacks = ["All", sectorNameTidy(sector)]
     const bar_stacks_display = ["Northern Ireland", sectorNameTidy(sector)];
 
     const bar_datasets = gases.map((gas, i) => ({
         label: gas,
         data: bar_stacks.map((sector) => {
-            const v = GHGALL.data[gas][latest_year]?.["Northern Ireland"]?.[sector] / GHGALL.data[GHGALL_stat][latest_year]?.["Northern Ireland"]?.[sector] * 100;
+            console.log(GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA")
+            const v = GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA" ? 0 : GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGINVENTORY.data[stat][latest_year][sector] * 100;
             return Number.isFinite(v) ? v : null; // null -> gaps if missing
         }),
         backgroundColor: chart_colours[i % chart_colours.length]
