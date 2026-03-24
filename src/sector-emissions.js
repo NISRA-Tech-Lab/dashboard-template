@@ -198,7 +198,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     const bar_datasets = gases.map((gas, i) => ({
         label: gas,
         data: bar_stacks.map((sector) => {
-            console.log(GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA")
             const v = GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA" ? 0 : GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGINVENTORY.data[stat][latest_year][sector] * 100;
             return Number.isFinite(v) ? v : null; // null -> gaps if missing
         }),
