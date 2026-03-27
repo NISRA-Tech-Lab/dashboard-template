@@ -1,7 +1,7 @@
 {
   "CPTDAC": {
     "label": "Processing times for domestic abuse cases",
-    "updated": "2025-12-19",
+    "updated": "2026-03-27",
     "data": {
       "Median days taken to process": {
         "2022/23": {
@@ -21,7 +21,7 @@
   },
   "DAHVAG": {
     "label": "Domestic abuse homicides recorded",
-    "updated": "2026-01-19",
+    "updated": "2026-03-27",
     "data": {
       "Domestic abuse homicides": {
         "2007/08": {
@@ -335,7 +335,7 @@
   },
   "DAHVGR": {
     "label": "Domestic abuse homicides recorded",
-    "updated": "2026-01-19",
+    "updated": "2026-03-27",
     "data": {
       "Domestic abuse homicides": {
         "2007/08": {
@@ -649,7 +649,7 @@
   },
   "DARPV": {
     "label": "Domestic abuse - relationship of perpetrator to victim",
-    "updated": "2026-03-12",
+    "updated": "2026-03-27",
     "data": {
       "Percentage of perpetrators": {
         "2018/19": {
@@ -666,7 +666,7 @@
   },
   "DOMACLGD": {
     "label": "Domestic abuse offences",
-    "updated": "2025-12-19",
+    "updated": "2026-03-27",
     "data": {
       "All domestic abuse crimes": {
         "2024/25": {
@@ -688,7 +688,7 @@
   },
   "DOMACVAC": {
     "label": "Domestic abuse crimes",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "All domestic abuse crimes": {
         "2024/25": {
@@ -716,7 +716,7 @@
   },
   "DOMACVG": {
     "label": "Domestic abuse crimes",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "All domestic abuse crimes": {
         "2004/05": {
@@ -850,7 +850,7 @@
   },
   "EXPDA": {
     "label": "Experience of domestic abuse",
-    "updated": "2026-03-12",
+    "updated": "2026-03-27",
     "data": {
       "Victims of domestic abuse": {
         "2018/19": {
@@ -920,7 +920,7 @@
   },
   "EXPGBVAG": {
     "label": "Experience of gender-based violence - adults",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "Adult victims of violence": {
         "2022": {
@@ -970,7 +970,7 @@
   },
   "EXPVLYTHEQ": {
     "label": "Experience of gender-based violence - 16 year olds",
-    "updated": "2026-02-05",
+    "updated": "2026-03-27",
     "data": {
       "Victims of gender-based violence": {
         "2023": {
@@ -1102,7 +1102,7 @@
   },
   "LDARPG": {
     "label": "Lifetime domestic abuse reported to the police",
-    "updated": "2026-03-12",
+    "updated": "2026-03-27",
     "data": {
       "Proportion of any lifetime domestic abuse reported to the police": {
         "2018/19": {
@@ -1115,7 +1115,7 @@
   },
   "PRCHOM": {
     "label": "Police recorded crime - victims of homicide",
-    "updated": "2025-12-18",
+    "updated": "2026-03-27",
     "data": {
       "All homicides": {
         "1998/99": {
@@ -1582,7 +1582,7 @@
   },
   "PRCONLCG": {
     "label": "Police recorded crime - online crime",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "Total recorded online crime": {
         "2014/15": {
@@ -1656,7 +1656,7 @@
   },
   "PRCPD": {
     "label": "Police recorded crime and sanction outcomes",
-    "updated": "2025-12-18",
+    "updated": "2026-03-27",
     "data": {
       "All crimes recorded by the police": {
         "2019/20": {
@@ -6672,7 +6672,7 @@
   },
   "PRCVCTM": {
     "label": "Police recorded crime - victims of crime",
-    "updated": "2025-12-18",
+    "updated": "2026-03-27",
     "data": {
       "All crimes recorded by the police": {
         "2007/08": {
@@ -40810,7 +40810,7 @@
   },
   "DOMAC": {
     "label": "Domestic abuse crimes and sanction outcomes",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "All domestic abuse crimes": {
         "2023/24": {
@@ -40894,7 +40894,7 @@
   },
   "EXPVAS": {
     "label": "Experience of gender based violence - adults",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "Adult victims of violence": {
         "2024": {
@@ -40929,7 +40929,7 @@
   },
   "EXPVLADEQ": {
     "label": "Experience of gender-based violence - adults",
-    "updated": "2026-02-27",
+    "updated": "2026-03-27",
     "data": {
       "Adult victims of gender-based violence": {
         "2022": {
@@ -41195,7 +41195,7 @@
   },
   "PRCONL": {
     "label": "Police recorded crime - online crime",
-    "updated": "2026-01-23",
+    "updated": "2026-03-27",
     "data": {
       "All online crimes": {
         "2014/15": {
