@@ -1,7 +1,7 @@
 import { insertHeader, insertFooter, insertHead, insertNavButtons } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js";
 import { insertValue } from "./utils/insert-value.js";
-import { latest_year, updateYearSpans, first_year, last_year } from "./utils/update-years.js";
+import { latest_year, updateYearSpans, first_year } from "./utils/update-years.js";
 import { toTitleCase } from "./utils/to-title-case.js";
 import { getSectors } from "./utils/get-sectors.js";
 
@@ -12,23 +12,23 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertNavButtons()
 
     // Insert values into homepage cards
-    const GHGINVENTORY = await readData("GHGINVENTORY");
-    const GHGINVENTORY_stat = "CO2 equivalent emissions"
-    updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
+    const GHGEMSSNS = await readData("GHGEMSSNS");
+    const stat = "CO2 equivalent emissions";
+    console.log(GHGEMSSNS);
+    updateYearSpans(GHGEMSSNS, stat);
 
     // Change in Emissions
-    const ghg_value = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
+    const ghg_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000;
 
     insertValue("total-ghg", ghg_value.toFixed(2));
 
     // Sectors
-    const sectors = Object.keys(GHGINVENTORY.data[GHGINVENTORY_stat][latest_year])
-        .filter((x) => x != "All");
+    const sectors = getSectors(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]);
 
     let sector_totals = {}
 
     for (let i = 0; i < sectors.length; i ++) {
-        sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year][sectors[i]]
+        sector_totals[sectors[i]] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sectors[i]]["All pollutants"];
     }
 
     const max_sector = Object.entries(sector_totals)
@@ -48,7 +48,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     let base_differences = {};
 
     for (let i = 0; i < sectors.length; i ++) {
-        base_sector_totals[sectors[i]] = GHGINVENTORY.data[GHGINVENTORY_stat][first_year][sectors[i]];
+        base_sector_totals[sectors[i]] = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sectors[i]]["All pollutants"];
         base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
     }
 
@@ -63,7 +63,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-change-sector-name", max_change_sector_name);
 
 
-    const pfg_value = GHGINVENTORY.data[GHGINVENTORY_stat]["2019"]["All"] / 1000;
+    const pfg_value = GHGEMSSNS.data[stat]["2019"]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000;
     insertValue("pfg-value", pfg_value.toFixed(1));
     
     insertFooter();

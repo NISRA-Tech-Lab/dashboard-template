@@ -22,7 +22,8 @@ export const config = {
         "GHGINVENTORY",
         "GHGINVGAS",
         "GHGINVENTTESSUB",
-        "GHGINVDA"
+        "GHGINVDA",
+        "GHGEMSSNS"
     ] 
     
 }
