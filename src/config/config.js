@@ -18,11 +18,6 @@ export const config = {
     "logo": "assets/img/logo/DAERA_Logo_NI_white.svg",
 
     "matrix": [
-        "GHGALL",
-        "GHGINVENTORY",
-        "GHGINVGAS",
-        "GHGINVENTTESSUB",
-        "GHGINVDA",
         "GHGEMSSNS"
     ] 
     

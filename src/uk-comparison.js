@@ -17,55 +17,100 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertNavButtons();
     insertExpandButtons();
     
-    let GHGINVENTORY = await readData("GHGINVENTORY");
-    const GHGINVENTORY_stat = "CO2 equivalent emissions";
+    const GHGEMSSNS = await readData("GHGEMSSNS");
+    const stat = "CO2 equivalent emissions";
 
-    const update_date = new Date(GHGINVENTORY.updated).toLocaleDateString("en-GB",
+    const update_date = new Date(GHGEMSSNS.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
             month: "long",
             year: "numeric"
         });
 
-    updateYearSpans(GHGINVENTORY, GHGINVENTORY_stat);
+    updateYearSpans(GHGEMSSNS, stat);
 
     // Total Emissions box
-    const ghg_ni = GHGINVENTORY.data[GHGINVENTORY_stat][latest_year]["All"] / 1000;
 
-    insertValue("ghg-ni", ghg_ni.toFixed(2));
+    const regions = Object.keys(GHGEMSSNS.data[stat][latest_year]);
+    
+    let ghg_uk = 0;
+    let region_totals = {};
+
+    for (let i = 0; i < regions.length; i ++) {
+        let region_value = GHGEMSSNS.data[stat][latest_year][regions[i]]["Grand total"]["All pollutants"] / 1000;
+        region_totals[regions[i]] = region_value;
+        ghg_uk += region_value;
+    }
+
+
+    insertValue("ghg-uk", ghg_uk.toFixed(0));
+    insertValue("ghg-ni", region_totals["Northern Ireland"].toFixed(2));
 
 
     // Gas bar
-    const regions = ["Northern Ireland", "UK"];
+    const bar_regions = ["Northern Ireland", "UK"];
+    const bar_gases = ["Carbon Dioxide", "Methane", "Nitrous Oxide", "Fluourinated and other gases"];
+    const gases = Object.keys(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"])
+        .filter(x => x != "All pollutants");
 
-    const bar_datasets = [
-        {
-            label: "Carbon Dioxide",
-            data: [61, 79],
-            backgroundColor: chart_colours[0]
-        },
-        {
-            label: "Methane",
-            data: [30, 15],
-            backgroundColor: chart_colours[1]
-        },
-        {
-            label: "Nitrous Oxide",
-            data: [7, 5],
-            backgroundColor: chart_colours[2]
-        },
-        {
-            label: "Fluourinated and other gases",
-            data: [1, 2],
-            backgroundColor: chart_colours[3]
+    let grouped_gas_data = {
+        "Northern Ireland": {},
+        "UK": {}
+    };   
+ 
+    let other_value = 0;
+    let other_value_uk = 0;
+    for (let i = 0; i < gases.length; i ++) {
+        let gas = gases[i];
+        if (gas == "CO2") {
+            let co2_uk = 0;
+            for (let j = 0; j < regions.length; j ++) {
+                co2_uk += GHGEMSSNS.data[stat][latest_year][regions[j]]["Grand total"][gas] / 1000;
+            }
+            grouped_gas_data["Northern Ireland"]["Carbon Dioxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / 1000 / region_totals["Northern Ireland"] * 100;
+            grouped_gas_data["UK"]["Carbon Dioxide"] = co2_uk / ghg_uk * 100;
+        } else if (gas == "CH4") {
+            let ch4_uk = 0;
+            for (let j = 0; j < regions.length; j ++) {
+                ch4_uk += GHGEMSSNS.data[stat][latest_year][regions[j]]["Grand total"][gas] / 1000;
+            }
+            grouped_gas_data["Northern Ireland"]["Methane"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / 1000 / region_totals["Northern Ireland"] * 100;
+            grouped_gas_data["UK"]["Methane"] = ch4_uk / ghg_uk * 100;
+        } else if (gas == "N2O") {
+            let n2o_uk = 0;
+            for (let j = 0; j < regions.length; j ++) {
+                n2o_uk += GHGEMSSNS.data[stat][latest_year][regions[j]]["Grand total"][gas] / 1000;
+            }
+            grouped_gas_data["Northern Ireland"]["Nitrous Oxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / 1000 / region_totals["Northern Ireland"] * 100;
+            grouped_gas_data["UK"]["Nitrous Oxide"] = n2o_uk / ghg_uk * 100;
+        } else {
+            let other_uk = 0;
+            for (let j = 0; j < regions.length; j ++) {
+                other_uk += GHGEMSSNS.data[stat][latest_year][regions[j]]["Grand total"][gas] / 1000;
+            }
+            other_value += GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / 1000;
+            other_value_uk += other_uk;
         }
-    ]
+    }
+
+    grouped_gas_data["Northern Ireland"]["Fluourinated and other gases"] = other_value / region_totals["Northern Ireland"] * 100;
+    grouped_gas_data["UK"]["Fluourinated and other gases"] = other_value_uk / ghg_uk * 100;
+
+
+    let bar_datasets = []
+    for (let i = 0; i < bar_gases.length; i ++) {
+        bar_datasets[i] = {
+            label: bar_gases[i],
+            data: [grouped_gas_data["Northern Ireland"][bar_gases[i]], grouped_gas_data["UK"][bar_gases[i]]],
+            backgroundColor: chart_colours[i]
+        }
+    }
 
     const bar_canvas = document.getElementById("gas-bar");
     const bar_canvas_expanded = document.getElementById("gas-bar-expanded");
 
     const bar_data = {
-        labels: regions,
+        labels: bar_regions,
         datasets: bar_datasets
     };
 
@@ -96,35 +141,25 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     new Chart(bar_canvas, bar_config);
     new Chart(bar_canvas_expanded, bar_config);
-    downloadButton("gas-bar-capture", "GHGINVENTORY", update_date);
+    downloadButton("gas-bar-capture", "GHGEMSSNS", update_date);
     
-
     // Historic comparison
+    const bar_years = [first_year, last_year, latest_year];
 
-    const bar_years = ["Base Year", last_year, latest_year];
+    let historic_bar_datasets = [];
 
-    const historic_bar_datasets = [
-        {
-            label: "England",
-            data: [634, 299, 285],
-            backgroundColor: chart_colours[0]
-        },
-        {
-            label: "Scotland",
-            data: [80, 39, 38],
-            backgroundColor: chart_colours[1]
-        },
-        {
-            label: "Wales",
-            data: [55, 36, 34],
-            backgroundColor: chart_colours[2]
-        },
-        {
-            label: "Northern Ireland",
-            data: [27, 20, 18],
-            backgroundColor: chart_colours[3]
+    for (let i = 0; i < regions.length; i ++) {
+        let region_data = [];
+        for (let j = 0; j < bar_years.length; j ++) {
+            let year = bar_years[j];
+            region_data.push(GHGEMSSNS.data[stat][year][regions[i]]["Grand total"]["All pollutants"] / 1000);
         }
-    ]
+        historic_bar_datasets[i] = {
+            label: regions[i],
+            data: region_data,
+            backgroundColor: chart_colours[i]
+        };
+    }
 
     const historic_bar_canvas = document.getElementById("historic-bar");
     const historic_bar_canvas_expanded = document.getElementById("historic-bar-expanded");
@@ -161,12 +196,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     new Chart(historic_bar_canvas, historic_bar_config);
     new Chart(historic_bar_canvas_expanded, historic_bar_config);
-    downloadButton("historic-bar-capture", "GHGINVENTORY", update_date);
-
+    downloadButton("historic-bar-capture", "GHGEMSSNS", update_date);
     
-
-
-
     // Populate info boxes
     populateInfoBoxes(
         ["Definitions", "Source", "What does the data mean?"],
