@@ -245,15 +245,41 @@ window.addEventListener("DOMContentLoaded", async () => {
     gas_chart = new Chart(bar_canvas, bar_config);
     gas_expand = new Chart(bar_canvas_expanded, bar_config);
 
+    let subsector_codes = [];
+    for (let i = 0; i < subsector_data_filtered.length; i ++) {
+        let subsector = subsector_data_filtered[i].subsector;
+        subsector_codes.push(
+            String(Object.keys(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]).indexOf(subsector) + 1)
+        );
+    };
+
+    const subsector_line_query = {
+        "CTRY24CD": "N92000002",
+        "TES_SUBSECTOR": subsector_codes,
+        "POLLUTANTS": "ALL"
+
+    };
+
+    downloadButton("subsector-line-capture", "GHGEMSSNS", update_date, subsector_line_query);
+
+    const gas_bar_query = {
+        "TLIST(A1)": latest_year,
+        "CTRY24CD": "N92000002",
+        "TES_SUBSECTOR": [
+            String(Object.keys(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]).indexOf(sector) + 1),
+            "ALL"
+        ]
+    };
+
+    downloadButton("gas-bar-capture", "GHGEMSSNS", update_date, gas_bar_query);
 
     }   
     
     update_cards();
     sector_select.onchange = update_cards;
 
-    downloadButton("subsector-line-capture", "GHGALL", update_date);
-    downloadButton("gas-bar-capture", "GHGALL", update_date);
-
+    
+    
     // Populate info boxes
     populateInfoBoxes(
         ["Definitions", "Source", "What does the data mean?"],

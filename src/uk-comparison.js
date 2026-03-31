@@ -1,14 +1,12 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
-import { chart_colours,  createLineChart } from "./utils/charts.js";
-import { latest_year, first_year, last_year, updateYearSpans, years } from "./utils/update-years.js";
+import { chart_colours } from "./utils/charts.js";
+import { latest_year, first_year, last_year, updateYearSpans } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
-import { sectorNameTidy } from "./utils/to-title-case.js";
+
 import { insertExpandButtons } from "./utils/expand-buttons.js";
-import { reshapeForTreemap } from "./utils/reshape-for-treemap.js";
-import { getSectors } from "./utils/get-sectors.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -141,7 +139,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     new Chart(bar_canvas, bar_config);
     new Chart(bar_canvas_expanded, bar_config);
-    downloadButton("gas-bar-capture", "GHGEMSSNS", update_date);
+
+    const gas_bar_query = {
+        "TLIST(A1)": latest_year,
+        "TES_SUBSECTOR": "ALL"
+    };
+
+    downloadButton("gas-bar-capture", "GHGEMSSNS", update_date, gas_bar_query);
     
     // Historic comparison
     const bar_years = [first_year, last_year, latest_year];
@@ -196,7 +200,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     new Chart(historic_bar_canvas, historic_bar_config);
     new Chart(historic_bar_canvas_expanded, historic_bar_config);
-    downloadButton("historic-bar-capture", "GHGEMSSNS", update_date);
+
+    const historic_bar_query = {
+        "TLIST(A1)": [first_year, last_year, latest_year],
+        "TES_SUBSECTOR": "ALL",
+        "POLLUTANTS": "ALL"
+    };
+
+    downloadButton("historic-bar-capture", "GHGEMSSNS", update_date, historic_bar_query);
     
     // Populate info boxes
     populateInfoBoxes(

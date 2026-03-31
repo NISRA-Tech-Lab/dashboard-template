@@ -159,7 +159,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         ghg_values[i] = GHGEMSSNS.data[stat][line_years[i]] ? GHGEMSSNS.data[stat][line_years[i]]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000 : null;       
         co2_values[i] = GHGEMSSNS.data[stat][line_years[i]] ? GHGEMSSNS.data[stat][line_years[i]]["Northern Ireland"]["Grand total"]["CO2"] / 1000 : null;
         methane_values[i] = GHGEMSSNS.data[stat][line_years[i]] ? GHGEMSSNS.data[stat][line_years[i]]["Northern Ireland"]["Grand total"]["CH4"] / 1000 : null;        
-    }
+    };
 
 
     createLineChart({
@@ -168,7 +168,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         labels: ["Total GHG", "Carbon Dioxide", "Methane"],
         unit: "MtCO2e",
         canvas_id: "historic-line"
-    })
+    });
 
     createLineChart({
         years,
@@ -176,9 +176,15 @@ window.addEventListener("DOMContentLoaded", async () => {
         labels: ["Total GHG", "Carbon Dioxide", "Methane"],
         unit: "MtCO2e",
         canvas_id: "historic-line-expanded"
-    })
+    });
 
-    downloadButton("historic-line-capture", "GHGALL", update_date);
+    const historic_line_query = {
+        "CTRY24CD": "N92000002",
+        "TES_SUBSECTOR": "ALL",
+        "POLLUTANTS": ["CO2", "CH4", "ALL"]
+    };
+
+    downloadButton("historic-line-capture", "GHGEMSSNS", update_date, historic_line_query);
 
     // Table
     const table = document.getElementById("emissions-table");
@@ -229,7 +235,14 @@ window.addEventListener("DOMContentLoaded", async () => {
         changeCell.style.verticalAlign = "middle";
     }
 
-    downloadButton("emissions-table-capture", "GHGINVENTORY", update_date, "table");
+    const emissions_table_query = {
+        "TLIST(A1)": [first_year, latest_year],
+        "CTRY24CD": "N92000002",
+        "TES_SUBSECTOR": ["5", "11", "17", "19", "22", "26", "34"],
+        "POLLUTANTS": "ALL"
+    }
+
+    downloadButton("emissions-table-capture", "GHGEMSSNS", update_date, emissions_table_query, "table");
 
     // Populate info boxes
     populateInfoBoxes(

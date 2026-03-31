@@ -255,9 +255,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     tree_chart_expanded.update();
   });
 
-  
+  const sector_treemap_query = {
+    "TLIST(A1)": latest_year,
+    "CTRY24CD": "N92000002",
+    "POLLUTANTS": "ALL"
+  }
 
-  downloadButton("sector-treemap-capture", "GHGALL", update_date);
+  downloadButton("sector-treemap-capture", "GHGEMSSNS", update_date, sector_treemap_query);
 
   // Bar chart (stacked over time: one bar per year, stacks = sectors)
   const bar_canvas = document.getElementById("sector-bar");
@@ -316,7 +320,14 @@ window.addEventListener("DOMContentLoaded", async () => {
   new Chart(bar_canvas, bar_config);
   new Chart(bar_canvas_expanded, bar_config);
 
-  downloadButton("sector-bar-capture", "GHGALL", update_date);
+  const sector_bar_query = {
+        "TLIST(A1)": [first_year, last_year, latest_year],
+        "CTRY24CD": "N92000002",
+        "TES_SUBSECTOR": ["5", "11", "17", "19", "22", "26", "34"],
+        "POLLUTANTS": "ALL"
+    };
+
+  downloadButton("sector-bar-capture", "GHGEMSSNS", update_date, sector_bar_query);
 
 
 

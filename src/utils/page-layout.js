@@ -48,7 +48,7 @@ export function insertHeader () {
 export function insertNavButtons() {
   const nav = document.getElementById("nav");
 
-  const links = config.navigation;
+  const links = config.navigation.filter(l => l.href !== "projections.html" || config.show_projections);
 
   const pathname = window.location.pathname;
   const file = pathname.slice(pathname.lastIndexOf("/") + 1) || "index.html";
