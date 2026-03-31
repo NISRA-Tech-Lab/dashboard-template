@@ -127,6 +127,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       let subsector_lines = [];
       let subsector_labels = [];
 
+      let line_years = [];
+        for (let i = first_year; i <= latest_year; i ++) {
+            line_years.push(i)
+        }
+
       for (let i = 0; i < subsector_data_filtered.length; i ++) {
 
         const subsector = sector == "Waste total" ? "Waste total" : subsector_data_filtered[i].subsector;
@@ -134,11 +139,11 @@ window.addEventListener("DOMContentLoaded", async () => {
         subsector_data_filtered[i].change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value - subsector_data_filtered[i].value || 0;
         subsector_data_filtered[i].pct_change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value ? Math.abs(subsector_data_filtered[i].change / subsector_base_data_filtered.find(x => x.subsector === subsector)?.value * 100) : 0;
 
-        let subsector_line_values = [];
+        let subsector_line_values = [];        
 
-        for (let j = 0; j < years.length; j++) {
-          const year = years[j];
-          const value = GHGEMSSNS.data[stat][year]["Northern Ireland"][subsector] ? GHGEMSSNS.data[stat][year]["Northern Ireland"][subsector]["All pollutants"] / 1000 : 0;
+        for (let j = 0; j < line_years.length; j++) {
+          const year = line_years[j];
+          const value = GHGEMSSNS.data[stat][year] ? GHGEMSSNS.data[stat][year]["Northern Ireland"][subsector]["All pollutants"] / 1000 : null;
           subsector_line_values.push(value);
         }
 
@@ -170,7 +175,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       }
 
     subsector_chart = createLineChart({
-        years,
+        years: line_years,
         lines: subsector_lines,
         labels: subsector_labels,
         unit: "MtCO2e",
@@ -178,7 +183,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     })
 
     subsector_expand = createLineChart({
-        years,
+        years: line_years,
         lines: subsector_lines,
         labels: subsector_labels,
         unit: "MtCO2e",

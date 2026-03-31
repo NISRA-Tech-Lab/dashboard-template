@@ -1,11 +1,11 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
-import { createLineChart, createBarChartData, createBarChart } from "./utils/charts.js";
+import { createLineChart } from "./utils/charts.js";
 import { latest_year, first_year, updateYearSpans, years, last_year } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
-import { sectorNameTidy, toTitleCase } from "./utils/to-title-case.js";
+import { sectorNameTidy } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
 import { getSectors } from "./utils/get-sectors.js";
 
@@ -171,7 +171,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
 
     createLineChart({
-        years,
+        years: line_years,
         lines: [ghg_values, co2_values, methane_values],
         labels: ["Total GHG", "Carbon Dioxide", "Methane"],
         unit: "MtCO2e",
