@@ -114,12 +114,17 @@ window.addEventListener("DOMContentLoaded", async () => {
     const treemap_data = reshapeForTreemap(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]); 
 
   // Compute totals for top level (unsorted first)
-  const sectorTotalsUnsorted = Array.from(new Set(treemap_data.map(d => d.sector))).map(sector => ({
+  const sectorTotalsUnsorted = Array.from(new Set(treemap_data.map(d => d.sector))).map(sector => {
+  const value = treemap_data
+    .filter(d => d.sector === sector)
+    .reduce((sum, d) => sum + (Number.isFinite(+d.value) ? +d.value : 0), 0);
+
+  return {
     sector,
-    value: treemap_data
-      .filter(d => d.sector === sector)
-      .reduce((sum, d) => sum + (Number.isFinite(+d.value) ? +d.value : 0), 0)
-  }));
+    value,                    // signed net total
+    value_abs: Math.abs(value) // absolute for sizing
+  };
+});
 
   // Sort totals descending (largest first)
   const sectorTotals = sectorTotalsUnsorted

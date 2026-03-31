@@ -108,7 +108,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("pfg-base-year", pfg_base_year);
 
     //// Greatest increase / decrease
-    const sectors = getSectors(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]);
+    const sectors = getSectors(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]).concat(["Grand total"]);
 
     let sector_totals = {};
     let base_sector_totals = {}
@@ -220,9 +220,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         const latestCell = row.insertCell(2);
         const changeCell = row.insertCell(3);
 
-        sectorCell.innerHTML = sectorNameTidy(sector);
-        baseCell.innerHTML = base_value.toFixed(2);
-        latestCell.innerHTML = latest_value.toFixed(2);
+        sectorCell.innerHTML = sector == "Grand total" ? "<strong>All sectors</strong>" : sectorNameTidy(sector);
+        baseCell.innerHTML = sector == "Grand total" ? `<strong>${base_value.toFixed(2)}</strong>` : base_value.toFixed(2);
+        latestCell.innerHTML = sector == "Grand total" ? `<strong>${latest_value.toFixed(2)}</strong>` : latest_value.toFixed(2);
         changeCell.innerHTML = `${pct_change}`;
 
         baseCell.style.textAlign = "right";
@@ -238,7 +238,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const emissions_table_query = {
         "TLIST(A1)": [first_year, latest_year],
         "CTRY24CD": "N92000002",
-        "TES_SUBSECTOR": ["5", "11", "17", "19", "22", "26", "34"],
+        "TES_SUBSECTOR": ["5", "11", "17", "19", "22", "26", "34", "ALL"],
         "POLLUTANTS": "ALL"
     }
 

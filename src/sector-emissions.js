@@ -39,6 +39,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       let option = document.createElement("option");
       option.value = sectors[i];
       option.textContent = sectorNameTidy(sectors[i]);
+      option.name = "sector";
       sector_select.appendChild(option);
     }
 
@@ -52,7 +53,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     function update_cards () {
 
-      const sector = sector_select.value;
+        const url_params = new URLSearchParams(window.location.search);
+        const sector = url_params.get("sector") ? url_params.get("sector") : sector_select.value;
+
+        sector_select.value = sector;    
+
       const sector_name_els = document.getElementsByClassName("sector-name");
       for (let i = 0; i < sector_name_els.length; i++) {
           sector_name_els[i].textContent = sectorNameTidy(sector);
@@ -281,7 +286,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     }   
     
     update_cards();
-    sector_select.onchange = update_cards;
+
+    sector_select.onchange = function() {
+        window.location.search = "?sector=" + encodeURIComponent(sector_select.value);
+    }
 
     
     
