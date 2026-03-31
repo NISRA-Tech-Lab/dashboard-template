@@ -17,13 +17,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertNavButtons();
     insertExpandButtons();
 
-    let GHGINVENTORY = await readData("GHGINVENTORY");
-    let GHGINVENTTESSUB = await readData("GHGINVENTTESSUB");
+    const GHGEMSSNS = await readData("GHGEMSSNS");
 
     const stat = "CO2 equivalent emissions";
-    updateYearSpans(GHGINVENTORY, stat);
+    updateYearSpans(GHGEMSSNS, stat);
 
-    const update_date = new Date(GHGINVENTORY.updated).toLocaleDateString("en-GB",
+    const update_date = new Date(GHGEMSSNS.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
             month: "long",
@@ -32,15 +31,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     // Update values
     //// Biggest sector
-    const ghg_value = GHGINVENTORY.data[stat][latest_year]["All"] / 1000;
+    const ghg_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"]  / 1000;
 
-    const sectors = Object.keys(GHGINVENTORY.data[stat][latest_year])
-        .filter((x) => x != "All");
+    const sectors = getSectors(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]);
 
     let sector_totals = {}
 
     for (let i = 0; i < sectors.length; i ++) {
-        sector_totals[sectors[i]] = GHGINVENTORY.data[stat][latest_year][sectors[i]]
+        sector_totals[sectors[i]] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sectors[i]]["All pollutants"];
     }
 
     const max_sector = Object.entries(sector_totals)
@@ -50,7 +48,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const max_sector_value = sector_totals[max_sector] / 1000;
     const max_sector_pct = (max_sector_value / ghg_value * 100).toFixed(0);
 
-    const max_sector_name = toTitleCase(max_sector.replace(" TOTAL", ""));
+    const max_sector_name = sectorNameTidy(max_sector);
     
     insertValue("max-sector-pct", max_sector_pct);
     insertValue("max-sector-name", max_sector_name);
@@ -62,7 +60,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     
     const min_sector_value = sector_totals[min_sector] / 1000;
     const min_sector_pct = min_sector_value / ghg_value * 100 < 1 ? (min_sector_value / ghg_value * 100).toFixed(2) : (min_sector_value / ghg_value * 100).toFixed(0);
-    const min_sector_name = toTitleCase(min_sector.replace(" TOTAL", ""));  
+    const min_sector_name = sectorNameTidy(min_sector);  
 
     insertValue("min-sector-pct", min_sector_pct);
     insertValue("min-sector-name", min_sector_name);
@@ -73,7 +71,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     let base_differences = {};
 
     for (let i = 0; i < sectors.length; i ++) {
-        base_sector_totals[sectors[i]] = GHGINVENTORY.data[stat][first_year][sectors[i]];
+        base_sector_totals[sectors[i]] = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sectors[i]]["All pollutants"];
         if (base_sector_totals[sectors[i]] != 0) {
             base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
         } else {
@@ -90,9 +88,9 @@ window.addEventListener("DOMContentLoaded", async () => {
         .reduce((min, current) => current[1] < min[1] ? current : min)[0];
 
     const max_change_sector_value = base_differences[max_change_sector].toFixed(0);
-    const max_change_sector_name = toTitleCase(max_change_sector.replace(" TOTAL", ""));
+    const max_change_sector_name = sectorNameTidy(max_change_sector);
     const min_change_sector_value = base_differences[min_change_sector].toFixed(0);
-    const min_change_sector_name = toTitleCase(min_change_sector.replace(" TOTAL", ""));
+    const min_change_sector_name = sectorNameTidy(min_change_sector);
 
     insertValue("most-worsened-pct", Math.abs(min_change_sector_value));
     insertValue("most-worsened-name", min_change_sector_name);
@@ -107,14 +105,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     const other_decrease_1 = sorted_differences[1];
     const other_decrease_2 = sorted_differences[2];
 
-    insertValue("other-decrease-sector-1", toTitleCase(other_decrease_1[0].replace(" TOTAL", "")));
+    insertValue("other-decrease-sector-1", sectorNameTidy(other_decrease_1[0]));
     insertValue("other-decrease-pct-1", Math.abs(other_decrease_1[1]).toFixed(0));
-    insertValue("other-decrease-sector-2", toTitleCase(other_decrease_2[0].replace(" TOTAL", "")));
+    insertValue("other-decrease-sector-2", sectorNameTidy(other_decrease_2[0]));
     insertValue("other-decrease-pct-2", Math.abs(other_decrease_2[1]).toFixed(0));
 
     // Sector treemap  
-    const treemap_data_raw = GHGINVENTTESSUB.data[stat][latest_year];
-    const treemap_data = reshapeForTreemap(treemap_data_raw); 
+    const treemap_data = reshapeForTreemap(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]); 
 
   // Compute totals for top level (unsorted first)
   const sectorTotalsUnsorted = Array.from(new Set(treemap_data.map(d => d.sector))).map(sector => ({
@@ -269,16 +266,17 @@ window.addEventListener("DOMContentLoaded", async () => {
   const bar_years = [first_year, last_year, latest_year];
 
   const sorted_sectors = [...sectors].sort((a, b) => {
-    const valA = GHGINVENTORY.data[stat][latest_year]?.[a] ?? -Infinity;
-    const valB = GHGINVENTORY.data[stat][latest_year]?.[b] ?? -Infinity;
+    const valA = sector_totals?.[a] ?? -Infinity;
+    const valB = sector_totals?.[b] ?? -Infinity;
     return valB - valA;
   });
 
+
   // Datasets: one dataset per sector (so each sector is a stack segment across years)
   const bar_datasets = sorted_sectors.map((sector, i) => ({
-    label: sector,
+    label: sectorNameTidy(sector),
     data: bar_years.map((yr) => {
-      const v = GHGINVENTORY.data[stat][yr]?.[sector];
+      const v = GHGEMSSNS.data[stat][yr]["Northern Ireland"]?.[sector]["All pollutants"];
       return Number.isFinite(v) ? v : null; // null -> gaps if missing
     }),
     backgroundColor: chart_colours[i % chart_colours.length]
@@ -301,10 +299,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       maintainAspectRatio: false,
       plugins: {
         title: {
-          display: false
-          
+          display: false 
         }
-        // keep legend defaults (you didn't disable it before)
       },
       scales: {
         x: { stacked: true,

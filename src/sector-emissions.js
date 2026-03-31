@@ -16,29 +16,24 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertHeader();
     insertNavButtons();
     insertExpandButtons();
-    
-    let GHGALL = await readData("GHGALL");
-    const GHGALL_stat = "Total GHG";
 
-    let GHGINVENTORY = await readData("GHGINVENTORY");
-    let GHGINVENTTESSUB = await readData("GHGINVENTTESSUB");
-    let GHGINVGAS = await readData("GHGINVGAS");
+    let GHGEMSSNS = await readData("GHGEMSSNS");
 
     const stat = "CO2 equivalent emissions";
 
-    const update_date = new Date(GHGINVENTTESSUB.updated).toLocaleDateString("en-GB",
+    const update_date = new Date(GHGEMSSNS.updated).toLocaleDateString("en-GB",
         {
             day: "2-digit", 
             month: "long",
             year: "numeric"
         });
 
-    updateYearSpans(GHGINVENTTESSUB, stat);
+    updateYearSpans(GHGEMSSNS, stat);
 
     // Choose sector box
     const sector_select = document.getElementById("select-sector");  
 
-    const sectors = getSectors(GHGINVENTTESSUB.data[stat][latest_year]);
+    const sectors = getSectors(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]);
 
     for (let i = 0; i < sectors.length; i ++) {
       let option = document.createElement("option");
@@ -47,8 +42,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       sector_select.appendChild(option);
     }
 
-    const subsector_data = reshapeForTreemap(GHGINVENTTESSUB.data[stat][latest_year]);
-    const subsector_base_data = reshapeForTreemap(GHGINVENTTESSUB.data[stat][first_year]);
+    const subsector_data = reshapeForTreemap(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]);
+    const subsector_base_data = reshapeForTreemap(GHGEMSSNS.data[stat][first_year]["Northern Ireland"]);
 
     let subsector_chart;
     let subsector_expand;    
@@ -63,10 +58,10 @@ window.addEventListener("DOMContentLoaded", async () => {
           sector_name_els[i].textContent = sectorNameTidy(sector);
       }
 
-      const ghg_value = GHGINVENTTESSUB.data[stat][latest_year][sector]  / 1000;
+      const ghg_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"]  / 1000;
       insertValue("total-ghg", ghg_value.toFixed(2));
 
-      const ghg_value_last = GHGINVENTTESSUB.data[stat][latest_year - 1][sector] / 1000;
+      const ghg_value_last = GHGEMSSNS.data[stat][latest_year - 1]["Northern Ireland"][sector]["All pollutants"] / 1000;
       const ghg_change_value = ghg_value_last - ghg_value;
       const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
       let ghg_change_string;
@@ -79,7 +74,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("ghg-change", ghg_change_string);
 
-      const ghg_value_base = GHGINVENTTESSUB.data[stat][latest_year - 1][sector] / 1000;
+      const ghg_value_base = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sector]["All pollutants"] / 1000;
       const ghg_change_base_value = ghg_value_base - ghg_value;
       const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
       let ghg_change_base_string;
@@ -92,15 +87,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("ghg-base-change", ghg_change_base_string);
 
-      const ghg_ni = GHGINVENTORY.data[stat][latest_year]["All"] / 1000;
+      const ghg_ni = GHGEMSSNS.data[stat][first_year]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000;
       const sector_pct = (ghg_value / ghg_ni * 100).toFixed(0);
 
       insertValue("sector-pct", sector_pct);
 
-      const co2_value = GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
+      const co2_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["CO2"] / 1000;
       insertValue("total-co2", co2_value.toFixed(2));
 
-      const co2_value_last = GHGINVGAS.data[stat][latest_year - 1]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
+      const co2_value_last = GHGEMSSNS.data[stat][latest_year - 1]["Northern Ireland"][sector]["CO2"] / 1000;
       const co2_change_value = co2_value_last - co2_value;
       const co2_pct_change = Math.abs(co2_change_value / co2_value_last * 100).toFixed(0);
       let co2_change_string;
@@ -113,7 +108,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       insertValue("co2-change", co2_change_string);
 
-      const co2_value_base = GHGINVGAS.data[stat][first_year]["Northern Ireland"][sectorNameTidy(sector)]["CO2"] / 1000;
+      const co2_value_base = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sector]["CO2"] / 1000;
       const co2_change_base_value = co2_value_base - co2_value;
       const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
       let co2_change_base_string;
@@ -134,7 +129,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
       for (let i = 0; i < subsector_data_filtered.length; i ++) {
 
-        const subsector = subsector_data_filtered[i].subsector;
+        const subsector = sector == "Waste total" ? "Waste total" : subsector_data_filtered[i].subsector;
 
         subsector_data_filtered[i].change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value - subsector_data_filtered[i].value || 0;
         subsector_data_filtered[i].pct_change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value ? Math.abs(subsector_data_filtered[i].change / subsector_base_data_filtered.find(x => x.subsector === subsector)?.value * 100) : 0;
@@ -143,16 +138,16 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         for (let j = 0; j < years.length; j++) {
           const year = years[j];
-          const value = GHGINVENTTESSUB.data[stat][year][subsector] ? GHGINVENTTESSUB.data[stat][year][subsector] / 1000 : 0;
+          const value = GHGEMSSNS.data[stat][year]["Northern Ireland"][subsector] ? GHGEMSSNS.data[stat][year]["Northern Ireland"][subsector]["All pollutants"] / 1000 : 0;
           subsector_line_values.push(value);
         }
 
         subsector_lines.push(subsector_line_values);
         let subsector_tidy;
-        if (subsector.indexOf(sectorNameTidy(sector)) == 0) {
+        if (subsector == "Waste total") {
+            subsector_tidy = "Waste";
+        } else if (subsector.indexOf(sectorNameTidy(sector)) == 0) {
             subsector_tidy = subsector.replace(`${sectorNameTidy(sector)} `, "")
-        } else if (subsector.indexOf("Net Emissions: ") == 0) {
-            subsector_tidy = subsector.replace("Net Emissions: ", "")
         } else {
             subsector_tidy = subsector;
         }
@@ -165,9 +160,9 @@ window.addEventListener("DOMContentLoaded", async () => {
       const greatest_increase = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
 
       insertValue("most-worsened-pct", greatest_increase.pct_change.toFixed(0));
-      insertValue("most-worsened-name", greatest_increase.subsector_tidy);
+      insertValue("most-worsened-name", greatest_increase.subsector);
       insertValue("most-improved-pct", greatest_decrease.pct_change.toFixed(0));
-      insertValue("most-improved-name", greatest_decrease.subsector_tidy);
+      insertValue("most-improved-name", greatest_decrease.subsector);
 
       if (subsector_chart) {
         subsector_chart.destroy();
@@ -190,15 +185,16 @@ window.addEventListener("DOMContentLoaded", async () => {
         canvas_id: "subsector-line-expanded"
     })
 
-    const gases = Object.keys(GHGINVGAS.data[stat][latest_year]["Northern Ireland"]["All"]);
+    const gases = Object.keys(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector])
+        .filter((x) => x != "All pollutants");
 
-    const bar_stacks = ["All", sectorNameTidy(sector)]
+    const bar_stacks = ["Grand total", sector]
     const bar_stacks_display = ["Northern Ireland", sectorNameTidy(sector)];
 
     const bar_datasets = gases.map((gas, i) => ({
         label: gas,
         data: bar_stacks.map((sector) => {
-            const v = GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA" ? 0 : GHGINVGAS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGINVENTORY.data[stat][latest_year][sector] * 100;
+            const v = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA" ? 0 : GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;
             return Number.isFinite(v) ? v : null; // null -> gaps if missing
         }),
         backgroundColor: chart_colours[i % chart_colours.length]
