@@ -14,54 +14,47 @@
 </div>
 
 <div id="content" class="container-fluid">
-
         
         <div class = "py-2">
             <!-- First row - cards -->
             <div class="row text-center">
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 navy-bg">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <p>Total UK Greenhouse Gas Emissions in <span class="latest-year"></span></p>
                             <p class="display-6"><span id="ghg-uk">385</span> <span class="unit"></span></p>
-                            <p>Northern Ireland <span id="ghg-ni"></span> <span class="unit"></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>In Northern Ireland Carbon Dioxide accounted for</p>
-                            <p class="display-6"><span id="co2-ni">61</span><span class="unit-pct">%</span></p>
-                            <p>of all emissions in <span class="latest-year"></span>.</p>
-                            <p>Compared to <span id="co2-uk">79</span>% in the UK.</p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>UK Greenhouse Gas Emmissions</p>
+                            <p class="display-6"><span id="ghg-change"></span><span class="unit-pct">%</span></p>
+                            <p>since <span class="last-year"></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>England Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
-                            <p class="display-6"><span id="ghg-eng">284.73</span> <span class="unit"></span></p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>UK Greenhouse Gas Emmissions</p>
+                            <p class="display-6"><span id="ghg-change-base"></span><span class="unit-pct">%</span></p>
+                            <p>since base year</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Scotland Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
-                            <p class="display-6"><span id="ghg-sco">37.81</span> <span class="unit"></span></p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>In the UK Carbon Dioxide accounted for</p>
+                            <p class="display-6"><span id="co2-uk"></span><span class="unit-pct">%</span></p>
+                            <p>of all emissions in <span class="latest-year"></span></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl py-2">
-                    <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Wales Greenhouse Gas Emmissions in <span class="latest-year"></span></p>
-                            <p class="display-6"><span id="ghg-wal">33.70</span> <span class="unit"></span></p>
-                        </div>
-                    </div>
-                </div>
+                
+              
                 
             </div>
 
@@ -86,7 +79,7 @@
                         <div class="card-header">
                             UK Historic Comparison - Base Year, <span class="last-year"></span> and <span class="latest-year"></span>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <canvas id="historic-bar" class="chart-canvas"></canvas>
                         </div>
                         </div>

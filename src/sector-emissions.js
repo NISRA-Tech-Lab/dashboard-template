@@ -66,65 +66,10 @@ window.addEventListener("DOMContentLoaded", async () => {
       const ghg_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"]  / 1000;
       insertValue("total-ghg", ghg_value.toFixed(2));
 
-      const ghg_value_last = GHGEMSSNS.data[stat][latest_year - 1]["Northern Ireland"][sector]["All pollutants"] / 1000;
-      const ghg_change_value = ghg_value_last - ghg_value;
-      const ghg_pct_change = Math.abs(ghg_change_value / ghg_value_last * 100).toFixed(0);
-      let ghg_change_string;
-
-      if (ghg_change_value < 0) {
-          ghg_change_string = `↑ up ${ghg_pct_change}% since ${latest_year - 1}`
-      } else {
-          ghg_change_string = `↓ down ${ghg_pct_change}% since ${latest_year - 1}`
-      }
-
-      insertValue("ghg-change", ghg_change_string);
-
-      const ghg_value_base = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sector]["All pollutants"] / 1000;
-      const ghg_change_base_value = ghg_value_base - ghg_value;
-      const ghg_pct_change_base = Math.abs(ghg_change_base_value / ghg_value_base * 100).toFixed(0);
-      let ghg_change_base_string;
-
-      if (ghg_change_base_value < 0) {
-        ghg_change_base_string = `↑ up ${ghg_pct_change_base}% since base year`
-      } else {
-        ghg_change_base_string = `↓ down ${ghg_pct_change_base}% since base year`
-      }
-
-      insertValue("ghg-base-change", ghg_change_base_string);
-
       const ghg_ni = GHGEMSSNS.data[stat][first_year]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000;
       const sector_pct = (ghg_value / ghg_ni * 100).toFixed(0);
 
       insertValue("sector-pct", sector_pct);
-
-      const co2_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["CO2"] / 1000;
-      insertValue("total-co2", co2_value.toFixed(2));
-
-      const co2_value_last = GHGEMSSNS.data[stat][latest_year - 1]["Northern Ireland"][sector]["CO2"] / 1000;
-      const co2_change_value = co2_value_last - co2_value;
-      const co2_pct_change = Math.abs(co2_change_value / co2_value_last * 100).toFixed(0);
-      let co2_change_string;
-
-      if (co2_change_value < 0) {
-          co2_change_string = `↑ up ${co2_pct_change}% since ${latest_year - 1}`
-      } else {
-          co2_change_string = `↓ down ${co2_pct_change}% since ${latest_year - 1}`
-      }
-
-      insertValue("co2-change", co2_change_string);
-
-      const co2_value_base = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sector]["CO2"] / 1000;
-      const co2_change_base_value = co2_value_base - co2_value;
-      const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
-      let co2_change_base_string;
-
-      if (co2_change_base_value < 0) {
-          co2_change_base_string = `↑ up ${co2_pct_change_base}% since base year`
-      } else {
-          co2_change_base_string = `↓ down ${co2_pct_change_base}% since base year`
-      }
-
-      insertValue("co2-base-change", co2_change_base_string);
 
       const subsector_data_filtered = subsector_data.filter(x => x.sector === sectorNameTidy(sector));
       const subsector_base_data_filtered = subsector_base_data.filter(x => x.sector === sectorNameTidy(sector));
@@ -141,8 +86,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         const subsector = sector == "Waste total" ? "Waste total" : subsector_data_filtered[i].subsector;
 
-        subsector_data_filtered[i].change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value - subsector_data_filtered[i].value || 0;
-        subsector_data_filtered[i].pct_change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value ? Math.abs(subsector_data_filtered[i].change / subsector_base_data_filtered.find(x => x.subsector === subsector)?.value * 100) : 0;
+        subsector_data_filtered[i].change = subsector_data_filtered[i].value - subsector_base_data_filtered[i].value  || 0;
+        subsector_data_filtered[i].pct_change = subsector_base_data_filtered.find(x => x.subsector === subsector)?.value ? subsector_data_filtered[i].change / subsector_base_data_filtered.find(x => x.subsector === subsector)?.value * 100 : 0;
 
         let subsector_line_values = [];        
 
@@ -166,13 +111,25 @@ window.addEventListener("DOMContentLoaded", async () => {
         subsector_labels.push(subsector_tidy);
       }
 
-      const greatest_decrease = subsector_data_filtered.reduce((max, item) => item.change > max.change ? item : max, subsector_data_filtered[0]);
-      const greatest_increase = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
+      
 
-      insertValue("most-worsened-pct", greatest_increase.pct_change.toFixed(0));
-      insertValue("most-worsened-name", greatest_increase.subsector);
-      insertValue("most-improved-pct", greatest_decrease.pct_change.toFixed(0));
-      insertValue("most-improved-name", greatest_decrease.subsector);
+      const greatest_increase = subsector_data_filtered.reduce((max, item) => item.change > max.change ? item : max, subsector_data_filtered[0]);
+      const greatest_decrease = subsector_data_filtered.reduce((min, item) => item.change < min.change ? item : min, subsector_data_filtered[0]);
+
+      if (greatest_increase.pct_change > 0) {
+        insertValue("most-worsened-pct", greatest_increase.pct_change.toFixed(0));
+        insertValue("most-worsened-name", greatest_increase.subsector);
+      } else {
+        document.getElementById("most-worsened").classList.add("d-none");
+      };
+
+      
+      if (greatest_decrease.pct_change < 0) {
+        insertValue("most-improved-pct", Math.abs(greatest_decrease.pct_change).toFixed(0));
+        insertValue("most-improved-name", greatest_decrease.subsector);
+      } else {
+        document.getElementById("most-improved").classList.add("d-none");
+      }
 
       if (subsector_chart) {
         subsector_chart.destroy();
@@ -209,6 +166,23 @@ window.addEventListener("DOMContentLoaded", async () => {
         }),
         backgroundColor: chart_colours[i % chart_colours.length]
     }));
+
+    const gasLookup = {
+        "CO2": "Carbon Dioxide",
+        "CH4": "Methane"
+    };
+
+    const gasValues = bar_datasets.map(dataset => dataset.data[1]); // index 1 is the sector
+    const maxGasIndex = gasValues.indexOf(Math.max(...gasValues));
+    const maxGasName = gasLookup[bar_datasets[maxGasIndex].label];
+    const maxGasValue = bar_datasets[maxGasIndex].data[1];
+
+    insertValue("max-gas-name", maxGasName);
+    insertValue("max-gas-value", maxGasValue.toFixed(0));
+
+    if (maxGasName != "Carbon Dioxide") {
+        document.getElementById("co2-diff").classList.remove("d-none");
+    }
 
     // Bar chart (stacked over time: one bar per year, stacks = sectors)
 

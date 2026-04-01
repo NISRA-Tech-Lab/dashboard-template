@@ -1,11 +1,11 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
 import { readData } from "./utils/read-data.js"
 import { chart_colours,  get_tree_data } from "./utils/charts.js";
-import { latest_year, first_year, last_year, updateYearSpans, years } from "./utils/update-years.js";
+import { latest_year, first_year, last_year, updateYearSpans } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";
-import { toTitleCase, sectorNameTidy } from "./utils/to-title-case.js";
+import { sectorNameTidy } from "./utils/to-title-case.js";
 import { insertExpandButtons } from "./utils/expand-buttons.js";
 import { reshapeForTreemap } from "./utils/reshape-for-treemap.js";
 import { getSectors } from "./utils/get-sectors.js";
@@ -53,29 +53,26 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-sector-pct", max_sector_pct);
     insertValue("max-sector-name", max_sector_name);
 
-    //// Smallest sector
-    const min_sector = Object.entries(sector_totals)
-        .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
-        .reduce((min, current) => current[1] < min[1] ? current : min)[0];
-    
-    const min_sector_value = sector_totals[min_sector] / 1000;
-    const min_sector_pct = min_sector_value / ghg_value * 100 < 1 ? (min_sector_value / ghg_value * 100).toFixed(2) : (min_sector_value / ghg_value * 100).toFixed(0);
-    const min_sector_name = sectorNameTidy(min_sector);  
-
-    insertValue("min-sector-pct", min_sector_pct);
-    insertValue("min-sector-name", min_sector_name);
 
     //// Greatest increase / decrease
     
     let base_sector_totals = {};
     let base_differences = {};
+    let last_sector_totals = {};
+    let last_differences = {};
 
     for (let i = 0; i < sectors.length; i ++) {
         base_sector_totals[sectors[i]] = GHGEMSSNS.data[stat][first_year]["Northern Ireland"][sectors[i]]["All pollutants"];
+        last_sector_totals[sectors[i]] = GHGEMSSNS.data[stat][last_year]["Northern Ireland"][sectors[i]]["All pollutants"];
         if (base_sector_totals[sectors[i]] != 0) {
             base_differences[sectors[i]] = (base_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / base_sector_totals[sectors[i]] * 100;
         } else {
             base_differences[sectors[i]] = null;
+        }
+        if (last_sector_totals[sectors[i]] != 0) {
+            last_differences[sectors[i]] = (last_sector_totals[sectors[i]] - sector_totals[sectors[i]]) / last_sector_totals[sectors[i]] * 100;
+        } else {
+            last_differences[sectors[i]] = null;
         }
     }
 
@@ -84,6 +81,14 @@ window.addEventListener("DOMContentLoaded", async () => {
         .reduce((max, current) => current[1] > max[1] ? current : max)[0];
 
     const min_change_sector = Object.entries(base_differences)
+        .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
+        .reduce((min, current) => current[1] < min[1] ? current : min)[0];
+
+    const max_change_sector_last = Object.entries(last_differences)
+        .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
+        .reduce((max, current) => current[1] > max[1] ? current : max)[0];
+
+    const min_change_sector_last = Object.entries(last_differences)
         .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
         .reduce((min, current) => current[1] < min[1] ? current : min)[0];
 
@@ -97,18 +102,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("most-improved-pct", Math.abs(max_change_sector_value));
     insertValue("most-improved-name", max_change_sector_name);
 
-    // Find other notable decreases
-    const sorted_differences = Object.entries(base_differences)
-        .filter(([_, value]) => typeof value === "number" && !Number.isNaN(value))
-        .sort((a, b) => b[1] - a[1]);
+    const max_change_sector_value_last = last_differences[max_change_sector_last].toFixed(0);
+    const max_change_sector_name_last = sectorNameTidy(max_change_sector_last);
+    const min_change_sector_value_last = last_differences[min_change_sector_last].toFixed(0);
+    const min_change_sector_name_last = sectorNameTidy(min_change_sector_last);
 
-    const other_decrease_1 = sorted_differences[1];
-    const other_decrease_2 = sorted_differences[2];
+    insertValue("most-worsened-pct-last", Math.abs(min_change_sector_value_last));
+    insertValue("most-worsened-name-last", min_change_sector_name_last);
+    insertValue("most-improved-pct-last", Math.abs(max_change_sector_value_last));
+    insertValue("most-improved-name-last", max_change_sector_name_last);
 
-    insertValue("other-decrease-sector-1", sectorNameTidy(other_decrease_1[0]));
-    insertValue("other-decrease-pct-1", Math.abs(other_decrease_1[1]).toFixed(0));
-    insertValue("other-decrease-sector-2", sectorNameTidy(other_decrease_2[0]));
-    insertValue("other-decrease-pct-2", Math.abs(other_decrease_2[1]).toFixed(0));
 
     // Sector treemap  
     const treemap_data = reshapeForTreemap(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]); 

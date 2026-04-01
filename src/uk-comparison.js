@@ -32,17 +32,47 @@ window.addEventListener("DOMContentLoaded", async () => {
     const regions = Object.keys(GHGEMSSNS.data[stat][latest_year]);
     
     let ghg_uk = 0;
+    let ghg_uk_last = 0;
+    let ghg_uk_base = 0;
     let region_totals = {};
 
     for (let i = 0; i < regions.length; i ++) {
         let region_value = GHGEMSSNS.data[stat][latest_year][regions[i]]["Grand total"]["All pollutants"] / 1000;
+        let region_value_last = GHGEMSSNS.data[stat][last_year][regions[i]]["Grand total"]["All pollutants"] / 1000;
+        let region_value_base = GHGEMSSNS.data[stat][first_year][regions[i]]["Grand total"]["All pollutants"] / 1000;
         region_totals[regions[i]] = region_value;
         ghg_uk += region_value;
+        ghg_uk_last += region_value_last;
+        ghg_uk_base += region_value_base;
     }
 
 
     insertValue("ghg-uk", ghg_uk.toFixed(0));
-    insertValue("ghg-ni", region_totals["Northern Ireland"].toFixed(2));
+
+    const ghg_change_value = ghg_uk_last - ghg_uk;
+    const ghg_pct_change = Math.abs(ghg_change_value / ghg_uk_last * 100).toFixed(0);
+    let ghg_change_string;
+
+    if (ghg_change_value < 0) {
+        ghg_change_string = `↑ up ${ghg_pct_change}`
+    } else {
+        ghg_change_string = `↓ down ${ghg_pct_change}`
+    }
+
+    insertValue("ghg-change", ghg_change_string);
+
+    const ghg_change_value_base = ghg_uk_base - ghg_uk;
+    const ghg_pct_change_base = Math.abs(ghg_change_value_base / ghg_uk_base * 100).toFixed(0);
+    let ghg_change_string_base;
+
+    if (ghg_change_value_base < 0) {
+        ghg_change_string_base = `↑ up ${ghg_pct_change_base}`
+    } else {
+        ghg_change_string_base = `↓ down ${ghg_pct_change_base}`
+    }
+
+    insertValue("ghg-change-base", ghg_change_string_base);
+    
 
 
     // Gas bar
@@ -94,6 +124,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     grouped_gas_data["Northern Ireland"]["Fluourinated and other gases"] = other_value / region_totals["Northern Ireland"] * 100;
     grouped_gas_data["UK"]["Fluourinated and other gases"] = other_value_uk / ghg_uk * 100;
 
+    insertValue("co2-uk",grouped_gas_data["UK"]["Carbon Dioxide"].toFixed(0));
 
     let bar_datasets = []
     for (let i = 0; i < bar_gases.length; i ++) {
@@ -164,6 +195,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             backgroundColor: chart_colours[i]
         };
     }
+
+    
 
     const historic_bar_canvas = document.getElementById("historic-bar");
     const historic_bar_canvas_expanded = document.getElementById("historic-bar-expanded");

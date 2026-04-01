@@ -19,8 +19,8 @@
             <!-- First row - cards -->
             <div class="row text-center">
                 <div class="col-6 col-xl py-2">
-                    <div class="card h-100 navy-bg">
-                        <div class="card-body">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <p>The <strong id="max-sector-name"></strong> sector contributed</p>
                             <p class="display-6"><span id="max-sector-pct"></span><span class="unit-pct">%</span></p>
                             <p>of Northern Ireland's total emissions in <span class="latest-year"></span></p>
@@ -29,17 +29,26 @@
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>The <strong id="min-sector-name"></strong> sector contributed</p>
-                            <p class="display-6"><span id="min-sector-pct"></span><span class="unit-pct">%</span></p>
-                            <p>of Northern Ireland's total emissions in <span class="latest-year"></span></p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentage increase</p>
+                            <p class="display-6">↑ <span id="most-worsened-pct-last"></span><span class="unit-pct">%</span></p>
+                            <p>rise in <strong id="most-worsened-name-last"></strong> emissions since <span class="last-year"></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Greatest increase</p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentage decrease</p>
+                            <p class="display-6">↓ <span id="most-improved-pct-last"></span><span class="unit-pct">%</span></p>
+                            <p>fall in <strong id="most-improved-name-last"></strong> emissions since <span class="last-year"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-xl py-2">
+                    <div class="card h-100 blue-bg">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentage increase</p>
                             <p class="display-6">↑ <span id="most-worsened-pct"></span><span class="unit-pct">%</span></p>
                             <p>rise in <strong id="most-worsened-name"></strong> emissions since base year</p>
                         </div>
@@ -47,22 +56,14 @@
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Greatest decrease</p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentagedecrease</p>
                             <p class="display-6">↓ <span id="most-improved-pct"></span><span class="unit-pct">%</span></p>
                             <p>fall in <strong id="most-improved-name"></strong> emissions since base year</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl py-2">
-                    <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p class="mb-2">Other notable decreases since the base year:</p>
-                            <p><strong id="other-decrease-sector-1"></strong> (↓ <span id="other-decrease-pct-1"></span>%)</p>
-                            <p><strong id="other-decrease-sector-2"></strong> (↓ <span id="other-decrease-pct-2"></span>%)</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Second row - tables and charts -->
@@ -90,7 +91,7 @@
                         <div class="card-header">
                             Emissions by sector - Base Year, <span class="last-year"></span> and <span class="latest-year"></span>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <canvas id="sector-bar" class="chart-canvas"></canvas>
                         </div>
                         </div>

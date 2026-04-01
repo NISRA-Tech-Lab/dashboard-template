@@ -18,7 +18,7 @@
         <div class="row mt-2">
             <div class="col-12 d-flex justify-content-end">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column justify-content-center">
                         <form class="d-flex align-items-center gap-2">
                             <label for="select-sector" class="form-label mb-0 text-nowrap">
                                 Choose a sector:
@@ -38,46 +38,44 @@
             <div class="row text-center">
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 navy-bg">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <p><strong class="sector-name"></strong> Greenhouse Gas Emissions</p>
                             <p class="display-6"><span id="total-ghg"></span> <span class="unit"></span></p>
-                            <p id="ghg-change"></p>
-                            <p id="ghg-base-change"></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 navy-bg">
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <p>The <strong class="sector-name"></strong> sector contributed</p>
                             <p class="display-6"><span id="sector-pct"></span><span class="unit-pct">%</span></p>
-                            <p>of Northern Ireland's total emissions in <span class="latest-year"></span></p>
+                            <p>of Northern Ireland's emissions in <span class="latest-year"></span></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p><strong class="sector-name"></strong> sector Carbon Dioxide Emmissions</p>
-                            <p class="display-6"><span id="total-co2"></span> <span class="unit"></span></p>
-                            <p id="co2-change"></p>
-                            <p id="co2-base-change"></p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p><span id="max-gas-name"></span> contributed</p>
+                            <p class="display-6"><span id="max-gas-value"></span><span class="unit-pct">%</span></p>
+                            <p>of <strong class="sector-name"></strong> emissions.</p>
+                            <p id="co2-diff" class="d-none">This differs from the overall NI gas composition where Carbon Dioxide is the biggest contributor.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl py-2">
+                <div id="most-worsened" class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Greatest increase</p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentage increase</p>
                             <p class="display-6">↑ <span id="most-worsened-pct"></span><span class="unit-pct">%</span></p>
                             <p>rise in <strong id="most-worsened-name"></strong> emissions since base year</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl py-2">
+                <div id="most-improved" class="col-6 col-xl py-2">
                     <div class="card h-100 blue-bg">
-                        <div class="card-body">
-                            <p>Greatest decrease</p>
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <p>Greatest percentage decrease</p>
                             <p class="display-6">↓ <span id="most-improved-pct"></span><span class="unit-pct">%</span></p>
                             <p>fall in <strong id="most-improved-name"></strong> emissions since base year</p>
                         </div>
@@ -106,7 +104,7 @@
                         <div class="card-header">
                             Percentage make up of Greenhouse Gas Emissions in Northern Ireland and <span class="sector-name"></span> sector, <span class="latest-year"></span>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column justify-content-center">
                             <canvas id="gas-bar" class="chart-canvas"></canvas>
                         </div>
                         </div>

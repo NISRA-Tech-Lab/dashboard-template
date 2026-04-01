@@ -6,9 +6,9 @@ export function toTitleCase(str) {
 }
 
 export function sectorNameTidy (sector) {
-  if (sector.indexOf("LULUCF") > -1) {
-    return "LULUCF";
-  } else {
-    return toTitleCase(sector.replace(" total", ""));
-  }
+  // if (sector.indexOf("LULUCF") > -1) {
+  //   return "LULUCF";
+  // } else {
+    return sector.replace(" total", "");
+  // }
 }

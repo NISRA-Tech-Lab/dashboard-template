@@ -40,9 +40,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     let ghg_change_string;
 
     if (ghg_change_value < 0) {
-        ghg_change_string = `↑ up ${ghg_pct_change}% since ${latest_year - 1}`
+        ghg_change_string = `↑ up ${ghg_pct_change}%`
     } else {
-        ghg_change_string = `↓ down ${ghg_pct_change}% since ${latest_year - 1}`
+        ghg_change_string = `↓ down ${ghg_pct_change}%`
     }
 
     insertValue("ghg-change", ghg_change_string);
@@ -53,16 +53,15 @@ window.addEventListener("DOMContentLoaded", async () => {
     let ghg_change_base_string;
 
     if (ghg_change_base_value < 0) {
-        ghg_change_base_string = `↑ up ${ghg_pct_change_base}% since base year`
+        ghg_change_base_string = `↑ up ${ghg_pct_change_base}%`
     } else {
-        ghg_change_base_string = `↓ down ${ghg_pct_change_base}% since base year`
+        ghg_change_base_string = `↓ down ${ghg_pct_change_base}%`
     }
 
     insertValue("ghg-base-change", ghg_change_base_string);
 
     //// Carbon Dioxide Emissions
     const co2_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["CO2"] / 1000;
-    insertValue("total-co2", co2_value.toFixed(2));
 
     const co2_value_last = GHGEMSSNS.data[stat][last_year]["Northern Ireland"]["Grand total"]["CO2"] / 1000;
     const co2_change_value = co2_value_last - co2_value;
@@ -75,8 +74,6 @@ window.addEventListener("DOMContentLoaded", async () => {
         co2_change_string = `↓ down ${co2_pct_change}% since ${latest_year - 1}`
     }
 
-    insertValue("co2-change", co2_change_string);
-
     const co2_value_base = GHGEMSSNS.data[stat][first_year]["Northern Ireland"]["Grand total"]["CO2"] / 1000;
     const co2_change_base_value = co2_value_base - co2_value;
     const co2_pct_change_base = Math.abs(co2_change_base_value / co2_value_base * 100).toFixed(0);
@@ -88,7 +85,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         co2_change_base_string = `↓ down ${co2_pct_change_base}% since base year`
     }
 
-    insertValue("co2-base-change", co2_change_base_string);
+    // insertValue("co2-base-change", co2_change_base_string);
 
     //// Pfg Wellbeing Framework
     const pfg_base_year = "2019"
@@ -104,7 +101,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     insertValue("pfg-change", pfg_change_string);
     insertValue("pfg-change-type", pfg_change_value < 0 ? "increase" : "reduction");
-    insertValue("pfg-base-value", pfg_base_value.toFixed(1));
+    // insertValue("pfg-base-value", pfg_base_value.toFixed(1));
     insertValue("pfg-base-year", pfg_base_year);
 
     //// Greatest increase / decrease
