@@ -1,7 +1,7 @@
 import { insertHeader, insertFooter, insertNavButtons, insertHead } from "./utils/page-layout.js";
-import { readData } from "./utils/read-data.js"
+import { readData } from "./utils/read-data.js";
 import { createLineChart } from "./utils/charts.js";
-import { latest_year, first_year, updateYearSpans, years, last_year } from "./utils/update-years.js";
+import { latest_year, first_year, updateYearSpans, last_year } from "./utils/update-years.js";
 import { insertValue } from "./utils/insert-value.js";
 import { populateInfoBoxes } from "./utils/info-boxes.js";
 import { downloadButton } from "./utils/download-button.js";

@@ -420,3 +420,7 @@ table tr:not(:has(th)):hover {
 .unit:before {
   content: "MtCO₂e";
 }
+
+.tab-pane p {
+  margin-bottom: 1em;
+}
