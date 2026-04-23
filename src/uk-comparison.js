@@ -47,7 +47,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    insertValue("ghg-uk", ghg_uk.toFixed(0));
+    insertValue("ghg-uk", ghg_uk.toFixed(2));
 
     const ghg_change_value = ghg_uk_last - ghg_uk;
     const ghg_pct_change = Math.abs(ghg_change_value / ghg_uk_last * 100).toFixed(0);
@@ -151,9 +151,19 @@ window.addEventListener("DOMContentLoaded", async () => {
         plugins: {
             title: {
             display: false
-            
-            }
-            // keep legend defaults (you didn't disable it before)
+            },
+            tooltip: {
+        callbacks: {
+          label: function(context) {
+            let value = context.raw;
+            let label = context.dataset.label;
+            return label + ": " +value.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            })  + "%";
+          }
+        }
+      }
         },
         scales: {
             x: { stacked: true,
@@ -180,6 +190,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     
     // Historic comparison
     const bar_years = [first_year, last_year, latest_year];
+    const bar_year_labels = ["Base Year", last_year, latest_year]
 
     let historic_bar_datasets = [];
 
@@ -202,7 +213,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const historic_bar_canvas_expanded = document.getElementById("historic-bar-expanded");
 
     const historic_bar_data = {
-        labels: bar_years,
+        labels: bar_year_labels,
         datasets: historic_bar_datasets
     };
 
@@ -214,9 +225,20 @@ window.addEventListener("DOMContentLoaded", async () => {
         plugins: {
             title: {
             display: false
+            },
+            tooltip: {
+        callbacks: {
+          label: function(context) {
+            let value = context.raw;
+            let label = context.dataset.label;
+            return label + ": " +value.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            });
+          }
+        }
+      }
             
-            }
-            // keep legend defaults (you didn't disable it before)
         },
         scales: {
             x: { stacked: true,

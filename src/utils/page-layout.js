@@ -60,15 +60,15 @@ export function insertNavButtons() {
 
       <!-- Mobile only -->
 
-      <div class="d-lg-none w-100 text-center pb-2">
+      <div class="d-lg-none w-100 text-center pb-2 mt-1">
         <div class="dropdown d-inline-block">
-          <button class="btn btn-light dropdown-toggle"
+          <button class="btn btn-primary dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             aria-label="Open menu">
-            <span class="me-1">Menu</span>
-            <i class="bi bi-list" aria-hidden="true"></i>
+            <span class="me-1 display-6">Menu
+            <i class="bi bi-list" aria-hidden="true"></i></span>
           </button>
 
           <!-- optional: keep menu centered under button -->

@@ -288,7 +288,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   const bar_datasets = sorted_sectors.map((sector, i) => ({
     label: sectorNameTidy(sector),
     data: bar_years.map((yr) => {
-      const v = GHGEMSSNS.data[stat][yr]["Northern Ireland"]?.[sector]["All pollutants"];
+      const v = GHGEMSSNS.data[stat][yr]["Northern Ireland"]?.[sector]["All pollutants"] / 1000;
       return Number.isFinite(v) ? v : null; // null -> gaps if missing
     }),
     backgroundColor: chart_colours[i % chart_colours.length]
@@ -305,25 +305,37 @@ window.addEventListener("DOMContentLoaded", async () => {
   };
 
   const bar_config = {
-    type: "bar",
-    data: bar_data,
-    options: {
-      maintainAspectRatio: false,
-      plugins: {
-        title: {
-          display: false 
-        }
+  type: "bar",
+  data: bar_data,
+  options: {
+    maintainAspectRatio: false,
+    plugins: {
+      title: {
+        display: false
       },
-      scales: {
-        x: { stacked: true,
-          grid: {
-              display: false
-            }
-         },
-        y: { stacked: true }
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let value = context.raw;
+            return value.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            });
+          }
+        }
       }
-    }
-  };
+    },
+    scales: {
+       x: {
+         stacked: true,
+          grid: { display: false }
+         },
+          y: {
+             stacked: true 
+            }
+  } 
+  }
+};
 
   new Chart(bar_canvas, bar_config);
   new Chart(bar_canvas_expanded, bar_config);

@@ -155,26 +155,51 @@ window.addEventListener("DOMContentLoaded", async () => {
     const gases = Object.keys(GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector])
         .filter((x) => x != "All pollutants");
 
+    const bar_gases = ["Carbon Dioxide", "Methane", "Nitrous Oxide", "Fluourinated and other gases"];
+
     const bar_stacks = ["Grand total", sector]
     const bar_stacks_display = ["Northern Ireland", sectorNameTidy(sector)];
 
-    const bar_datasets = gases.map((gas, i) => ({
-        label: gas,
-        data: bar_stacks.map((sector) => {
-            const v = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] == "NA" ? 0 : GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;
-            return Number.isFinite(v) ? v : null; // null -> gaps if missing
-        }),
-        backgroundColor: chart_colours[i % chart_colours.length]
-    }));
+    let grouped_gas_data = {
+        "Northern Ireland": {},
+        [sectorNameTidy(sector)]: {}
+    };   
+ 
+    let other_value = 0;
+    let other_value_sector = 0;
+    for (let i = 0; i < gases.length; i ++) {
+        let gas = gases[i];
+        if (gas == "CO2") {
+            grouped_gas_data["Northern Ireland"]["Carbon Dioxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"] * 100;
+            grouped_gas_data[sectorNameTidy(sector)]["Carbon Dioxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;  
+        } else if (gas == "CH4") {
+            grouped_gas_data["Northern Ireland"]["Methane"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"] * 100;
+            grouped_gas_data[sectorNameTidy(sector)]["Methane"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;
+        } else if (gas == "N2O") {
+            grouped_gas_data["Northern Ireland"]["Nitrous Oxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"] * 100;
+            grouped_gas_data[sectorNameTidy(sector)]["Nitrous Oxide"] = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas] / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;
+        } else {
+            other_value += GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"][gas];
+            other_value_sector += GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector][gas];
+            
+        }
+    }
 
-    const gasLookup = {
-        "CO2": "Carbon Dioxide",
-        "CH4": "Methane"
-    };
+    grouped_gas_data["Northern Ireland"]["Fluourinated and other gases"] = other_value / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["All pollutants"] * 100;
+    grouped_gas_data[sectorNameTidy(sector)]["Fluourinated and other gases"] = other_value_sector / GHGEMSSNS.data[stat][latest_year]["Northern Ireland"][sector]["All pollutants"] * 100;
+
+    let bar_datasets = []
+    for (let i = 0; i < bar_gases.length; i ++) {
+        bar_datasets[i] = {
+            label: bar_gases[i],
+            data: [grouped_gas_data["Northern Ireland"][bar_gases[i]], grouped_gas_data[sectorNameTidy(sector)][bar_gases[i]]],
+            backgroundColor: chart_colours[i]
+        }
+    }
 
     const gasValues = bar_datasets.map(dataset => dataset.data[1]); // index 1 is the sector
     const maxGasIndex = gasValues.indexOf(Math.max(...gasValues));
-    const maxGasName = gasLookup[bar_datasets[maxGasIndex].label];
+    const maxGasName = bar_datasets[maxGasIndex].label;
     const maxGasValue = bar_datasets[maxGasIndex].data[1];
 
     insertValue("max-gas-name", maxGasName);
@@ -208,8 +233,19 @@ window.addEventListener("DOMContentLoaded", async () => {
             title: {
             display: false
             
-            }
-            // keep legend defaults (you didn't disable it before)
+            },
+            tooltip: {
+        callbacks: {
+          label: function(context) {
+            let value = context.raw;
+            let label = context.dataset.label;
+            return label + ": " +value.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            })  + "%";
+          }
+        }
+      }
         },
         scales: {
             x: { stacked: true,

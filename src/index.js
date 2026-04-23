@@ -19,7 +19,6 @@ window.addEventListener("DOMContentLoaded", async () => {
     // Insert values into homepage cards
     const GHGEMSSNS = await readData("GHGEMSSNS");
     const stat = "CO2 equivalent emissions";
-    console.log(GHGEMSSNS);
     updateYearSpans(GHGEMSSNS, stat);
 
     // Change in Emissions
@@ -65,7 +64,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     insertValue("max-change-sector-name", max_change_sector_name);
 
     const pfg_value = GHGEMSSNS.data[stat]["2019"]["Northern Ireland"]["Grand total"]["All pollutants"] / 1000;
-    insertValue("pfg-value", pfg_value.toFixed(1));
+    insertValue("pfg-value", pfg_value.toFixed(2));
+
+    const co2_value = GHGEMSSNS.data[stat][latest_year]["Northern Ireland"]["Grand total"]["CO2"]/ 1000 / ghg_value * 100;
+    insertValue("co2-value", co2_value.toFixed(0));
     
     insertFooter();
 

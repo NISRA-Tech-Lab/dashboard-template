@@ -27,7 +27,7 @@ export function reshapeForTreemap(rawObj) {
 
                 for (const item of pendingItems) {
                     // ignore non-numeric / missing values defensively
-                    const num = Number(item.value);
+                    const num = Number(item.value) / 1000;
 
                     if (Number.isFinite(num)) {
                         // const safeValue = Math.max(0, num); // negative values become 0
@@ -36,7 +36,7 @@ export function reshapeForTreemap(rawObj) {
                 }
 
                 if (sector == "Waste") {
-                    rows.push( {sector, subsector: "Waste", value: Number(v)})
+                    rows.push( {sector, subsector: "Waste", value: Number(v) / 1000})
                 }
 
                 // reset for next sector block

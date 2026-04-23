@@ -79,7 +79,7 @@ export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
             instersect: false,
             callbacks: {
               label: function (context) {
-                return `${context.dataset.label}: ${Number(context.raw).toLocaleString(1)} ${unit}`;
+                return `${context.dataset.label}: ${Number(context.raw).toFixed(2)} ${unit}`;
               }
             }
           }
@@ -184,78 +184,6 @@ export function createBarChart({ chart_data, categories, canvas_id, label_format
   return bar_chart;
 }
 
-
-export function createBarChartData({data, stat, year, categories}) {   
-
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < categories.length; i ++) {
-        let female_key = Object.keys(data.data[stat][year][categories[i]]).filter(x => x.includes("Female"));
-        let male_key = Object.keys(data.data[stat][year][categories[i]]).filter(x => x.includes("Male"));
-        female_bars.push(data.data[stat][year][categories[i]][female_key]);
-        male_bars.push(data.data[stat][year][categories[i]][male_key]);
-    }
-
-    return {female: female_bars,
-            male: male_bars};    
-
-}
-
-export function createPRCData ({data, stat, year, violence_types}) {   
-
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < violence_types.length; i ++) {
-             female_bars.push(data.data[stat][year]
-                [violence_types[i]]
-                ["All ages"]["Female"]);
-            male_bars.push(data.data[stat][year]
-                [violence_types[i]]
-                ["All ages"]["Male"]);
-    }
-
-    return {female: female_bars,
-            male: male_bars};    
-
-}
-
-// Domestic abuse specific functions
-export function createDAData({data, stat, year, time_periods, da_type}) {   
-
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < time_periods.length; i ++) {
-             female_bars.push(data.data[stat][year][da_type]
-                [time_periods[i]]
-                ["Female"]);
-            male_bars.push(data.data[stat][year][da_type]
-                [time_periods[i]]
-                ["Male"]);
-    }
-
-    return {female: female_bars,
-            male: male_bars};    
-
-}
-
-export function createDALast3Data({data, stat, year, da_types}) {   
-
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < da_types.length; i ++) {
-             female_bars.push(data.data[stat][year][da_types[i]]
-                [["Recent (last 3 years)"]]
-                ["Female"]);
-            male_bars.push(data.data[stat][year][da_types[i]]
-                [["Recent (last 3 years)"]]
-                ["Male"]);
-    }
-
-    return {female: female_bars,
-            male: male_bars};    
-
-}
-
 export function splitLabel(label, maxChars) {
     const lines = [];
     let start = 0;
@@ -273,7 +201,7 @@ export function splitLabel(label, maxChars) {
   }
 
   export function formatValue(v) {
-    return Number(v).toLocaleString("en", { maximumFractionDigits: 0 });
+    return Number(v).toLocaleString("en", { maximumFractionDigits: 2 });
   }
 
   export function get_tree_data(level, sectorName = null, sectorTotals, sectorIndex, treemap_data) {
