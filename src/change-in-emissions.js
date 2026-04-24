@@ -136,7 +136,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     const max_change_sector_name = sectorNameTidy(max_change_sector);
     const min_change_sector_value = base_differences[min_change_sector].toFixed(0);
     const min_change_sector_name = sectorNameTidy(min_change_sector);
-
+ 
     insertValue("min-sector-pct", Math.abs(min_change_sector_value));
     insertValue("min-sector-name", min_change_sector_name);
     insertValue("max-sector-pct", Math.abs(max_change_sector_value));
@@ -260,17 +260,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         <p>Published: Annually</p>
         <p>Time period covered - Greenhouse Gas Inventory: 1990-${latest_year}</p>`,
 
-        `<p>This dashboard presents data for Northern Ireland, from the Greenhouse Gas (GHG) Inventory. The GHG inventory provides the official estimates of emissions for the UK and each DA from 1990 to the latest available year. The inventory fulfils the United Nations Framework Convention on Climate Change (UNFCCC) reporting requirements under the Kyoto Protocol. The GHG inventory helps in understanding the amount of GHGs emitted and what sectors they originate from. The Inventory covers the emissions of the following seven gases which contribute to global warming:</p>
-        <ul>
-            <li>Carbon dioxide (CO&#8322;)</li>
-            <li>Methane (CH&#8324;)</li>
-            <li>Nitrous oxide (N&#8322;O)</li>
-            <li>Hydrofluorocarbons (HFCs)</li>
-            <li>Perfluorocarbons (PFCs)</li>
-            <li>Sulphur hexafluoride (SF&#8326;)</li>
-            <li>Nitrogen trifluoride (NF&#8323;)</li>
-        </ul>
-        <p>The last four of these gases are the Fluorinated, or F-gases.</p>`
+        `<p>This page shows how greenhouse gas emissions have changed between a base year and the latest available year. It helps users understand where the largest reductions (or increases) have occurred over time. Because the greenhouse gas inventory is revised annually, changes reflect both real world emissions trends and methodological improvements.</p>`
         
         ]
     );

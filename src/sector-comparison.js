@@ -317,7 +317,8 @@ window.addEventListener("DOMContentLoaded", async () => {
         callbacks: {
           label: function(context) {
             let value = context.raw;
-            return value.toLocaleString(undefined, {
+            let label = context.dataset.label;
+            return label + ": " + value.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2
             });
@@ -370,17 +371,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         <p>Published: Annually</p>
         <p>Time period covered - Greenhouse Gas Inventory: 1990-${latest_year}</p>`,
 
-        `<p>This dashboard presents data for Northern Ireland, from the Greenhouse Gas (GHG) Inventory. The GHG inventory provides the official estimates of emissions for the UK and each DA from 1990 to the latest available year. The inventory fulfils the United Nations Framework Convention on Climate Change (UNFCCC) reporting requirements under the Kyoto Protocol. The GHG inventory helps in understanding the amount of GHGs emitted and what sectors they originate from. The Inventory covers the emissions of the following seven gases which contribute to global warming:</p>
-        <ul>
-            <li>Carbon dioxide (CO&#8322;)</li>
-            <li>Methane (CH&#8324;)</li>
-            <li>Nitrous oxide (N&#8322;O)</li>
-            <li>Hydrofluorocarbons (HFCs)</li>
-            <li>Perfluorocarbons (PFCs)</li>
-            <li>Sulphur hexafluoride (SF&#8326;)</li>
-            <li>Nitrogen trifluoride (NF&#8323;)</li>
-        </ul>
-        <p>The last four of these gases are the Fluorinated, or F-gases.</p>`
+        `<p>This page compares greenhouse gas emissions across Territorial Emissions Statistics (TES) sectors in Northern Ireland. It allows users to see how emissions differ between sectors and how their relative contributions have changed over time. The comparison helps identify which sectors are the largest sources of emissions and where reductions have been greatest. All emissions are shown on a consistent basis, allowing meaningful comparison between sectors.</p>`
         
         ]
     );

@@ -12,7 +12,7 @@ export const config = {
         { href: "sector-emissions.html", text: "Sector Emissions" },
         { href: "uk-comparison.html", text: "UK Comparison" },
         { href: "projections.html", text: "Projections" },        
-        { href: "user-notes.html", text: "User Notes" }        
+        { href: "user-notes.html", text: "User Notes" }  
     ],
     
     "portal_url": "https://data.nisra.gov.uk/",
