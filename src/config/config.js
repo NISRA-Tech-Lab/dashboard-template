@@ -21,6 +21,8 @@ export const config = {
 
     "matrix": [
         "GHGEMSSNS"
-    ] 
+    ],
+    
+    "rateit": "greenhouse-gas-inventory"
     
 }
