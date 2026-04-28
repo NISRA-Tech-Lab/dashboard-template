@@ -12,7 +12,7 @@ export function insertHeader () {
     <div aria-label="Feedback" class="w-100" style="background-color:#3878c5;">
         <div class="text-white text-center py-2 px-3">
             We welcome feedback from users through our 
-                <a href="https://dttselfserve.nidirect.gov.uk/NISRA/RateIt#/Gender_based_violence" target="_blank" rel="noopener noreferrer">short survey</a>
+                <a href="https://dttselfserve.nidirect.gov.uk/NISRA/RateIt#/${config.rateit}" target="_blank" rel="noopener noreferrer">short survey</a>
             
         </div>
     </div>
