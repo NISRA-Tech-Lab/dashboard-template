@@ -7,103 +7,83 @@
   <!-- Top Navbar -->
 <nav id="nav"></nav>
 
+<main>
+<div class="w-100 text-center current-page py-2">
+            Figures on this page are presented as Million tonnes of Carbon Dioxide Equivalent (<span class="unit"></span>).
+        </div>
 <div id="content" class="container-fluid">  
 
     <!-- Main Content -->
-    <main>
-        <div id="strategies" class="row text-center">
-            <div class="col-xl-4 grey-bg py-1">This dashboard relates to two strategies:</div>
-            <div class="col-xl-4 blue-bg py-1"><a href="https://www.executiveoffice-ni.gov.uk/topics/ending-violence-against-women-and-girls" target="_blank" rel="noopener">Ending Violence Against Women and Girls (EVAWG)</a></div>
-            <div class="col-xl-4 purple-bg py-1"><a href="https://www.justice-ni.gov.uk/publications/domestic-and-sexual-abuse-strategy-2024-2031" target="_blank" rel="noopener">Domestic abuse</a></div>
-        </div>
+    
+        
         <div class = "py-2 text-center">
             <div class="row">
-                <div class="col-6 col-xl-3 py-2">
+                <div class="col-6 col-xl-4 py-2">
                     <div class="home card h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center py-4">
-                            <p class="display-4"><span id="violence-women"></span>%</p>
-                            <p>of women have experienced violence</p>
+                            <p>In Northern Ireland Greenhouse Gas Emissions totalled</p>
+                            <p class="display-4"><span id="total-ghg"></span> <span class="unit"></span></p>
+                            <p>in <span class="latest-year"></span></p>
                         </div>
                         <div class="card-footer blue-bg">
-                            <a href="violence-against-women-and-men.html">Violence against women and men</a>
+                            <a href="change-in-emissions.html">Change in Emissions</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl-3 py-2">
+                <div class="col-6 col-xl-4 py-2">
                     <div class="home card h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="violence-girl"></span>%</p>
-                            <p>of 16-year-old girls have experienced violence</p>
+                            <p class="display-4"><span id="max-sector-pct"></span><span class="unit-pct">%</span></p>
+                            <p>of Northern Ireland's Emissions in <span class="latest-year"></span> came from the <strong id="max-sector-name"></strong> sector</p>
                         </div>
                         <div class="card-footer blue-bg">
-                            <a href="violence-against-girls-and-boys.html">Violence against girls and boys</a>
+                            <a href="sector-emissions.html">Sector Emissions</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl-3 py-2">
+                <div class="col-6 col-xl-4 py-2">
                     <div class="home card h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="domestic-abuse"></span>%</p>
-                            <p>of women have experienced domestic abuse</p>
-                        </div>
-                        <div class="card-footer purple-bg">
-                            <a href="domestic-abuse.html">Domestic abuse</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-6 col-xl-3 py-2">
-                    <div class="home card h-100">
-                        <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="stalking"></span>%</p>
-                            <p>of stalking and harrassment victims are women</p>
-                        </div>
-                        <div class="card-footer purple-bg">
-                            <a href="police-recorded-crime-domestic-abuse.html">Police recorded crime - Domestic abuse</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-6 col-xl-3 py-2">
-                    <div class="home card h-100">
-                        <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="sexual-violence"></span>%</p>
-                            <p>of victims of sexual offences are women</p>
+                            <p class="display-4">↓<span id="max-change-sector-value"></span><span class="unit-pct">%</span></p>
+                            <p>The greatest reduction from the Base Year was seen in the <strong id="max-change-sector-name"></strong> sector</p>
                         </div>
                         <div class="card-footer blue-bg">
-                            <a href="police-recorded-crime-evawg.html">Police recorded crime - EVAWG</a>
+                            <a href="sector-comparison.html">Sector Comparison</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl-3 py-2">
+                <div class="col-6 col-xl-4 py-2">
                     <div class="home card h-100">
-                        <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="domestic-homicide"></span> women</p>
-                            <p>were killed by an intimate partner in the last five years</p>
+                        <div class="card-body d-flex flex-column justify-content-center text-center py-4">
+                            <p>This is a reduction from the</p>
+                            <p class="display-4"><span id="pfg-value"></span> <span class="unit"></span></p>
+                            <p>PfG Framework 2019 baseline value</p>
                         </div>
                         <div class="card-footer blue-bg">
-                            <a href="domestic-homicides.html">Police recorded crime - Domestic homicides</a>
+                            <a href="https://datavis.nisra.gov.uk/executiveofficeni/pfg_wellbeing_dashboard.html?indicator=greenhouse+gas+emissions" target="_blank" rel="noopener">Programme for Government</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl-3 py-2">
+                <div class="col-6 col-xl-4 py-2">
                     <div class="home card h-100">
                         <div class="card-body d-flex flex-column justify-content-center text-center">
-                            <p class="display-4"><span id="sexual-days"></span> days</p>
-                            <p>to process sexual violence vs <span id="all-days"></span> for all criminal cases</p>
+                            <p>In NI Carbon Dioxide Emissions account for</p>
+                            <p class="display-4"><span id="co2-value"></span><span class="unit-pct">%</span></p>
+                            <p>of all Greenhouse Gas Emissions</p>
                         </div>
-                        <div class="card-footer green-bg">
-                            <a href="case-processing-times.html">Case processing times</a>
+                        <div class="card-footer blue-bg">
+                            <a href="uk-comparison.html">UK Comparison</a>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-xl-3 py-2">
-                    <div class="home card h-100">
-                        <div class="card-body d-flex flex-column justify-content-center text-center align-items-center">
-                            <img id="map-img" src="assets/img/map-ni.png" alt="Map of Northern Ireland" role="img" height="170" >
+                <div class="col-6 col-xl-4 py-2">
+                    <div id="projections-card" class="home card h-100">
+                        <div class="card-body d-flex flex-column justify-content-center text-center">
+                            <p class="display-4"><span id="co2-projection"></span> <span class="unit"></span></p>
+                            <p>Northern ireland's Projected Greenhouse Gas Emissions by 2032</p>
                         </div>
-                        <div class="card-footer green-bg">
-                            <a href="maps.html">Maps</a>
+                        <div class="card-footer blue-bg">
+                            <a href="projections.html">Projections</a>
                         </div>
                     </div>
                 </div>
@@ -114,28 +94,20 @@
             <div class="col-12 col-xl-6 py-2">
                 <div class="home card h-100">
                     <div class="card-body">
-                        <p class="h5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0d6efd" class="bi bi-info-circle" viewBox="0 0 20 20">
+                        <h2 class="h5"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#0d6efd" class="bi bi-info-circle" viewBox="0 0 20 20">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                           </svg>
-                        <a href="information.html">Information about this dashboard</a></p>
+                        Information about this dashboard</h2>
+                        <p class="mt-2">This dashboard shows total greenhouse gas emissions for Northern Ireland over time. It allows users to see long term trends since 1990 and how emissions have changed in the most recent years.</p>
+                        <p class="mt-2">All figures come from the UK Greenhouse Gas Inventory and represent emissions occurring within Northern Ireland’s territory.</p>
+                        <p class="mt-2">More information can be found on the <a href="user-notes.html">User Notes</a> page.</p>
+</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-12 col-xl-6 py-2">
-                <div class="home card h-100">
-                    <div class="card-body">
-                        <h2>For help and support</h2>
-        <a href="https://www.executiveoffice-ni.gov.uk/articles/support-services-executiveoffice" target="_blank" rel="noopener">Support Services</a>
-        <p>The information on this page will direct you to services that will support you if you have concerns about an issue of coercive control.</p>
-        
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 </div>
 

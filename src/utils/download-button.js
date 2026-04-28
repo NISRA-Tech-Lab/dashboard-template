@@ -1,37 +1,60 @@
 import { config } from "../config/config.js";
 import { map } from "./plot-map.js"
 
-export function downloadButton (capture_id, matrix, update_date, map_plot = false) {
+export function downloadButton (capture_id, matrix, update_date, query, plot_type = "chart") {
 
     const capture = document.getElementById(capture_id);
     const footer = capture.parentElement.querySelector(".card-footer");
 
-    let data_sub = "";
+    if (footer.getElementsByClassName("dropdown").length > 0) {
+        footer.removeChild(footer.querySelector(".dropdown"));
+    };
 
-    if (config.portal_url == "https://ppdata.nisra.gov.uk/" & matrix != "INDPRCASEEQ") {
-        data_sub = "pp";
+    let footerContent = document.createElement("div");
+    footerContent.classList.add("dropdown");
+
+    let query_long = [];
+    for (let i = 0; i < Object.keys(query).length; i ++) {
+      query_long.push({
+        "code": Object.keys(query)[i],
+        "selection": {
+          "filter": "item",
+          "values": Array.isArray(Object.values(query)[i]) ? Object.values(query)[i] : [Object.values(query)[i]]
+        }
+      })
     }
 
-    const link_label = map_plot ? "map" : "chart";
+    const csv_query_string = encodeURIComponent(JSON.stringify({
+      "query": query_long,
+      "response": {
+        "format": "csv",
+        "pivot": null,
+        "codes": false
+      }
+    }));
 
-    footer.innerHTML = `
-        <div class="dropdown"><strong>Data last updated:</strong> ${update_date}.
+    const xl_query_string = csv_query_string.replace("csv", "xlsx");
+
+    footerContent.innerHTML = `
+        <strong>Data last updated:</strong> ${update_date}.
         <div>
             <button class="btn btn-secondary dropdown-toggle btn-primary mt-2" type="button" id="${capture_id}-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
                 Download
             </button>
             
             <ul class="dropdown-menu" aria-labelledby="${capture_id}-dropdown">
-                <li><a class="dropdown-item" href="https://${data_sub}ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.ReadDataset/${matrix}/CSV/1.0/">data (in CSV format)</a></li>
-                <li><a class="dropdown-item" href="https://${data_sub}ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.ReadDataset/${matrix}/XLSX/2007/">data (in Excel format)</a></li>
-                <li><a class="dropdown-item" href="#" id="download-${capture_id}">${link_label} (as image)</a></li>
+                <li><a class="dropdown-item" href="https://ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.PxAPIv1/en/155/EECGGE/${matrix}?query=${csv_query_string}">data (in CSV format)</a></li>
+                <li><a class="dropdown-item" href="https://ws-data.nisra.gov.uk/public/api.restful/PxStat.Data.Cube_API.PxAPIv1/en/155/EECGGE/${matrix}?query=${xl_query_string}">data (in Excel format)</a></li>
+                <li><a class="dropdown-item" href="#" id="download-${capture_id}">${plot_type} (as image)</a></li>
             </ul>
             </div>
-        </div>
+        
     `;
 
+    footer.appendChild(footerContent);
 
-    if (map_plot) {
+
+    if (plot_type == "map") {
         document.getElementById(`download-${capture_id}`).addEventListener("click", async (e) => {
         e.preventDefault();
 

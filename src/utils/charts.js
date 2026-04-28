@@ -5,44 +5,36 @@ import { getNested } from "./get-nested.js";
 
 export const chart_colours = ["#3878c5", "#00205B", "#68A41E", "#732777", "#ce70d2", "#434700", "#a88f8f", "#3b3b3b", "#e64791", "#400b23"];
 
-export function createLineChart({data, stat, years, line_1, line_2, label_1 = "Female", label_2 = "Male", unit = "%", canvas_id}) {
+export const text_colours = [
+  "#000000",  // #3878c5
+  "#FFFFFF", // #00205B
+  "#000000", // #68A41E
+  "#FFFFFF", // #732777
+  "#000000", // #ce70d2
+  "#FFFFFF", // #434700
+  "#000000", // #a88f8f
+  "#FFFFFF", // #3b3b3b
+  "#000000", // #e64791
+  "#FFFFFF" // #400b23
+];
+
+export function createLineChart({years, lines, labels, unit = "%", canvas_id}) {
 
     const line_canvas = document.getElementById(canvas_id);
 
     let line_values = [];
-    let female_values = [];
-    let male_values = [];
-
-    for (let i = 0; i < years.length; i++) {
-        const base = data.data[stat][years[i]];   // start point for that year
-
-        if (line_1.includes("No violence") || line_1.includes("No forms of violence")) {
-            female_values.push(100 - getNested(base, line_1));
-            male_values.push(100 - getNested(base, line_2));
-        } else {
-            female_values.push(getNested(base, line_1));
-            male_values.push(getNested(base, line_2));
-        }
+ 
+    for (let i = 0; i < lines.length; i++) {
+      line_values.push({
+        axis: "y",
+        label: labels[i],
+        data: lines[i],
+        fill: false,
+        backgroundColor: chart_colours[i],
+        borderColor: chart_colours[i],
+        borderWidth: 2
+      });
     }
-
-    line_values.push({axis: "y",
-        label: label_1,
-        data: female_values,
-        fill: false,
-        backgroundColor: chart_colours[0],
-        borderColor: chart_colours[0],
-        borderWidth: 2
-    });
-
-    line_values.push({axis: "y",
-        label: label_2,
-        data: male_values,
-        fill: false,
-        backgroundColor: chart_colours[1],
-        borderColor: chart_colours[1],
-        borderWidth: 2
-    });
-
 
     const line_data = {
         labels: years,
@@ -63,10 +55,7 @@ export function createLineChart({data, stat, years, line_1, line_2, label_1 = "F
           y: {
             beginAtZero: true,
             ticks: {
-              precision: 0,
-            },
-            grid: {
-              display: false
+              precision: 3,
             }
           },
           x: {
@@ -75,6 +64,9 @@ export function createLineChart({data, stat, years, line_1, line_2, label_1 = "F
               minRotation: 0,
               autoSkip: true,
               autoSkipPadding: 4
+            },
+            grid: {
+              display: false
             }
           }
         },
@@ -83,14 +75,11 @@ export function createLineChart({data, stat, years, line_1, line_2, label_1 = "F
             onClick: () => {}  
           },
           tooltip: {
+            mode: "index",
+            instersect: false,
             callbacks: {
               label: function (context) {
-                const value = context.raw;
-                if (unit === "%") {
-                  return `${value}%`;
-                } else {
-                  return Number(value).toLocaleString();
-                }
+                return `${context.dataset.label}: ${Number(context.raw).toFixed(2)} ${unit}`;
               }
             }
           }
@@ -100,27 +89,10 @@ export function createLineChart({data, stat, years, line_1, line_2, label_1 = "F
 
 
     const ctx_line = line_canvas.getContext('2d');
-    const line_chart = new Chart(ctx_line, config_line);
+    return new Chart(ctx_line, config_line);
 
-    const gender_form = document.getElementById("gender-form");
-    if (gender_form) {
-        let selectedGender = getSelectedGender(); 
 
-        const datasetsForSelection = (sel) => {
-            if (sel === "female") return [line_values[0]];
-            if (sel === "male") return [line_values[1]];
-            return [line_values[0], line_values[1]]; // "both" / default
-        };
 
-        line_chart.data.datasets = datasetsForSelection(selectedGender);
-        line_chart.update();
-
-        gender_form.addEventListener("change", function () {
-            selectedGender = getSelectedGender(); 
-            line_chart.data.datasets = datasetsForSelection(selectedGender);
-            line_chart.update();
-        });
-    }
 
 }
 
@@ -212,74 +184,121 @@ export function createBarChart({ chart_data, categories, canvas_id, label_format
   return bar_chart;
 }
 
-
-export function createBarChartData({data, stat, year, categories}) {   
-
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < categories.length; i ++) {
-        let female_key = Object.keys(data.data[stat][year][categories[i]]).filter(x => x.includes("Female"));
-        let male_key = Object.keys(data.data[stat][year][categories[i]]).filter(x => x.includes("Male"));
-        female_bars.push(data.data[stat][year][categories[i]][female_key]);
-        male_bars.push(data.data[stat][year][categories[i]][male_key]);
+export function splitLabel(label, maxChars) {
+    const lines = [];
+    let start = 0;
+    while (start < label.length) {
+      let end = start + maxChars;
+      if (end < label.length && label[end] !== " ") {
+        const spaceIndex = label.lastIndexOf(" ", end);
+        if (spaceIndex > start) end = spaceIndex;
+      }
+      lines.push(label.substring(start, end).trim());
+      start = end;
+      if (label[start] === " ") start++;
     }
+    return lines.filter(Boolean);
+  }
 
-    return {female: female_bars,
-            male: male_bars};    
+  export function formatValue(v) {
+    return Number(v).toLocaleString("en", { maximumFractionDigits: 2 });
+  }
 
-}
+  export function get_tree_data(level, sectorName = null, sectorTotals, sectorIndex, treemap_data) {
 
-export function createPRCData ({data, stat, year, violence_types}) {   
+  const tree =
+    level === "sector"
+      ? sectorTotals // [{ sector, value }]
+      : treemap_data
+          .filter(d => d.sector === sectorName)
+          .map(d => ({
+            subsector: d.subsector,                   // keep original if you need it for drilldown
+            subsector_tidy: d.subsector_tidy ?? d.subsector, // label to display
+            value: Number(d.value),
+            value_abs: Math.abs(Number(d.value))
+          }));
 
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < violence_types.length; i ++) {
-             female_bars.push(data.data[stat][year]
-                [violence_types[i]]
-                ["All ages"]["Female"]);
-            male_bars.push(data.data[stat][year]
-                [violence_types[i]]
-                ["All ages"]["Male"]);
-    }
+  const groupField = level === "sector" ? "sector" : "subsector_tidy";
 
-    return {female: female_bars,
-            male: male_bars};    
+  const lightenColor = (hex, amount = 0.4) => {
+    const clean = hex.replace("#", "");
+    const num = parseInt(clean, 16);
 
-}
+    let r = (num >> 16) & 255;
+    let g = (num >> 8) & 255;
+    let b = num & 255;
 
-// Domestic abuse specific functions
-export function createDAData({data, stat, year, time_periods, da_type}) {   
+    r = Math.round(r + (255 - r) * amount);
+    g = Math.round(g + (255 - g) * amount);
+    b = Math.round(b + (255 - b) * amount);
 
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < time_periods.length; i ++) {
-             female_bars.push(data.data[stat][year][da_type]
-                [time_periods[i]]
-                ["Female"]);
-            male_bars.push(data.data[stat][year][da_type]
-                [time_periods[i]]
-                ["Male"]);
-    }
+    return `rgb(${r}, ${g}, ${b})`;
+  };
 
-    return {female: female_bars,
-            male: male_bars};    
+  return {
+    datasets: [{
+      type: "treemap",
+      tree,
+      key: "value_abs",
+      groups: [groupField],
 
-}
+      label: "",
+      label2: level,
 
-export function createDALast3Data({data, stat, year, da_types}) {   
+      spacing: 1,
+      borderWidth: 1,
+      hoverBorderWidth: 3,
+      hoverBorderColor: "#000",
+      borderColor: level === "sector" ? "#ffffff" : "#000",
 
-    let female_bars = [];
-    let male_bars = [];
-    for (let i = 0; i < da_types.length; i ++) {
-             female_bars.push(data.data[stat][year][da_types[i]]
-                [["Recent (last 3 years)"]]
-                ["Female"]);
-            male_bars.push(data.data[stat][year][da_types[i]]
-                [["Recent (last 3 years)"]]
-                ["Male"]);
-    }
+      backgroundColor: (ctx) => {
+  let baseColor;
+  let signedValue = 0;
 
-    return {female: female_bars,
-            male: male_bars};    
+  if (level === "sector") {
+    const sector = ctx.raw?.g;
+    const i = sectorIndex.get(sector) ?? 0;
+    baseColor = chart_colours[i % chart_colours.length];
 
+    // sector level value
+    signedValue = ctx.raw?._data?.value ?? 0;
+
+  } else {
+    const i = sectorIndex.get(sectorName) ?? 0;
+    baseColor = chart_colours[i % chart_colours.length];
+
+    // subsector level value (your working access pattern)
+    signedValue = ctx.raw?._data?.children?.[0]?.value ?? 0;
+  }
+
+  return signedValue < 0
+    ? lightenColor(baseColor, 0.5)
+    : baseColor;
+},
+
+      labels: {
+        display: true,
+        align: "center",
+        position: "center",
+
+        color: (ctx_tree) => {
+          if (level === "sector") {
+            const sector = ctx_tree.raw?.g;
+            const i = sectorIndex.get(sector) ?? 0;
+            return text_colours[i % text_colours.length];
+          }
+          const i = sectorIndex.get(sectorName) ?? 0;
+          return text_colours[i % text_colours.length];
+        },
+
+        formatter: (ctx_tree) => {
+          const label = ctx_tree.raw?.g ?? ""; // now this will be subsector_tidy
+          const chars_per_line = Math.max(1, Math.round(ctx_tree.raw.w / 10));
+          const lines = splitLabel(label, chars_per_line);
+          lines.push(formatValue(ctx_tree.raw["_data"].children[0].value));
+          return lines;
+        }
+      }
+    }]
+  };
 }

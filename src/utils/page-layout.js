@@ -12,7 +12,7 @@ export function insertHeader () {
     <div aria-label="Feedback" class="w-100" style="background-color:#3878c5;">
         <div class="text-white text-center py-2 px-3">
             We welcome feedback from users through our 
-                <a href="https://dttselfserve.nidirect.gov.uk/NISRA/RateIt#/Gender_based_violence" target="_blank" rel="noopener noreferrer">short survey</a>
+                <a href="https://dttselfserve.nidirect.gov.uk/NISRA/RateIt#/${config.rateit}" target="_blank" rel="noopener noreferrer">short survey</a>
             
         </div>
     </div>
@@ -29,13 +29,13 @@ export function insertHeader () {
 
   <!-- Center: Page title -->
   <div class="col-12 col-xl-4 d-flex justify-content-center">
-    <h1 class="mb-0 text-white fs-2 app-title text-center">${config.title}</h1>
+    <h1 class="mb-0 text-white fs-2 app-title text-center">${config.title} 1990-<span class="latest-year"></span></h1>
   </div>
 
   <!-- Right: TEO logo -->
   <div class="col-12 col-xl-4 d-flex justify-content-center justify-content-xl-end">
     <a class="navbar-brand pe-2 d-flex align-items-center" href="./">
-      <img src="assets/img/logo/teo-white.png"
+      <img id="banner-logo" src=${config.logo}
            alt="TEO logo" height="60" class="ms-3">
     </a>
   </div>
@@ -48,7 +48,7 @@ export function insertHeader () {
 export function insertNavButtons() {
   const nav = document.getElementById("nav");
 
-  const links = config.navigation;
+  const links = config.navigation.filter(l => l.href !== "projections.html" || config.show_projections);
 
   const pathname = window.location.pathname;
   const file = pathname.slice(pathname.lastIndexOf("/") + 1) || "index.html";
@@ -60,15 +60,15 @@ export function insertNavButtons() {
 
       <!-- Mobile only -->
 
-      <div class="d-lg-none w-100 text-center pb-2">
+      <div class="d-lg-none w-100 text-center pb-2 mt-1">
         <div class="dropdown d-inline-block">
-          <button class="btn btn-light dropdown-toggle"
+          <button class="btn btn-primary dropdown-toggle"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
             aria-label="Open menu">
-            <span class="me-1">Menu</span>
-            <i class="bi bi-list" aria-hidden="true"></i>
+            <span class="me-1 display-6">Menu
+            <i class="bi bi-list" aria-hidden="true"></i></span>
           </button>
 
           <!-- optional: keep menu centered under button -->
@@ -220,7 +220,7 @@ export async function insertHead(title) {
     <link rel="icon" type="image/svg+xml" href="assets/img/icon/favicon.svg" />
     <link rel="shortcut icon" href="assets/img/icon/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icon/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="Gender-based violence - ${title}" />
+    <meta name="apple-mobile-web-app-title" content="${config.title} - ${title}" />
 
     <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css">
 
@@ -244,6 +244,7 @@ export async function insertHead(title) {
   await loadScript("https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2");
   await loadScript("https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js");
   await loadScript("https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js");
+  await loadScript("https://cdn.jsdelivr.net/npm/chartjs-chart-treemap/dist/chartjs-chart-treemap.min.js");
 
   document.body.removeAttribute("style");
 
