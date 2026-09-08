@@ -112,7 +112,22 @@ For detailed implementation examples and best practices, explore the [dashboard-
 
 ---
 
-## 6. Data Preparation (`src/r/`)
+## 6. Dashboard BuildR (`src/r/launch-ui.R`)
+
+In addition to this repo the [NISRA Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr) package has been developed. All the necessary code to install and run this package is included here in the Dashboard Template.
+
+1. Ensure that you have installed R 4.6.1 on your machine. This is available on the ITAssist Store without the need for a service request.
+2. In VS Code go to the __Plugins__ tab (or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> and search for __R__ (also available [here](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r)) and click __Install__.
+3. Then search for __Live Server__ (available [here](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)) and click __Install__
+4. Click the __Go Live__ button that should now be present in the bottom right corner of your VS Code window
+5. Open the `src/r/launch-ui.R` and click the __Run Source__ button at the top of the window.
+6. You should now have a preview of your dashboard running in one browser tab and the interactive interface running in another.
+
+<img src="https://raw.githubusercontent.com/NISRA-Tech-Lab/dashboard-template/6296be2c6ed5dad3b33eb80000101c2d509cd286/assets/img/dashboard-buildr.png"/>
+
+---
+
+## 7. Data Preparation (`src/r/`)
 
 Datasets from the [NISRA Data Portal](https://data.nisra.gov.uk) can be imported using onscreen the instructions in the [Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr). If you wish to manually import data follow these steps:
 
@@ -126,7 +141,7 @@ Datasets from the [NISRA Data Portal](https://data.nisra.gov.uk) can be imported
 
 ---
 
-## 7. Adding a New Page
+## 8. Adding a New Page
 
 Adding a new page to your dashboard is best done using onscreen the instructions in the [Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr) user interface. If you wish to manually add a new page follow these steps:
 
@@ -148,7 +163,7 @@ For complete page implementation examples, see the [dashboard-demo repository](h
 
 ---
 
-## 8. Utilities Reference (`src/utils/`)
+## 9. Utilities Reference (`src/utils/`)
 
 Each file in `src/utils/` provides reusable helper functions:
 
@@ -170,7 +185,7 @@ For detailed function signatures and usage examples, see the [dashboard-demo rep
 > [!WARNING]
 > It is not recommended that you alter these function files as doing so may prohibit your fork from receiving future functionality, branding and accessibility updates.
 
-## 9. How to Add a New Chart or Info Box
+## 10. How to Add a New Chart or Info Box
 
 Adding chart and info box content to your dashboard is best done using onscreen the instructions in the [Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr) user interface. If you wish to manually insert a chart follow these steps:
 
@@ -231,7 +246,7 @@ This will insert the value dynamically into the span.
 
 ---
 
-# 10. Further resources
+# 11. Further resources
 
 - [Dashboard demo wireframe](https://datavis.nisra.gov.uk/techlab/drpvze/nisra-dashboard-demo-wireframe.pptx) - A Powerpoint presentation containing elements that can be used to in dashboard planning
 - [NISRA Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr) - An R package that can be used to interact with this template to automate some basic dashboard buiilding tasks.
