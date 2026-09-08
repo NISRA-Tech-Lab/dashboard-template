@@ -1,3 +1,5 @@
+import { config } from '../config/config.js';
+
 export function initCookieConsent(options = {}) {
   const {
     bannerId = 'cookie-banner',
@@ -108,10 +110,12 @@ export function initCookieConsent(options = {}) {
   // Build the consent banner before loading GTM.
   cookieBanner.classList.add('cookies-infobar');
 
+
+
   cookieBanner.innerHTML = `
     <div class="container">
       <p>
-        <strong>Cookies on the NISRA Data Explorer</strong>
+        <strong>Cookies on ${config.title}</strong>
       </p>
 
       <p>
@@ -130,7 +134,7 @@ export function initCookieConsent(options = {}) {
 
       <button
         id="accept-cookies"
-        class="cookies-infobar_btn"
+        class="btn btn-secondary btn-primary"
         type="button"
       >
         Accept cookies
@@ -138,7 +142,7 @@ export function initCookieConsent(options = {}) {
 
       <button
         id="reject-cookies"
-        class="cookies-infobar_btn_reject"
+        class="btn btn-secondary btn-primary"
         type="button"
       >
         Reject cookies
