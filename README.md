@@ -123,7 +123,7 @@ In addition to this repo the [NISRA Dashboard BuildR](https://github.com/NISRA-T
 5. Open the `src/r/launch-ui.R` and click the __Run Source__ button at the top of the window.
 6. You should now have a preview of your dashboard running in one browser tab and the interactive interface running in another.
 
-<img src="https://raw.githubusercontent.com/NISRA-Tech-Lab/dashboard-template/6296be2c6ed5dad3b33eb80000101c2d509cd286/assets/img/dashboard-buildr.png"/>
+<img src="https://raw.githubusercontent.com/NISRA-Tech-Lab/dashboard-template/refs/heads/main/assets/img/dashboard-buildr.png"/>
 
 ---
 
