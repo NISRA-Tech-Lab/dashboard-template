@@ -117,7 +117,7 @@ For detailed implementation examples and best practices, explore the [dashboard-
 In addition to this repo the [NISRA Dashboard BuildR](https://github.com/NISRA-Tech-Lab/dashboard-buildr) package has been developed. All the necessary code to install and run this package is included here in the Dashboard Template.
 
 1. Ensure that you have installed R 4.6.1 on your machine. This is available on the ITAssist Store without the need for a service request.
-2. In VS Code go to the __Plugins__ tab (or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd> and search for __R__ (also available [here](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r)) and click __Install__.
+2. In VS Code go to the __Plugins__ tab (or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>) and search for __R__ (also available [here](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r)) and click __Install__.
 3. Then search for __Live Server__ (available [here](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)) and click __Install__
 4. Click the __Go Live__ button that should now be present in the bottom right corner of your VS Code window
 5. Open the `src/r/launch-ui.R` and click the __Run Source__ button at the top of the window.
