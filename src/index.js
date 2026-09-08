@@ -3,13 +3,16 @@ import { readData } from "./utils/read-data.js";
 import { insertValue } from "./utils/insert-value.js";
 import { latest_year, updateYearSpans, first_year } from "./utils/update-years.js";
 import { config } from "./config/config.js";
+import { initCookieConsent } from "./utils/cookies.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
+    initCookieConsent();
     await insertHead("Home");
     insertHeader();
     insertNavButtons();
     insertFooter();
+
 
     // Insert values into homepage cards below
 
