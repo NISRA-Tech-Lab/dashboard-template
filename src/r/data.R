@@ -62,15 +62,9 @@ config_file <- readLines(
   "src/config/config.js",
   warn = FALSE
 ) |>
-  sub(
-    "export ",
-    "",
-    .
-  ) |>
-  paste(
-    .,
-    collapse = "\n"
-  )
+  (\(x) sub("export ", "", x))() |>
+  (\(x) paste(x, collapse = "\n"))()
+
 
 ctx <- V8::v8()
 
