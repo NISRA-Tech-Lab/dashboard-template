@@ -509,7 +509,7 @@ function addHoverPopup(map, unit = "") {
 //   • creates legend rows and colour blocks
 //   • updates the map-legend HTML element
 //   • displays the minimum and maximum values
-function createLegend(legendId, minValue, maxValue, unit = "") {
+function createLegend(legendId, minValue, maxValue) {
 
     const legend = document.getElementById(legendId);
     if (!legend) return;
@@ -527,7 +527,6 @@ function createLegend(legendId, minValue, maxValue, unit = "") {
 
     const unit_value = document.createElement("div");
     unit_value.classList.add("legend-unit");
-    unit_value.textContent = unit;
 
     const max_value = document.createElement("div");
     max_value.id = "legend-max";
