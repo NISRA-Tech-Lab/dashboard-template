@@ -150,7 +150,7 @@ const palette = ["#d6e4f6", "#8db2e0", "#3878c5", "#22589c", "#00205b"];
 //   • creates a new MapLibre map
 //   • adds map sources, layers, controls and event listeners
 //   • updates the exported map variable
-export async function plotMap({elementId, legendId, area, data, meta, value, unit = ""}) {
+export async function plotMap({elementId, legendId, area, data, meta, value, unit = "", label_dp = 0}) {
 
   // ===== PREPARE THE VALUE RANGE =====
   const values = data
@@ -292,7 +292,7 @@ export async function plotMap({elementId, legendId, area, data, meta, value, uni
     });
 
     // ===== ADD THE HOVER INTERACTION =====
-    addHoverPopup(map, unit);
+    addHoverPopup(map, unit, label_dp);
   });
 }
 
@@ -404,7 +404,7 @@ function getColour(norm) {
 //   • changes the map canvas cursor
 //   • updates MapLibre feature-state values
 //   • displays and removes popup content
-function addHoverPopup(map, unit = "") {
+function addHoverPopup(map, unit = "", label_dp = 0) {
 
   // ===== PREPARE THE HOVER STATE AND POPUP =====
   let hoveredId = null;
@@ -433,7 +433,7 @@ function addHoverPopup(map, unit = "") {
     const props = feature.properties;
     const value = props.nisra_value == null
       ? "Not available"
-      : `${Number(props.nisra_value).toLocaleString("en-GB")}${unit ? ` ${unit}` : ""}`;
+      : `${Number(props.nisra_value).toLocaleString("en-GB", { minimumFractionDigits: label_dp, maximumFractionDigits: label_dp })}${unit ? ` ${unit}` : ""}`;
 
     popup
       .setLngLat(e.lngLat)
