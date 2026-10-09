@@ -150,7 +150,7 @@ const palette = ["#d6e4f6", "#8db2e0", "#3878c5", "#22589c", "#00205b"];
 //   • creates a new MapLibre map
 //   • adds map sources, layers, controls and event listeners
 //   • updates the exported map variable
-export async function plotMap({elementId, legendId, area, data, meta, value}) {
+export async function plotMap({elementId, legendId, area, data, meta, value, unit = ""}) {
 
   // ===== PREPARE THE VALUE RANGE =====
   const values = data
@@ -160,7 +160,7 @@ export async function plotMap({elementId, legendId, area, data, meta, value}) {
   const range_max = Math.ceil(Math.max(...values));
   const range = range_max - range_min || 1;
 
-  createLegend(legendId, range_min, range_max);
+  createLegend(legendId, range_min, range_max, unit);
 
   // ===== LOAD AND PREPARE THE MAP SHAPES =====
   if (!geojsonData) [geojsonData, type] = await loadShapes(area);
@@ -292,7 +292,7 @@ export async function plotMap({elementId, legendId, area, data, meta, value}) {
     });
 
     // ===== ADD THE HOVER INTERACTION =====
-    addHoverPopup(map);
+    addHoverPopup(map, unit);
   });
 }
 
@@ -404,7 +404,7 @@ function getColour(norm) {
 //   • changes the map canvas cursor
 //   • updates MapLibre feature-state values
 //   • displays and removes popup content
-function addHoverPopup(map) {
+function addHoverPopup(map, unit = "") {
 
   // ===== PREPARE THE HOVER STATE AND POPUP =====
   let hoveredId = null;
@@ -433,7 +433,7 @@ function addHoverPopup(map) {
     const props = feature.properties;
     const value = props.nisra_value == null
       ? "Not available"
-      : Number(props.nisra_value).toLocaleString("en-GB");
+      : `${Number(props.nisra_value).toLocaleString("en-GB")}${unit ? ` ${unit}` : ""}`;
 
     popup
       .setLngLat(e.lngLat)
@@ -509,7 +509,7 @@ function addHoverPopup(map) {
 //   • creates legend rows and colour blocks
 //   • updates the map-legend HTML element
 //   • displays the minimum and maximum values
-function createLegend(legendId, minValue, maxValue) {
+function createLegend(legendId, minValue, maxValue, unit = "") {
 
     const legend = document.getElementById(legendId);
     if (!legend) return;
@@ -527,6 +527,7 @@ function createLegend(legendId, minValue, maxValue) {
 
     const unit_value = document.createElement("div");
     unit_value.classList.add("legend-unit");
+    unit_value.textContent = unit;
 
     const max_value = document.createElement("div");
     max_value.id = "legend-max";
