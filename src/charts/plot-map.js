@@ -431,9 +431,17 @@ function addHoverPopup(map, unit = "", label_dp = 0) {
     map.setFeatureState({ source: "shapes", id: hoveredId }, { hover: true });
 
     const props = feature.properties;
+
+    const formatted_value = Number(props.nisra_value).toLocaleString("en-GB", {
+      minimumFractionDigits: label_dp,
+      maximumFractionDigits: label_dp
+    });
+    
     const value = props.nisra_value == null
       ? "Not available"
-      : `${Number(props.nisra_value).toLocaleString("en-GB", { minimumFractionDigits: label_dp, maximumFractionDigits: label_dp })}${unit ? ` ${unit}` : ""}`;
+      : unit === "£"
+      ? `£${formatted_value}`
+      : `${formatted_value}${unit ? ` ${unit}` : ""}`;
 
     popup
       .setLngLat(e.lngLat)
