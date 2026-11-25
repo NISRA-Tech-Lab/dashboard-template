@@ -170,7 +170,7 @@ export function insertTable(tableId, expandedId = null, table_data) {
       const tr = document.createElement("tr");
 
       columns.forEach(col => {
-        const { values, format } = table_data[col];
+        const { values, format, unit = "", dp = 0, comma_separator = true } = table_data[col];
         const val = values[i];
 
         const td = document.createElement("td");
@@ -180,7 +180,35 @@ export function insertTable(tableId, expandedId = null, table_data) {
         }
 
         else if (format === "number") {
-          td.textContent = val.toLocaleString();
+
+          let formatted;
+
+          if (comma_separator) {
+            formatted = Number(val).toLocaleString(
+              undefined,
+              {
+                minimumFractionDigits: dp,
+                maximumFractionDigits: dp
+              }
+            );
+            
+          } else {
+            formatted = Number(val).toFixed(dp);
+          }
+
+          if (unit === "£") {
+            
+            td.textContent = `${unit}${formatted}`;
+          
+          } else if (unit) {
+            
+            td.textContent = `${formatted}${unit}`;
+          
+          } else {
+            
+            td.textContent = formatted;
+          }
+
           td.classList.add("number");
         }
 
