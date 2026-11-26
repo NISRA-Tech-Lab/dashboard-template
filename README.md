@@ -119,9 +119,10 @@ In addition to this repo the [NISRA Dashboard BuildR](https://github.com/NISRA-T
 1. Ensure that you have installed R 4.6.1 on your machine. This is available on the ITAssist Store without the need for a service request.
 2. In VS Code go to the __Plugins__ tab (or press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>) and search for __R__ (also available [here](https://marketplace.visualstudio.com/items?itemName=REditorSupport.r)) and click __Install__.
 3. Then search for __Live Server__ (available [here](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)) and click __Install__
-4. Click the __Go Live__ button that should now be present in the bottom right corner of your VS Code window
-5. Open the `src/r/launch-ui.R` and click the __Run Source__ button at the top of the window.
-6. You should now have a preview of your dashboard running in one browser tab and the interactive interface running in another.
+4. Next, search for __Office Viewer__ (available [here](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-office) and click __Install__
+5. Click the __Go Live__ button that should now be present in the bottom right corner of your VS Code window
+6. Open the `src/r/launch-ui.R` and click the __Run Source__ button at the top of the window.
+7. You should now have a preview of your dashboard running in one browser tab and the interactive interface running in another.
 
 <img src="https://raw.githubusercontent.com/NISRA-Tech-Lab/dashboard-template/refs/heads/main/assets/img/dashboard-buildr.png"/>
 
